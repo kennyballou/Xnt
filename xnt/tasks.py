@@ -8,6 +8,19 @@ import shutil
 import zipfile
 import contextlib
 
+_names = sys.modules.keys()
+
+if 'xnt.build.ant' in _names:
+    import xnt.build.ant as build
+elif 'xnt.build.nant' in _names:
+    import xnt.build.nant as build
+elif 'xnt.build.make' in _names:
+    import xnt.build.make as build
+else:
+    raise ImportError("No build tool module loaded")
+
+sys.modules['xnt.build'] = build
+
 #File associated tasks
 def cp(src,dst):
     if os.path.isdir(src):
@@ -43,7 +56,7 @@ def zip(dir,zipfilename):
                 z.write(absfn, zfn)
 
 def make(path="",target=""):
-    makeCmd = ["ant", target]
+    makeCmd = [build.cmd, target]
     if path and os.path.exists(path):
         oldPath = os.getcwd()
         os.chdir(os.path.abspath(path))
