@@ -18,7 +18,7 @@ def cp(src,dst):
 def mv(src,dst):
     shutil.move(src,dst)
 
-def mkdir(dir,mode=0777):
+def mkdir(dir,mode=0o777):
     try:
         os.mkdir(dir,mode)
     except IOError:
