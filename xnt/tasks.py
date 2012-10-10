@@ -49,13 +49,3 @@ def echo(message="",tofile=""):
             subprocess.call(["echo", message], stdout=f)
     else:
         print(message)
-
-#HG Tasks
-def hgclone(url):
-    subprocess.call(["hg", "clone", url])
-
-def hgfetch(path):
-    oldPath = os.getcwd()
-    os.chdir(path)
-    subprocess.call(["hg", "pull", "-u"])
-    os.chdir(oldPath)
