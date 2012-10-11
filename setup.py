@@ -2,12 +2,10 @@
 
 import os
 import shutil
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 def read(fname):
     return "\n" + open(os.path.join(os.path.dirname(__file__), fname)).read()
-
-shutil.copy2("README.markdown", "README")
 
 setup(
     name="Xnt",
@@ -18,10 +16,15 @@ setup(
     description=("High-Level build script for doing more complex build tasks"),
     license="gpl3",
     keywords="Build Scripts",
-    packages=["xnt",],
+    packages=find_packages(),
     scripts=["Xnt.py",],
     package_data={
     },
     long_description=read("README.markdown"),
     platforms=["Linux",],
+    entry_points={
+        'console_scripts': [
+            'xnt = Xnt:main',
+        ],
+    },
 )
