@@ -1,8 +1,11 @@
-# Xnt #
+===
+Xnt
+===
 
 A wrapper build tool
 
-## Motivation ##
+Motivation
+==========
 
 When writing something such as a build tool, there is always the question:
 "why?". Why write yet another build tool?
@@ -30,7 +33,8 @@ Last, and most certainly the least, I wanted to explore the idea. I wanted to
 write something that made me think about solving some of the problems
 challenged by such a tool.
 
-## What Xnt Is NOT ##
+What Xnt Is NOT
+===============
 
 Calling Xnt simply a build tool is (grossly?) misleading. Xnt is not really a
 build tool in the traditional sense. Like stated above, it is more a wrapper
@@ -38,7 +42,8 @@ around existing build tools. I didn't want to replace what some of these tools
 already do really well (e.g. being able to describe how to compile an entire
 large Java program in several lines of code using Ant).
 
-## What Xnt IS ##
+What Xnt IS
+===========
 
 Xnt is a wrapping build tool, intended to be used with a multitude of sub-build
 tools, even in the same project. Regardless of the language the project is
