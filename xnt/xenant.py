@@ -11,6 +11,8 @@ def main():
     else:
         target = sys.argv[1]
     invokeBuild(target)
+    from xnt.tasks import rm
+    rm("build.pyc")
 
 def invokeBuild(targetName):
     if not os.path.exists("build.py"):
