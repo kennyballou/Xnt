@@ -17,14 +17,14 @@ setup(
     license="gpl3",
     keywords="Build Scripts",
     packages=find_packages(),
-    scripts=["Xnt.py",],
+    scripts=["xnt/xenant.py",],
     package_data={
     },
     long_description=read("README.markdown"),
-    platforms=["Linux",],
+    platforms=["Linux", "Windows",],
     entry_points={
         'console_scripts': [
-            'xnt = Xnt:main',
+            'xnt = xnt.xenant:main',
         ],
     },
 )

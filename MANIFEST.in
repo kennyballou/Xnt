@@ -1,3 +1,2 @@
-include *.py
 include README.markdown
 recursive-include xnt *.py
