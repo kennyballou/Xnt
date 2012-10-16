@@ -50,3 +50,85 @@ tools, even in the same project. Regardless of the language the project is
 written in, Xnt should be able to suite your needs. If your language's build
 tool is unable to do something concisely or cleanly, Python should help. [There
 could be more here... I can't think of it though.]
+
+Installing and Setting Up Xnt
+=============================
+
+Using Xnt is fairly simple. All you will need to do is install it, create a
+`build.py` file for your project, and invoke it just like any other build tool
+you have used before (e.g. ``$ xnt {target}``).
+
+Dependencies
+------------
+
+Xnt has a few dependencies, specifically, Mercurial (for ``Hg`` use), CVS (for
+``cvs`` use), Nant, Ant, Make, and ``distribute``. Currently, the dependencies
+are just assumed to be there, so you may, if you want, ignore them. However,
+you may not be able to easily install Xnt without distribute.
+
+Source Install
+--------------
+
+To install from source, you can download the source tarball or zip file, unpack
+it into a temporary directory and then, from a shell or command prompt, run
+``$python[2] setup.py install [--user]``.
+
+PyPi/ Pip
+---------
+
+Soon I will attempt to get this package up to `PyPi
+<http://pypi.python.org/pypi>`_.
+
+Linux/ Unix
+-----------
+
+After installing under Gnu/Linux or Unix, you are set. There is nothing more
+you will need to do.
+
+Windows
+-------
+
+If on Windows, after installing you will need edit your ``PATH`` environment
+variable to include the ``<python_install_dir>\Scripts`` folder. After which,
+you will be all set to use Xnt.
+
+Example ``build.py``
+====================
+
+Here is a simple ``build.py``::
+
+    #!/usr/bin/env python
+
+    import xnt
+    from xnt.tasks import *
+    fromt xnt.builders import ant
+
+    @target
+    def init():
+        mkdir("bin")
+
+    @target
+    def build():
+        init()
+        ant("build")
+
+    @target
+    def clean():
+        rm("bin")
+
+    @target
+    def rebuild():
+        clean()
+        build()
+
+    @target
+    def default():
+        """ Package Build """
+        rebuild()
+        zip("bin", "packaged.zip")
+
+As you can see, it really just is a Python script. There really isn't anything
+really special happening. We just import some of the Xnt modules, and define
+some targets. When you call ``xnt``, it will be loading this script and call
+the target specified by ``{target}`` or, if you don't specify one, it will call
+the target named ``default``.
