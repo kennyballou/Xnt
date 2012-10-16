@@ -7,18 +7,24 @@ import time
 import shutil
 import zipfile
 import contextlib
+import logging
+
+logger = logging.getLogger("Xnt")
 
 #File associated tasks
 def cp(src,dst):
+    logger.info("Copying %s to %s", src, dst)
     if os.path.isdir(src):
         shutil.copytree(src,dst)
     else:
         shutil.copy2(src,dst)
 
 def mv(src,dst):
+    logger.info("Moving %s to %s", src, dst)
     shutil.move(src,dst)
 
 def mkdir(dir,mode=0o777):
+    logger.info("Making directory %s with %s mode", dir, mode)
     try:
         os.mkdir(dir,mode)
     except IOError:
@@ -27,6 +33,7 @@ def mkdir(dir,mode=0o777):
         raise
 
 def rm(path):
+    logger.info("Removing %s", path)
     try:
         if os.path.isdir(path):
             shutil.rmtree(path)
@@ -38,6 +45,7 @@ def rm(path):
         raise
 
 def zip(dir,zipfilename):
+    logger.info("Zipping %s as %s", dir, zipfilename)
     assert os.path.isdir(dir) and zipfilename
     with contextlib.closing(zipfile.ZipFile(
         zipfilename,

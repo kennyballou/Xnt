@@ -2,8 +2,11 @@
 
 import os
 import sys
+import logging
 
 sys.path.append(os.getcwd())
+logger = logging.Logger(name="Xnt")
+logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
 
 def main():
     if len(sys.argv[1:]) < 1:
@@ -16,16 +19,16 @@ def main():
 
 def invokeBuild(targetName):
     if not os.path.exists("build.py"):
-        sys.stderr.write("There was no build file")
+        logger.error("There was no build file")
         sys.exit(1)
     try:
         build = __import__("build", fromlist=[])
         target = getattr(build, targetName)
         target()
     except AttributeError:
-        sys.stderr.write("No such target: " + targetName)
+        logger.warning("There was no target: %s", targetName)
     except:
-        print(sys.exc_info())
+        logger.error(sys.exc_info()[1].message)
 
 if __name__ == "__main__":
     main()
