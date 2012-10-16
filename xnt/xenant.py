@@ -6,7 +6,11 @@ import sys
 sys.path.append(os.getcwd())
 
 def main():
-    invokeBuild(sys.argv[1])
+    if len(sys.argv[1:]) < 1:
+        target = "default"
+    else:
+        target = sys.argv[1]
+    invokeBuild(target)
 
 def invokeBuild(targetName):
     if not os.path.exists("build.py"):
