@@ -23,12 +23,19 @@ def mkdir(dir,mode=0o777):
         os.mkdir(dir,mode)
     except IOError:
         pass
+    except:
+        raise
 
 def rm(path):
-    if os.path.isdir(path):
-        shutil.rmtree(path)
-    else:
-        os.remove(path)
+    try:
+        if os.path.isdir(path):
+            shutil.rmtree(path)
+        else:
+            os.remove(path)
+    except OSError:
+        pass
+    except:
+        raise
 
 def zip(dir,zipfilename):
     assert os.path.isdir(dir) and zipfilename
