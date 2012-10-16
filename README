@@ -100,7 +100,7 @@ Here is a simple ``build.py``::
 
     #!/usr/bin/env python
 
-    import xnt
+    from xnt import target
     from xnt.tasks import *
     fromt xnt.builders import ant
 
