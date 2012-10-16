@@ -27,4 +27,5 @@ setup(
             'xnt = xnt.xenant:main',
         ],
     },
+    install_requires=['distribute',],
 )
