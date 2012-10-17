@@ -9,7 +9,7 @@ import zipfile
 import contextlib
 import logging
 
-logger = logging.getLogger("Xnt")
+logger = logging.getLogger(__name__)
 
 #File associated tasks
 def cp(src,dst):

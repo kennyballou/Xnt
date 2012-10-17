@@ -6,7 +6,7 @@ import logging
 
 sys.path.append(os.getcwd())
 logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
-logger = logging.Logger(name="Xnt")
+logger = logging.Logger(name=__name__)
 logger.addHandler(logging.StreamHandler())
 
 def main():
