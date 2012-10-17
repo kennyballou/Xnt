@@ -5,8 +5,9 @@ import sys
 import logging
 
 sys.path.append(os.getcwd())
-logger = logging.Logger(name="Xnt")
 logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
+logger = logging.Logger(name="Xnt")
+logger.addHandler(logging.StreamHandler())
 
 def main():
     if len(sys.argv[1:]) < 1:
