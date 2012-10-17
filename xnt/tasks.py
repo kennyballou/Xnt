@@ -24,7 +24,7 @@ def mv(src,dst):
     shutil.move(src,dst)
 
 def mkdir(dir,mode=0o777):
-    logger.info("Making directory %s with %s mode", dir, mode)
+    logger.info("Making directory %s with mode %o", dir, mode)
     try:
         os.mkdir(dir,mode)
     except IOError:
