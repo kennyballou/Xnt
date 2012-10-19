@@ -102,7 +102,7 @@ Here is a simple ``build.py``::
 
     from xnt import target
     from xnt.tasks import *
-    fromt xnt.builders import ant
+    from xnt.builders import ant
 
     @target
     def init():
