@@ -123,10 +123,13 @@ Here is a simple ``build.py``::
         build()
 
     @target
-    def default():
-        """ Package Build """
+    def package():
         rebuild()
         zip("bin", "packaged.zip")
+
+    @target
+    def default():
+        package()
 
 As you can see, it really just is a Python script. There really isn't anything
 really special happening. We just import some of the Xnt modules, and define
