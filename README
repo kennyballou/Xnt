@@ -77,8 +77,10 @@ it into a temporary directory and then, from a shell or command prompt, run
 PyPi/ Pip
 ---------
 
-Soon I will attempt to get this package up to `PyPi
-<http://pypi.python.org/pypi>`_.
+To install from PyPi_, you will need `pip`_. Once you have `pip`, you may only
+run::
+
+    pip install Xnt [--user]
 
 Linux/ Unix
 -----------
@@ -136,3 +138,6 @@ really special happening. We just import some of the Xnt modules, and define
 some targets. When you call ``xnt``, it will be loading this script and call
 the target specified by ``{target}`` or, if you don't specify one, it will call
 the target named ``default``.
+
+.. _PyPi: http://pypi.python.org/pypi
+.. _pip: http://www.pip-installer.org/en/latest/installing.html
