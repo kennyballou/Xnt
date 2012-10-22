@@ -14,8 +14,6 @@ setup(
     author_email="kennethmgballou@gmail.com",
     url="https://bitbucket.org/devnulltao/xnt",
     description=("High-Level build script for doing more complex build tasks"),
-    license="gpl3",
-    keywords="Build Scripts",
     packages=find_packages(),
     scripts=["xnt/xenant.py",],
     package_data={
@@ -28,4 +26,16 @@ setup(
         ],
     },
     install_requires=['distribute',],
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Natural Language :: English',
+        'Operating System :: Microsoft :: Windows :: Windows 7',
+        'Operating System :: POSIX :: Linux',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Build Tools',
+        'Topic :: Utilities',
+    ],
 )
