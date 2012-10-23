@@ -9,7 +9,7 @@ def read(fname):
 
 setup(
     name="Xnt",
-    version="0.2.0",
+    version="0.2.2",
     author="Kenny Ballou",
     author_email="kennethmgballou@gmail.com",
     url="https://bitbucket.org/devnulltao/xnt",
