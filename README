@@ -82,7 +82,7 @@ command prompt, run::
 PyPi/ Pip
 ---------
 
-To install from PyPi_, you will need `pip`_. Once you have `pip`, you
+To install from PyPi_, you will need `pip`_. Once you have ``pip``, you
 may only run::
 
     $ pip install Xnt [--user]
