@@ -15,6 +15,7 @@ setup(
     url="https://bitbucket.org/devnulltao/xnt",
     description=("High-Level build script for doing more complex build tasks"),
     packages=find_packages(),
+    test_suite="xnt.tests",
     scripts=["xnt/xenant.py",],
     package_data={
     },
