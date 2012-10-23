@@ -76,8 +76,8 @@ Source Install
 --------------
 
 To install from source, you can download the source tarball or zip
-file, unpack it into a temporary directory and then, from a shell or
-command prompt, run::
+file (from either `BitbucketXnt`_ or `PyPiXnt`_), unpack it into a
+temporary directory and then, from a shell or command prompt, run::
 
     $ python[2] setup.py install [--user]
 
@@ -92,8 +92,11 @@ may only run::
 Linux/ Unix
 -----------
 
-After installing under Gnu/Linux or Unix, you are set. There is
-nothing more you will need to do.
+If you install using the ``--user`` option in either source or PyPi
+installs you may need to add ``~/.local/bin/`` to your ``PATH``
+environment variable.
+
+Otherwise, you shall need do nothing more.
 
 Windows
 -------
@@ -148,3 +151,5 @@ if you don't specify one, it will call the target named ``default``.
 
 .. _PyPi: http://pypi.python.org/pypi
 .. _pip: http://www.pip-installer.org/en/latest/installing.html
+.. _BitbucketXNt: https://bitbucket.org/devnulltao/xnt/downloads
+.. _PyPiXnt: http://pypi.python.org/pypi/Xnt
