@@ -32,13 +32,14 @@ def mkdir(dir,mode=0o777):
     except:
         raise
 
-def rm(path):
-    logger.info("Removing %s", path)
+def rm(*fileset):
     try:
-        if os.path.isdir(path):
-            shutil.rmtree(path)
-        else:
-            os.remove(path)
+        for f in fileset:
+            logger.info("Removing %s", f)
+            if os.path.isdir(f):
+                shutil.rmtree(f)
+            else:
+                os.remove(f)
     except OSError:
         pass
     except:
