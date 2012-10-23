@@ -61,7 +61,7 @@ class TaskTests(unittest.TestCase):
         xnt.tasks.echo("this is my cool echo", "temp/mynewcoolfile")
         self.assertTrue(os.path.exists("temp/mynewcoolfile"))
         with open("temp/mynewcoolfile", "r") as f:
-            self.assertEqual("this is my cool echo\n", f.read())
+            self.assertEqual("this is my cool echo", f.read())
 
 if __name__ == "__main__":
     unittest.main()

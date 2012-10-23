@@ -59,12 +59,9 @@ def zip(dir,zipfilename):
                 z.write(absfn, zfn)
 
 #Misc Tasks
-def echo(message="",tofile=""):
-    if tofile:
-        with open(tofile, "w") as f:
-            subprocess.call(["echo", message], stdout=f)
-    else:
-        print(message)
+def echo(msg, tofile):
+    with open(tofile, "w") as f:
+        f.write(msg)
 
 def log(msg="",lvl=logging.INFO):
     logger.log(lvl, msg)
