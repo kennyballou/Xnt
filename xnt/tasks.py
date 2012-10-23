@@ -65,3 +65,6 @@ def echo(message="",tofile=""):
             subprocess.call(["echo", message], stdout=f)
     else:
         print(message)
+
+def log(msg="",lvl=logging.INFO):
+    logger.log(lvl, msg)
