@@ -65,3 +65,13 @@ def echo(msg, tofile):
 
 def log(msg="",lvl=logging.INFO):
     logger.log(lvl, msg)
+
+def call(command, stdout=None, stderr=None):
+    """
+    Execute the given command, redirecting stdout and stderr
+    to optionally given files
+    param: command - list of command and arguments
+    param: stdout - file to redirect standard output to, if given
+    param: stderr - file to redirect standard error to, if given
+    """
+    subprocess.call(args=command, stdout=stdout, stderr=stderr)
