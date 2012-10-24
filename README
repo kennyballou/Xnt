@@ -177,6 +177,10 @@ Features
         """Example docstring of target"""
         #do something
 
+* Verbose Output
+  - If you want to see more verbose output you may specify ``-v`` to
+    Xnt
+
 Issues
 ======
 
