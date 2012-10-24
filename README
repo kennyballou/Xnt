@@ -149,6 +149,33 @@ modules, and define some targets. When you call ``xnt``, it will be
 loading this script and call the target specified by ``{target}`` or,
 if you don't specify one, it will call the target named ``default``.
 
+Features
+========
+
+*   Version special target (*as of 0.2.3*)
+    -   Invoke Xnt with ``version`` and it will report the version
+        of the currently installed Xnt
+    -   ``$ xnt version``
+
+*   Help special target (*as of 0.2.3*)
+    -   Invoke Xnt with ``help`` and it will report the targets of the
+        build file in the current directory, along with any doc
+        strings attached to those targets
+    -   ``$ xnt help``
+
+*   Ability to add doc-strings to targets (*as of 0.2.3*)
+    -   Using the familiar doc string syntax, you are now able to
+        describe targets and have them displayed when calling the
+        help target
+
+    -   Example Target
+        ::
+
+            @target
+            def myTarget():
+                """Example doc string of target"""
+                #do something
+
 .. _PyPi: http://pypi.python.org/pypi
 .. _pip: http://www.pip-installer.org/en/latest/installing.html
 .. _BitbucketXNt: https://bitbucket.org/devnulltao/xnt/downloads
