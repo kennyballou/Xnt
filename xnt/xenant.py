@@ -18,6 +18,8 @@ def main():
             printVersion()
             print("\n")
             printTargets()
+        elif arg == "-v":
+            logging.getLogger("xnt.tasks").setLevel(logging.INFO)
         elif arg:
             target = arg
             invokeBuild(target)
