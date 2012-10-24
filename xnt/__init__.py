@@ -6,4 +6,5 @@ def target(fn):
         print(fn.__name__ + ":")
         return fn()
     wrap.decorator = "target"
+    wrap.__doc__ = fn.__doc__
     return wrap

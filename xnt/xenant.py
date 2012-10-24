@@ -16,7 +16,7 @@ def main():
             printVersion()
         elif arg == "help":
             printVersion()
-            print("\n\n")
+            print("\n")
             printTargets()
         elif arg:
             target = arg
@@ -54,7 +54,10 @@ def printTargets():
             try:
                 fa = getattr(build, f)
                 if fa.decorator == "target":
-                    print(f + ":\n")
+                    print(f + ":")
+                    if fa.__doc__:
+                        print(fa.__doc__)
+                    print("\n")
             except AttributeError:
                 pass
     except AttributeError:
