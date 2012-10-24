@@ -10,10 +10,16 @@ logger = logging.Logger(name=__name__)
 logger.addHandler(logging.StreamHandler())
 
 def main():
-    if len(sys.argv[1:]) < 1:
-        target = "default"
-    else:
-        target = sys.argv[1]
+    args = sys.argv[1:]
+    for arg in args:
+        if arg == "version":
+            import xnt
+            print(xnt.__version__)
+            sys.exit()
+        elif arg:
+            target = arg
+        elif not arg:
+            target = "default"
     invokeBuild(target)
     from xnt.tasks import rm
     rm("build.pyc")
