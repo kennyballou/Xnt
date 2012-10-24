@@ -30,7 +30,8 @@ file or in the native language. Therefore, having a wrapping build
 framework/ tool that is written in an easy to read and write
 language, such as Python, these complicated steps can depend less on
 some funky new build library (further adding to the dependency tree)
-and can become just implementation details. [awkward?]
+and can become just implementation details (assuming, of course, you
+buy into Xnt first).
 
 Last, and most certainly the least, I wanted to explore the idea. I
 wanted to write something that made me think about solving some of
@@ -84,8 +85,8 @@ temporary directory and then, from a shell or command prompt, run::
 PyPi/ Pip
 ---------
 
-To install from PyPi_, you will need `pip`_. Once you have ``pip``, you
-may only run::
+To install from PyPi_, you will need `pip`_. Once you have ``pip``,
+you may only run::
 
     $ pip install Xnt [--user]
 
@@ -158,13 +159,13 @@ Features
     -   ``$ xnt version``
 
 *   Help special target (*as of 0.2.3*)
-    -   Invoke Xnt with ``help`` and it will report the targets of the
-        build file in the current directory, along with any doc
+    -   Invoke Xnt with ``help`` and it will report the targets of
+        the build file in the current directory, along with any doc
         strings attached to those targets
     -   ``$ xnt help``
 
-*   Ability to add doc-strings to targets (*as of 0.2.3*)
-    -   Using the familiar doc string syntax, you are now able to
+*   Ability to add docstrings to targets (*as of 0.2.3*)
+    -   Using the familiar docstring syntax, you are now able to
         describe targets and have them displayed when calling the
         help target
 
@@ -173,7 +174,7 @@ Features
 
             @target
             def myTarget():
-                """Example doc string of target"""
+                """Example docstring of target"""
                 #do something
 
 .. _PyPi: http://pypi.python.org/pypi
