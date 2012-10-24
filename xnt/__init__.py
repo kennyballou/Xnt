@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-__version__ = "Xnt 0.2.2"
+__version__ = "Xnt 0.2.3"
 
 def target(fn):
     def wrap():
