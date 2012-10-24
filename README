@@ -177,7 +177,14 @@ Features
         """Example docstring of target"""
         #do something
 
+Issues
+======
+
+If you find any issues or would like to request a feature, please
+visit `Bitbucket Issues`_.
+
 .. _PyPi: http://pypi.python.org/pypi
 .. _pip: http://www.pip-installer.org/en/latest/installing.html
-.. _BitbucketXNt: https://bitbucket.org/devnulltao/xnt/downloads
+.. _BitbucketXnt: https://bitbucket.org/devnulltao/xnt/downloads
 .. _PyPiXnt: http://pypi.python.org/pypi/Xnt
+.. _Bitbucket Issues: https://bitbucket.org/devnulltao/xnt/issues
