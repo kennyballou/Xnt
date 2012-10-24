@@ -46,6 +46,8 @@ class TaskTests(unittest.TestCase):
     def test_mkdir(self):
         xnt.tasks.mkdir("temp/mynewtestfolder")
         self.assertTrue(os.path.exists("temp/mynewtestfolder"))
+        self.assertTrue(os.path.exists("temp/testfolder1"))
+        xnt.tasks.mkdir("temp/testfolder1")
 
     def test_rm(self):
         xnt.tasks.rm("temp/testfolder1")

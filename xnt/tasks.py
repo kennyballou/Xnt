@@ -24,6 +24,8 @@ def mv(src,dst):
     shutil.move(src,dst)
 
 def mkdir(dir,mode=0o777):
+    if os.path.exists(dir):
+        return
     logger.info("Making directory %s with mode %o", dir, mode)
     try:
         os.mkdir(dir,mode)
