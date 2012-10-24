@@ -37,6 +37,8 @@ def mkdir(dir,mode=0o777):
 def rm(*fileset):
     try:
         for f in fileset:
+            if not os.path.exists(f):
+                continue
             logger.info("Removing %s", f)
             if os.path.isdir(f):
                 shutil.rmtree(f)
