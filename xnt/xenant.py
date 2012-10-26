@@ -33,24 +33,16 @@ def main():
         elif arg == "help":
             printVersion()
             print("\n")
-            printTargets()
+            printTargets(__loadBuild())
         elif arg == "-v":
             logging.getLogger("xnt.tasks").setLevel(logging.INFO)
-        elif arg:
-            target = arg
-            invokeBuild(target)
-        elif not arg:
-            target = "default"
-            invokeBuild(target)
+        else:
+            invokeBuild(__loadBuild(), arg if arg else "default")
     from xnt.tasks import rm
     rm("build.pyc")
 
-def invokeBuild(targetName):
-    if not os.path.exists("build.py"):
-        logger.error("There was no build file")
-        sys.exit(1)
+def invokeBuild(build, targetName):
     try:
-        build = __import__("build", fromlist=[])
         target = getattr(build, targetName)
         target()
     except AttributeError:
@@ -62,12 +54,8 @@ def printVersion():
     import xnt
     print(xnt.__version__)
 
-def printTargets():
-    if not os.path.exists("build.py"):
-        logger.error("There was no build file")
-        sys.exit(1)
+def printTargets(build):
     try:
-        build = __import__("build", fromlist=[])
         for f in dir(build):
             try:
                 fa = getattr(build, f)
@@ -78,10 +66,18 @@ def printTargets():
                     print("\n")
             except AttributeError:
                 pass
-    except AttributeError:
-        pass
     except:
         logger.error(sys.exc_info()[1].message)
+
+def __loadBuild():
+    if not os.path.exists("build.py"):
+        logger.error("There was no build file")
+        sys.exit(1)
+    try:
+        return __import__("build", fromlist=[])
+    except ImportError:
+        logger.error("HOW?!")
+        return None
 
 if __name__ == "__main__":
     main()
