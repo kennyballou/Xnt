@@ -25,23 +25,33 @@ logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
 logger = logging.Logger(name=__name__)
 logger.addHandler(logging.StreamHandler())
 
+def versionAction():
+    printVersion()
+    sys.exit(0)
+
+def verboseAction():
+    logging.getLogger("xnt.tasks").setLevel(logging.INFO)
+
+actions = {
+    "--version": versionAction,
+    "-v"     : verboseAction,
+}
+
 def main():
-    args = sys.argv[1:]
-    for arg in args:
-        if arg == "version":
-            printVersion()
-        elif arg == "help":
-            printVersion()
-            print("\n")
-            printTargets(__loadBuild())
-        elif arg == "-v":
-            logging.getLogger("xnt.tasks").setLevel(logging.INFO)
+    opts = list(o for o in sys.argv[1:] if o.startswith('-'))
+    arg = list(a for a in sys.argv[1:] if a not in opts)
+    for opt in opts:
+        if opt in actions:
+            actions[opt]()
         else:
-            invokeBuild(__loadBuild(), arg if arg else "default")
+            logger.debug("%s is not a valid option", opt)
+    invokeBuild(__loadBuild(), arg[0] if len(arg) == 1 else "default")
     from xnt.tasks import rm
     rm("build.pyc")
 
 def invokeBuild(build, targetName):
+    if targetName == "help":
+        return printTargets(build)
     try:
         target = getattr(build, targetName)
         target()
@@ -55,6 +65,8 @@ def printVersion():
     print(xnt.__version__)
 
 def printTargets(build):
+    printVersion()
+    print("\n")
     try:
         for f in dir(build):
             try:
