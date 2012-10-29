@@ -110,7 +110,7 @@ def setup(commands, dir=""):
     param: commands - list of commands and options to run/ append
     param: dir - (optional) directory to run from
     """
-    cmd = ["python" + str(sys.version_info[0]), "setup.py",]
+    cmd = [sys.executable, "setup.py",]
     for c in commands:
         cmd.append(c)
     cwd = os.getcwd()
