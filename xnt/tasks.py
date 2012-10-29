@@ -23,11 +23,18 @@ import time
 import shutil
 import zipfile
 import contextlib
+import glob
 import logging
 
 logger = logging.getLogger(__name__)
 
 #File associated tasks
+def expandpath(path):
+    """
+    Expand path using globs to a possibly empty list of directories
+    """
+    return glob.iglob(path)
+
 def cp(src,dst):
     logger.info("Copying %s to %s", src, dst)
     if os.path.isdir(src):
@@ -52,14 +59,15 @@ def mkdir(dir,mode=0o777):
 
 def rm(*fileset):
     try:
-        for f in fileset:
-            if not os.path.exists(f):
-                continue
-            logger.info("Removing %s", f)
-            if os.path.isdir(f):
-                shutil.rmtree(f)
-            else:
-                os.remove(f)
+        for g in fileset:
+            for f in expandpath(g):
+                if not os.path.exists(f):
+                    continue
+                logger.info("Removing %s", f)
+                if os.path.isdir(f):
+                    shutil.rmtree(f)
+                else:
+                    os.remove(f)
     except OSError:
         pass
     except:
