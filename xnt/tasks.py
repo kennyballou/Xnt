@@ -95,3 +95,18 @@ def call(command, stdout=None, stderr=None):
     param: stderr - file to redirect standard error to, if given
     """
     subprocess.call(args=command, stdout=stdout, stderr=stderr)
+
+def setup(commands, dir=""):
+    """
+    Invoke the ``setup.py`` file in the current or specified directory
+    param: commands - list of commands and options to run/ append
+    param: dir - (optional) directory to run from
+    """
+    cmd = ["python" + str(sys.version_info[0]), "setup.py",]
+    for c in commands:
+        cmd.append(c)
+    cwd = os.getcwd()
+    if dir:
+        os.chdir(dir)
+    call(cmd)
+    os.chdir(cwd)
