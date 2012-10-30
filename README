@@ -153,40 +153,28 @@ modules, and define some targets. When you call ``xnt``, it will be
 loading this script and call the target specified by ``{target}`` or,
 if you don't specify one, it will call the target named ``default``.
 
-Features
-========
+Usage
+=====
 
-* Version special target (*as of 0.2.3*)
+Command Usage:
 
-  - Invoke Xnt with ``version`` and it will report the version of the
-    currently installed Xnt
+    $ xnt [options] [target]
 
-  - ``$ xnt version``
+Where ``[options]`` are one of the following:
 
-* Help special target (*as of 0.2.3*)
+* ``-v``:           verbose, turn on logging
 
-  - Invoke Xnt with ``help`` and it will report the targets of the
-    build file in the current working directory, along with any
-    docstrings attached to those targets
+* ``--version``:    print version and quit
 
-  - ``$ xnt help``
+And where ``[target]`` is any target method in your ``build.py`` file
+or:
 
-* Ability to add docstrings to targets (*as of 0.2.3*)
+* Nothing; if no target is specified, Xnt will attempt to invoke the
+  ``default`` target
 
-  - Using the familiar docstring syntax, you are now able to describe
-    targets and have them displayed when calling the help target
-
-  - Example Target::
-
-        @target
-        def myTarget():
-            """Example docstring of target"""
-            #do something
-
-* Verbose Output
-
-  - If you want to see more verbose output you may specify ``-v`` to
-    Xnt
+* ``help``: if this 'special' target is provided, Xnt will print all
+  targets marked by the ``@target`` decorator and possibly their
+  docstrings if they are defined
 
 Issues
 ======
