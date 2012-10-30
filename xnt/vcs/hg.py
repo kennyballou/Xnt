@@ -18,19 +18,24 @@
 
 import os
 import sys
-from mercurial import hg
-from mercurial import ui
-from mercurial import commands
+import xnt.tasks
 
 def hgclone(url, dest=None,rev=None,branch=None):
-    commands.clone(
-        ui=ui.ui(),
-        source=url,
-        dest=dest,
-        opts={"-r":rev,
-              "-b":branch})
+    command = ["hg", "clone"]
+    if rev:
+        command.append("--rev")
+        command.append(rev)
+    if branch:
+        command.append("--branch")
+        command.append(branch)
+    command.append(url)
+    if dest:
+        command.append(dest)
+    xnt.tasks.call(command)
 
 def hgfetch(path, source='default'):
-    repo = hg.repository(ui.ui(), path)
-    commands.pull(repo.ui, repo, source)
-    commands.update(repo.ui, repo)
+    command = ["hg", "pull", "-u", source]
+    cwd = os.getcwd()
+    os.chdir(path)
+    xnt.tasks.call(command)
+    os.chdir(cwd)
