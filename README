@@ -80,7 +80,7 @@ Source Install
 --------------
 
 To install from source, you can download the source tarball or zip
-file (from either `BitbucketXnt`_ or `PyPiXnt`_), unpack it into a
+file (from either `Downloads`_ or `Xnt`_), unpack it into a
 temporary directory and then, from a shell or command prompt, run::
 
     $ python[2] setup.py install [--user]
@@ -180,11 +180,11 @@ Issues
 ======
 
 If you find any issues or would like to request a feature, please
-visit `Bitbucket Issues`_.
+visit `Issues`_.
 
 .. _PyPi: http://pypi.python.org/pypi
 .. _Package Documentation: http://packages.python.org/Xnt
 .. _pip: http://www.pip-installer.org/en/latest/installing.html
-.. _BitbucketXnt: https://bitbucket.org/devnulltao/xnt/downloads
-.. _PyPiXnt: http://pypi.python.org/pypi/Xnt
-.. _Bitbucket Issues: https://bitbucket.org/devnulltao/xnt/issues
+.. _Downloads: https://bitbucket.org/devnulltao/xnt/downloads
+.. _Xnt: http://pypi.python.org/pypi/Xnt
+.. _Issues: https://bitbucket.org/devnulltao/xnt/issues
