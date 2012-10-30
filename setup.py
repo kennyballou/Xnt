@@ -51,6 +51,8 @@ setup(
         'Natural Language :: English',
         'Operating System :: Microsoft :: Windows :: Windows 7',
         'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Topic :: Software Development',
         'Topic :: Software Development :: Build Tools',
         'Topic :: Utilities',
