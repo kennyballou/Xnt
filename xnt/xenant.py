@@ -18,6 +18,7 @@
 
 import os
 import sys
+import time
 import logging
 
 sys.path.append(os.getcwd())
@@ -38,6 +39,7 @@ actions = {
 }
 
 def main():
+    start_time = time.time()
     opts = list(o for o in sys.argv[1:] if o.startswith('-'))
     arg = list(a for a in sys.argv[1:] if a not in opts)
     for opt in opts:
@@ -48,6 +50,8 @@ def main():
     invokeBuild(__loadBuild(), arg[0] if len(arg) == 1 else "default")
     from xnt.tasks import rm
     rm("build.pyc")
+    elapsed_time = time.time() - start_time
+    logger.info("Execution time: %.3f", elapsed_time)
 
 def invokeBuild(build, targetName):
     if targetName == "help":
