@@ -6,8 +6,6 @@ Xnt
 
 A wrapper build tool
 
-`Package Documentation`_
-
 Motivation
 ==========
 
@@ -175,6 +173,9 @@ or:
 * ``help``: if this 'special' target is provided, Xnt will print all
   targets marked by the ``@target`` decorator and possibly their
   docstrings if they are defined
+
+For more information about Xnt and the build in functions, see the
+`Package Documentation`_.
 
 Issues
 ======
