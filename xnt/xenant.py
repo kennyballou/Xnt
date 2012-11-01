@@ -49,7 +49,8 @@ def main():
             logger.debug("%s is not a valid option", opt)
     invokeBuild(__loadBuild(), arg[0] if len(arg) == 1 else "default")
     from xnt.tasks import rm
-    rm("build.pyc")
+    rm("build.pyc",
+       "__pycache__")
     elapsed_time = time.time() - start_time
     logger.info("Execution time: %.3f", elapsed_time)
 
