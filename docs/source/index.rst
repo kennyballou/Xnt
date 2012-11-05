@@ -27,6 +27,7 @@ Contents:
    :maxdepth: 2
 
    buildfile
+   taskreference
 
 Motivation
 ==========
