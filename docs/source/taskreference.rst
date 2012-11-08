@@ -80,6 +80,21 @@ Miscellaneous Tasks
     *stdout* and *stderr* must be an open file handle. [However, that may
     change; I'm not sure how I feel about that yet.]
 
+.. function:: xnt(target, path)
+
+    Invoke the *target* of a build file in a different *path*.
+
+    *target* is the name of the target to invoke (similar to *target* of a
+    regular invocation with the small difference, however, of not allowing an
+    empty target.
+
+    *path* is the relative or full path to where the "sub" *build.py* file can
+    be found.
+
+    **Notice**: the use of this function requires fully qualified naming.
+    (i.e., *xnt.tasks.xnt(target, path)*). This will remain so until a better
+    name can be found for it.
+
 Compile Tasks
 =============
 
