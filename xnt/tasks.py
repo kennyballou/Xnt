@@ -94,6 +94,15 @@ def echo(msg, tofile):
 def log(msg="",lvl=logging.INFO):
     logger.log(lvl, msg)
 
+def xnt(target, path):
+    """
+    Invoke xnt on another build file in a different directory
+    """
+    import xnt.xenant
+    xnt.xenant.invokeBuild(
+        xnt.xenant.__loadBuild(path),
+        target)
+
 def call(command, stdout=None, stderr=None):
     """
     Execute the given command, redirecting stdout and stderr

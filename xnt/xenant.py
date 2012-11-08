@@ -21,7 +21,6 @@ import sys
 import time
 import logging
 
-sys.path.append(os.getcwd())
 logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
 logger = logging.Logger(name=__name__)
 logger.addHandler(logging.StreamHandler())
@@ -86,7 +85,14 @@ def printTargets(build):
     except:
         logger.error(sys.exc_info()[1].message)
 
-def __loadBuild():
+def __loadBuild(path=""):
+    if not path:
+        path = os.getcwd()
+    else:
+        path = os.path.abspath(path)
+    sys.path.append(path)
+    cwd = os.getcwd()
+    os.chdir(path)
     if not os.path.exists("build.py"):
         logger.error("There was no build file")
         sys.exit(1)
@@ -95,6 +101,10 @@ def __loadBuild():
     except ImportError:
         logger.error("HOW?!")
         return None
+    finally:
+        sys.path.remove(path)
+        del sys.modules["build"]
+        os.chdir(cwd)
 
 if __name__ == "__main__":
     main()
