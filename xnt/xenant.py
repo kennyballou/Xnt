@@ -25,6 +25,10 @@ logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
 logger = logging.Logger(name=__name__)
 logger.addHandler(logging.StreamHandler())
 
+def usageAction():
+    printUsage()
+    sys.exit(0)
+
 def versionAction():
     printVersion()
     sys.exit(0)
@@ -33,6 +37,7 @@ def verboseAction():
     logging.getLogger("xnt.tasks").setLevel(logging.INFO)
 
 actions = {
+    "--usage": usageAction,
     "--version": versionAction,
     "-v"     : verboseAction,
 }
@@ -63,6 +68,21 @@ def invokeBuild(build, targetName):
         logger.warning("There was no target: %s", targetName)
     except:
         logger.error(sys.exc_info()[1].message)
+
+def printUsage():
+    import xnt
+    print(xnt.__version__)
+    print(xnt.__license__)
+    print("Usage:\txnt [options] [target]")
+    print("Where [target] is a target in your ``build.py`` file")
+    print("  And [options] is one of the falling:")
+    print("\t-v: print verbose information about Xnt's running")
+    print("\t--usage: Print this message")
+    print("In addition to targets defined by your ``build.py`` file")
+    print("\t``list-targets`` can be used in place of [targets] to")
+    print("\t\tlist targets and docstrings defined in your ``build.py`` file")
+    print("\tIf no [target] is provided, Xnt will try the target: ``default``")
+    print("\n")
 
 def printVersion():
     import xnt
