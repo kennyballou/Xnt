@@ -54,7 +54,7 @@ def main():
     logger.info("Execution time: %.3f", elapsed_time)
 
 def invokeBuild(build, targetName):
-    if targetName == "help":
+    if targetName == "list-targets":
         return printTargets(build)
     try:
         target = getattr(build, targetName)
