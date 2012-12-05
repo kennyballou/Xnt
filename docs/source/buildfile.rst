@@ -134,6 +134,8 @@ Where options can be any and all of the following (unless otherwise specified):
 
 * ``-v``: add verbose output to the execution of Xnt
 
+* ``--version``: Print the version of Xnt and exit
+
 * ``--usage``: Print version, license, usage information and quit. [I've
   debatted between putting this as a special target and leaving it as an
   option.. not sure which is better...]
