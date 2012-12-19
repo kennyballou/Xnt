@@ -13,7 +13,8 @@ def clean():
        "dist",
        "README.html",
        "**/*.pyc",
-       "**/**/*.pyc")
+       "**/**/*.pyc",
+       "**__pycache__")
 
 @target
 def build():
