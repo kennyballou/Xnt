@@ -51,23 +51,27 @@ def main():
             actions[opt]()
         else:
             logger.debug("%s is not a valid option", opt)
-    invokeBuild(__loadBuild(), arg[0] if len(arg) == 1 else "default")
+    ec = invokeBuild(__loadBuild(), arg[0] if len(arg) == 1 else "default")
     from xnt.tasks import rm
     rm("build.pyc",
        "__pycache__")
     elapsed_time = time.time() - start_time
     logger.info("Execution time: %.3f", elapsed_time)
+    print("Success" if ec == 0 else "Failure")
 
 def invokeBuild(build, targetName):
     if targetName == "list-targets":
         return printTargets(build)
     try:
         target = getattr(build, targetName)
-        target()
+        ec = target()
+        return ec if ec else 0
     except AttributeError:
         logger.warning("There was no target: %s", targetName)
+        return -2
     except:
         logger.error(sys.exc_info()[1].message)
+        return -3
 
 def usage():
     import xnt
