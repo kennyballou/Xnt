@@ -26,10 +26,10 @@ File Tasks
     Return a generator for glob expansion of *path*
 
 .. _xnt.tasks.cp:
-.. function:: cp(src,dst)
+.. function:: cp(src="",dst="",files=[])
 
-    Copy the source file or directory (*src*) to destination file or
-    directory (*dst*)
+    Copy the source file or directory (*src*) OR files/folders (*files*) to
+    destination file or directory (*dst*)
 
 .. _xnt.tasks.mv:
 .. function:: mv(src,dst)
