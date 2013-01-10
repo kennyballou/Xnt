@@ -18,23 +18,25 @@ def clean():
 
 @target
 def build():
-    setup(["build"])
+    return setup(["build"])
 
 @target
 def test():
     """Tests package"""
     print("Python Tests:")
-    setup(["test"])
+    ec1 = setup(["test"])
     clean()
     print("Python2 Tests:")
-    call(["python2", "setup.py", "test"])
+    ec2 = call(["python2", "setup.py", "test"])
     clean()
+    return ec1 | ec2
 
 @target
 def install():
     """Install Xnt"""
-    setup(["install", "--user"])
+    ec = setup(["install", "--user"])
     clean()
+    return ec
 
 @target
 def doc():
@@ -42,4 +44,4 @@ def doc():
     Create package documentation
     """
     clean()
-    setup(["build_sphinx"])
+    return setup(["build_sphinx"])
