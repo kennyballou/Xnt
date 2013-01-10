@@ -118,7 +118,7 @@ def call(command, stdout=None, stderr=None):
     param: stdout - file to redirect standard output to, if given
     param: stderr - file to redirect standard error to, if given
     """
-    subprocess.call(args=command, stdout=stdout, stderr=stderr)
+    return subprocess.call(args=command, stdout=stdout, stderr=stderr)
 
 def setup(commands, dir=""):
     """
@@ -132,5 +132,6 @@ def setup(commands, dir=""):
     cwd = os.getcwd()
     if dir:
         os.chdir(dir)
-    call(cmd)
+    ec = call(cmd)
     os.chdir(cwd)
+    return ec
