@@ -20,7 +20,9 @@
 import sys
 import os
 import shutil
+import xnt
 import xnt.tasks
+import xnt.xenant as xenant
 import unittest
 
 
@@ -32,9 +34,8 @@ class XenantTests(unittest.TestCase):
         shutil.rmtree("temp")
 
     def test_version(self):
-        out = open("temp/testout", "w")
-        self.fail("not implemented")
-
+        actual = xenant.version()
+        self.assertEqual(xnt.__version__, xenant.version())
 
 if __name__ == "__main__":
     unittest.main()
