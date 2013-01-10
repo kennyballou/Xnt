@@ -35,12 +35,19 @@ def expandpath(path):
     """
     return glob.iglob(path)
 
-def cp(src,dst):
+def cp(src="",dst="",files=[]):
+    assert dst and src or len(files) > 0
     logger.info("Copying %s to %s", src, dst)
-    if os.path.isdir(src):
-        shutil.copytree(src,dst)
+    def copy(s,d):
+        if os.path.isdir(s):
+            shutil.copytree(s,d)
+        else:
+            shutil.copy2(s,d)
+    if src:
+        copy(src, dst)
     else:
-        shutil.copy2(src,dst)
+        for f in files:
+            copy(f, dst)
 
 def mv(src,dst):
     logger.info("Moving %s to %s", src, dst)

@@ -44,6 +44,17 @@ class TaskCopyTests(unittest.TestCase):
         with open("temp/testfile5", "r") as testfile:
             self.assertEqual("this is a test file", testfile.read())
 
+    def test_cp_filelist(self):
+        xnt.tasks.cp(dst="temp/testfolder2",
+                     files=["temp/testfile1",
+                            "temp/testfile2",
+                            "temp/testfile3"])
+        self.assertTrue(os.path.exists("temp/testfile1"))
+        self.assertTrue(os.path.exists("temp/testfile2"))
+        self.assertTrue(os.path.exists("temp/testfile3"))
+        with open("temp/testfile2", "r") as testfile:
+            self.assertEqual("this is a test file", testfile.read())
+
 
 if __name__ == "__main__":
     unittest.main()
