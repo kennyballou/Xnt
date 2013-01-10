@@ -26,11 +26,11 @@ logger = logging.Logger(name=__name__)
 logger.addHandler(logging.StreamHandler())
 
 def usageAction():
-    printUsage()
+    print(usage());
     sys.exit(0)
 
 def versionAction():
-    printVersion()
+    print(version())
     sys.exit(0)
 
 def verboseAction():
@@ -69,27 +69,31 @@ def invokeBuild(build, targetName):
     except:
         logger.error(sys.exc_info()[1].message)
 
-def printUsage():
+def usage():
     import xnt
-    print(xnt.__version__)
-    print(xnt.__license__)
-    print("Usage:\txnt [options] [target]")
-    print("Where [target] is a target in your ``build.py`` file")
-    print("  And [options] is one of the falling:")
-    print("\t-v: print verbose information about Xnt's running")
-    print("\t--usage: Print this message")
-    print("In addition to targets defined by your ``build.py`` file")
-    print("\t``list-targets`` can be used in place of [targets] to")
-    print("\t\tlist targets and docstrings defined in your ``build.py`` file")
-    print("\tIf no [target] is provided, Xnt will try the target: ``default``")
-    print("\n")
+    endl = os.linesep
+    usageText = \
+        xnt.__version__ + endl + \
+        xnt.__license__ + endl + \
+        "Usage:\txnt [options] [target]" + endl + \
+        "Where [target] is a target in your ``build.py`` file" + endl + \
+        "  And [options] is one of the falling:" + endl + \
+        "\t-v: print verbose information about Xnt's running" + endl + \
+        "\t--usage: Print this message" + endl + \
+        "In addition to targets defined by your ``build.py`` file" + endl + \
+        "\t``list-targets`` can be used in place of [targets] to" + endl + \
+        "\t\tlist targets and docstrings defined in your ``build.py`` file" + \
+        endl + \
+        "\tIf no [target] is provided, Xnt will try the target: ``default``" \
+        + endl
+    return usageText
 
-def printVersion():
+def version():
     import xnt
-    print(xnt.__version__)
+    return xnt.__version__
 
 def printTargets(build):
-    printVersion()
+    print(version())
     print("\n")
     try:
         for f in dir(build):
