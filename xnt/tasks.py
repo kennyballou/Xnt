@@ -59,8 +59,8 @@ def mkdir(dir,mode=0o777):
     logger.info("Making directory %s with mode %o", dir, mode)
     try:
         os.mkdir(dir,mode)
-    except IOError:
-        pass
+    except IOError as e:
+        log(e, logging.WARNING)
     except:
         raise
 
@@ -75,8 +75,8 @@ def rm(*fileset):
                     shutil.rmtree(f)
                 else:
                     os.remove(f)
-    except OSError:
-        pass
+    except OSError as e:
+        log(e, logging.WARNING)
     except:
         raise
 
