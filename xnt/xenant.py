@@ -69,8 +69,8 @@ def invokeBuild(build, targetName):
     except AttributeError:
         logger.warning("There was no target: %s", targetName)
         return -2
-    except:
-        logger.error(sys.exc_info()[1].message)
+    except Exception as e:
+        logger.error(e)
         return -3
 
 def usage():
@@ -110,8 +110,8 @@ def printTargets(build):
                     print("\n")
             except AttributeError:
                 pass
-    except:
-        logger.error(sys.exc_info()[1].message)
+    except Exception as e:
+        logger.error(e)
 
 def __loadBuild(path=""):
     if not path:
