@@ -3,5 +3,5 @@
 **/*__pycache__
 dist
 **MANIFEST
-build
+bin
 Xnt.egg-info
