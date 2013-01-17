@@ -28,6 +28,7 @@ Contents:
 
    buildfile
    taskreference
+   buildreference
 
 Motivation
 ==========
