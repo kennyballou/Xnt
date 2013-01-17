@@ -135,19 +135,3 @@ def setup(commands, dir=""):
     ec = call(cmd)
     os.chdir(cwd)
     return ec
-
-def gcc(src,o,flags=[],rebuild=False):
-    logger.info("Compiling %s to %s", src, o)
-    if (os.path.exists(o)
-        and __is_newer(o, src)
-        and not rebuild):
-        logger.info("Binary file newer than source")
-        return 0
-    cmd = ["gcc", src, "-o", o]
-    for f in flags:
-        cmd.append(f)
-    return call(cmd)
-
-
-def __is_newer(a, b):
-    return os.path.getmtime(a) > os.path.getmtime(b)
