@@ -34,7 +34,7 @@ def versionAction():
     sys.exit(0)
 
 def verboseAction():
-    logging.getLogger("xnt.tasks").setLevel(logging.INFO)
+    logging.getLogger("xnt").setLevel(logging.INFO)
 
 actions = {
     "--usage": usageAction,
