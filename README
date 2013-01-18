@@ -6,6 +6,23 @@ Xnt
 
 A wrapper build tool
 
+Release Notes
+=============
+
+[version]:[date]
+----------------
+
+[todo]
+
+Testing
+-------
+
+I don't test everything as well as maybe I would like and, of course,
+some better integration tests would help. But one area that is
+seriously lacking testing is the Windows. I don't have the best
+access to a Windows box and so I may not notice a potentially huge
+bug for some time.
+
 Motivation
 ==========
 
