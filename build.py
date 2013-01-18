@@ -14,7 +14,8 @@ def clean():
        "README.html",
        "**/*.pyc",
        "**/**/*.pyc",
-       "**__pycache__")
+       "**__pycache__",
+       "**/**/__pycache__")
 
 @target
 def build():
