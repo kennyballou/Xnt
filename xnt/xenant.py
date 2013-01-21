@@ -46,7 +46,7 @@ def main():
     start_time = time.time()
     params = list(p for p in sys.argv[1:] if p.startswith('-D'))
     opts = list(o for o in sys.argv[1:]
-        if o.startswith('-') and not o.startswith('-D'))
+        if o.startswith('-') and o not in params)
     arg = list(a for a in sys.argv[1:] if a not in opts and a not in params)
     for opt in opts:
         if opt in actions:
