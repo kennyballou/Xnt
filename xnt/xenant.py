@@ -56,7 +56,7 @@ def main():
     ec = invokeBuild(
         __loadBuild(),
         arg[0] if len(arg) == 1 else "default",
-        __processParams(params))
+        params)
     from xnt.tasks import rm
     rm("build.pyc",
        "__pycache__")
@@ -64,12 +64,19 @@ def main():
     logger.info("Execution time: %.3f", elapsed_time)
     print("Success" if ec == 0 else "Failure")
 
-def invokeBuild(build, targetName, props={}):
+def invokeBuild(build, targetName, props=[]):
+    def __getProperties():
+        try:
+            return getattr(build, "properties")
+        except AttributeError:
+            return None
+
     if targetName == "list-targets":
         return printTargets(build)
     try:
         if len(props) > 0:
-            setattr(build, "properties", props)
+            setattr(build, "properties", __processParams(props,
+                                                         __getProperties()))
         target = getattr(build, targetName)
         ec = target()
         return ec if ec else 0
@@ -141,8 +148,8 @@ def __loadBuild(path=""):
         del sys.modules["build"]
         os.chdir(cwd)
 
-def __processParams(params):
-    properties = {}
+def __processParams(params, buildProperties={}):
+    properties = buildProperties if buildProperties is not None else {}
     for p in params:
         name, value = p[2:].split("=")
         properties[name] = value
