@@ -18,13 +18,26 @@
 
 import os
 import subprocess
+import logging
+
+
+def ant(path="", target=""):
+    cmd = ["ant", target]
+    return __run_in(path, lambda: subprocess.call(cmd))
 
 def make(path="", target=""):
     cmd = ["make", target]
+    return __run_in(path, lambda: subprocess.call(cmd))
+
+def nant(path="", target=""):
+    cmd = ["nant", target]
+    return __run_in(path, lambda: subprocess.call(cmd))
+
+def __run_in(path, f):
+    oldPath = os.path.abspath(os.getcwd())
     if path and os.path.exists(path):
-        oldPath = os.path.abspath(os.getcwd())
         os.chdir(os.path.abspath(path))
-    result = subprocess.call(cmd)
+    result = f()
     if oldPath:
         os.chdir(oldPath)
     return result

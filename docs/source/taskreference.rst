@@ -114,34 +114,6 @@ Compile Tasks
     Invoke Python setup.py given the list of *commands* (or options) in the
     current directory or in a different directory, specified by *dir*.
 
-Apache Ant
-----------
-
-.. _xnt.build.ant.ant:
-.. function:: ant(path="", target="")
-
-    Invoke Apache Ant in either the current working directory or the specified
-    directory using the empty (default) target or the specified target.
-
-Gnu Make
---------
-
-.. _xnt.bulid.make.make:
-.. function:: make(path="", target="")
-
-    Invoke Gnu Make (*make*) in either the current working directory or the
-    specified directory using the empty (default) target or the specified
-    target.
-
-(.NET)Ant
----------
-
-.. _xnt.build.nant.nant:
-.. function:: nant(path="", target="")
-
-    Invoke NAnt in either the current working directory or the specified
-    directory using the empty (default) target or the specified target.
-
 SCM Tasks
 =========
 

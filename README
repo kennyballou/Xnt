@@ -1,4 +1,4 @@
-.. # vim: set colorcolumn=70:textwidth=69
+.. # vim: colorcolumn=70:textwidth=69:syntax=rst:
 
 ===
 Xnt
@@ -106,7 +106,7 @@ PyPi/ Pip
 To install from PyPi_, you will need `pip`_. Once you have ``pip``,
 you may only run::
 
-    $ pip install Xnt [--user]
+    $ pip[2] install Xnt [--user]
 
 Linux/ Unix
 -----------
@@ -133,7 +133,7 @@ Here is a simple ``build.py``::
 
     from xnt import target
     from xnt.tasks import *
-    from xnt.builders import ant
+    from xnt.build import make
 
     @target
     def init():
@@ -142,7 +142,7 @@ Here is a simple ``build.py``::
     @target
     def build():
         init()
-        ant("build")
+        make.ant("build")
 
     @target
     def clean():
@@ -187,9 +187,9 @@ or:
 * Nothing; if no target is specified, Xnt will attempt to invoke the
   ``default`` target
 
-* ``help``: if this 'special' target is provided, Xnt will print all
-  targets marked by the ``@target`` decorator and possibly their
-  docstrings if they are defined
+* ``list-targets``: if this 'special' target is provided, Xnt will
+  print all targets marked by the ``@target`` decorator and possibly
+  their docstrings if they are defined
 
 For more information about Xnt and the build in functions, see the
 `Package Documentation`_.
