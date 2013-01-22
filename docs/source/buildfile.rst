@@ -69,6 +69,28 @@ purpose of the target, or what the target accomplishes when ran. Finally, we
 call ``mkdir`` of the ``xnt.tasks`` module. This function, if not obvious by
 the name, creates a directory named 'build' (see :doc:`taskreference`).
 
+Return Values
+-------------
+
+The targets you define can return an error code (or '0' for success) however
+you see fit. Doing this will give you a status message at the end of the
+invocation of Xnt that will inform you if the target ran successfully or not
+given your criteria (or will just say it succeeded if you don't specify a
+return value at all). For example::
+
+    @target
+    def foo():
+        return 0
+
+Will result in::
+
+    ...
+    Success
+
+Most tasks have been updated to return error codes as well to that you can
+return what it returns. If you find any tasks that can be updated to behave
+this way, please create an issue for it.
+
 .. _runningXnt:
 
 Running Xnt
