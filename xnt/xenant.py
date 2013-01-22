@@ -44,14 +44,19 @@ actions = {
 
 def main():
     start_time = time.time()
-    opts = list(o for o in sys.argv[1:] if o.startswith('-'))
-    arg = list(a for a in sys.argv[1:] if a not in opts)
+    params = list(p for p in sys.argv[1:] if p.startswith('-D'))
+    opts = list(o for o in sys.argv[1:]
+        if o.startswith('-') and o not in params)
+    arg = list(a for a in sys.argv[1:] if a not in opts and a not in params)
     for opt in opts:
         if opt in actions:
             actions[opt]()
         else:
             logger.debug("%s is not a valid option", opt)
-    ec = invokeBuild(__loadBuild(), arg[0] if len(arg) == 1 else "default")
+    ec = invokeBuild(
+        __loadBuild(),
+        arg[0] if len(arg) == 1 else "default",
+        params)
     from xnt.tasks import rm
     rm("build.pyc",
        "__pycache__")
@@ -59,10 +64,19 @@ def main():
     logger.info("Execution time: %.3f", elapsed_time)
     print("Success" if ec == 0 else "Failure")
 
-def invokeBuild(build, targetName):
+def invokeBuild(build, targetName, props=[]):
+    def __getProperties():
+        try:
+            return getattr(build, "properties")
+        except AttributeError:
+            return None
+
     if targetName == "list-targets":
         return printTargets(build)
     try:
+        if len(props) > 0:
+            setattr(build, "properties", __processParams(props,
+                                                         __getProperties()))
         target = getattr(build, targetName)
         ec = target()
         return ec if ec else 0
@@ -133,6 +147,13 @@ def __loadBuild(path=""):
         sys.path.remove(path)
         del sys.modules["build"]
         os.chdir(cwd)
+
+def __processParams(params, buildProperties={}):
+    properties = buildProperties if buildProperties is not None else {}
+    for p in params:
+        name, value = p[2:].split("=")
+        properties[name] = value
+    return properties
 
 if __name__ == "__main__":
     main()

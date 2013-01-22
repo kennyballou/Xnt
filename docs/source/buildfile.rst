@@ -70,7 +70,7 @@ call ``mkdir`` of the ``xnt.tasks`` module. This function, if not obvious by
 the name, creates a directory named 'build' (see :doc:`taskreference`).
 
 Return Values
--------------
+=============
 
 The targets you define can return an error code (or '0' for success) however
 you see fit. Doing this will give you a status message at the end of the
@@ -91,73 +91,28 @@ Most tasks have been updated to return error codes as well to that you can
 return what it returns. If you find any tasks that can be updated to behave
 this way, please create an issue for it.
 
-.. _runningXnt:
+.. _buildProperties:
 
-Running Xnt
------------
+Build Properties
+================
 
-Invoking Xnt from the command line is very simple and very similar to how other
-build tools are invoked (this was intentional).
+As mentioned in :ref:`xntPropertiesParameters`, Xnt can accept parameters from
+the command line and pass them into the build file. Xnt doesn't necessarily
+expect the dictionary (named `properties`) to exist; but if you ever intend to
+use it, it will have to be defined one way or another (either to an empty
+dictionary or actually hold values). For example, to define an empty
+`properties` dictionary, one could write their build file as such::
 
-.. _defaultUse:
+    #!/usr/bin/env python
 
-Default Use
-~~~~~~~~~~~
+    from xnt import target
 
-The most simplistic use of Xnt is as follows::
+    properties = {}
 
-    $ xnt
+    @target
+    def foo():
+        #uses properties somehow
+        return 0
 
-This will attempt to invoke the `default` target in the current directory's
-`build.py`.
-
-.. _invokeTarget:
-
-Invoke a Target
-~~~~~~~~~~~~~~~
-
-To invoke a particular target, use::
-
-    $ xnt {target}
-
-Where the value of `{target}` is dependent on your particular `build.py` file.
-
-.. _specialTargets:
-
-Special Targets
-~~~~~~~~~~~~~~~
-
-"Special" targets (for lack of a better name) are targets that do not exist in
-the build script, but rather are a part of Xnt.
-
-Thus far, I have only defined one "special" target, ``list-targets`` (I don't
-think this name is going to change again ...).
-
-* ``list-targets`` does exactly what the name should suggest: it prints a list
-  of the targets found in the current directory's `build.py` script, along with
-  any docstrings that may be defined with them.
-
-Usage::
-
-    $ xnt list-targets
-
-.. _xntOptions:
-
-Options
-~~~~~~~
-
-Xnt also has a few "options" that may be provided along with a regular targets.
-
-Usage::
-
-    $ xnt [options] [target]
-
-Where options can be any and all of the following (unless otherwise specified):
-
-* ``-v``: add verbose output to the execution of Xnt
-
-* ``--version``: Print the version of Xnt and exit
-
-* ``--usage``: Print version, license, usage information and quit. [I've
-  debatted between putting this as a special target and leaving it as an
-  option.. not sure which is better...]
+The hope for this feature is that it is easy to use because it borrows syntax
+from other build tools that you may already be familiar with.
