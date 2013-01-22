@@ -9,19 +9,26 @@ A wrapper build tool
 Release Notes
 =============
 
-[version]:[date]
+0.4.0:2012-01-21
 ----------------
 
-[todo]
+* Moved to GitHub!
+
+* Add Parameter Passing to Xnt
+
+* Combined Build Modules ((N)Ant and make all live in
+  ``xnt.build.make``)
+
+* Add Compiler Wrappers (gcc/g++ and javac)
 
 Testing
 -------
 
 I don't test everything as well as maybe I would like and, of course,
 some better integration tests would help. But one area that is
-seriously lacking testing is the Windows. I don't have the best
-access to a Windows box and so I may not notice a potentially huge
-bug for some time.
+seriously lacking testing are the Windows builds. I don't have the
+best access to a Windows box and so I may not notice a potentially
+huge bug for some time.
 
 Motivation
 ==========
