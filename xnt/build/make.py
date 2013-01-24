@@ -21,17 +21,23 @@ import subprocess
 import logging
 
 
-def ant(path="", target=""):
-    cmd = ["ant", target]
+def ant(path="", target="",flags=[]):
+    cmd = __addFlags(["ant", target], flags)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def make(path="", target=""):
-    cmd = ["make", target]
+def make(path="", target="",flags=[]):
+    cmd = __addFlags(["make", target], flags)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def nant(path="", target=""):
-    cmd = ["nant", target]
+def nant(path="", target="",flags=[]):
+    cmd = __addFlags(["nant", target], flags)
     return __run_in(path, lambda: subprocess.call(cmd))
+
+def __addFlags(cmd, flags):
+    c = list(cmd)
+    for f in flags:
+        c.append(f)
+    return c
 
 def __run_in(path, f):
     oldPath = os.path.abspath(os.getcwd())
