@@ -62,7 +62,7 @@ def main():
        "__pycache__")
     elapsed_time = time.time() - start_time
     logger.info("Execution time: %.3f", elapsed_time)
-    print("Success" if ec == 0 else "Failure")
+    logger.info("Success" if ec == 0 else "Failure")
 
 def invokeBuild(build, targetName, props=[]):
     def __getProperties():
