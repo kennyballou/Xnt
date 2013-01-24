@@ -63,6 +63,8 @@ def main():
     elapsed_time = time.time() - start_time
     logger.info("Execution time: %.3f", elapsed_time)
     print("Success" if ec == 0 else "Failure")
+    if ec != 0:
+        sys.exit(ec)
 
 def invokeBuild(build, targetName, props=[]):
     def __getProperties():
