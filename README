@@ -180,7 +180,7 @@ Usage
 
 Command Usage:
 
-    $ xnt [options] [target]
+    $ xnt [options] [target]+
 
 Where ``[options]`` are one of the following:
 

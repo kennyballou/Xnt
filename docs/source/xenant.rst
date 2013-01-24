@@ -27,6 +27,17 @@ To invoke a particular target, use::
 
 Where the value of `{target}` is dependent on your particular `build.py` file.
 
+Invoke MORE Targets
+~~~~~~~~~~~~~~~~~~~
+
+Xnt now supports executing multiple targets in one go. That is, if you want to
+chain targets together, you now can *without* separate executions of Xnt. For
+example::
+
+    $ xnt {target1} {target2} ... {targetN}
+
+Will execute `target1` through `targetN` in order of listing.
+
 .. _specialTargets:
 
 Special Targets
