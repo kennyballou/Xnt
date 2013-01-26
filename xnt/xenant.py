@@ -136,6 +136,7 @@ def printTargets(build):
                 pass
     except Exception as e:
         logger.error(e)
+    return 1
 
 def __loadBuild(path=""):
     if not path:
