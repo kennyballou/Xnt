@@ -47,21 +47,29 @@ def main():
     params = list(p for p in sys.argv[1:] if p.startswith('-D'))
     opts = list(o for o in sys.argv[1:]
         if o.startswith('-') and o not in params)
-    arg = list(a for a in sys.argv[1:] if a not in opts and a not in params)
+    targets = list(a for a in sys.argv[1:]
+        if a not in opts and a not in params)
     for opt in opts:
         if opt in actions:
             actions[opt]()
         else:
             logger.debug("%s is not a valid option", opt)
-    ec = invokeBuild(
-        __loadBuild(),
-        arg[0] if len(arg) == 1 else "default",
-        params)
+    exit_codes = []
+    def invoke(target):
+        return invokeBuild(__loadBuild(),
+                           target,
+                           params)
+    if targets:
+        for t in targets:
+            exit_codes.append(invoke(t))
+    else:
+        exit_codes.append(invoke("default"))
     from xnt.tasks import rm
     rm("build.pyc",
        "__pycache__")
     elapsed_time = time.time() - start_time
     logger.info("Execution time: %.3f", elapsed_time)
+    ec = sum(exit_codes)
     logger.info("Success" if ec == 0 else "Failure")
     if ec != 0:
         sys.exit(ec)
