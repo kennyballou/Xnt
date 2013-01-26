@@ -9,6 +9,15 @@ A wrapper build tool
 Release Notes
 =============
 
+0.4.1:2012-01-25
+----------------
+
+* Add Multi Target Execution
+
+* Add Optional Flags to (Sub)Build modules (make)
+
+* Add Exit Code Return
+
 0.4.0:2012-01-21
 ----------------
 
