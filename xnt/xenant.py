@@ -21,34 +21,15 @@ import sys
 import time
 import logging
 
-logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
-logger = logging.Logger(name=__name__)
-logger.addHandler(logging.StreamHandler())
-
-def usageAction():
-    print(usage());
-    sys.exit(0)
-
-def versionAction():
-    print(version())
-    sys.exit(0)
 
 def verboseAction():
     logging.getLogger("xnt").setLevel(logging.INFO)
 
 actions = {
-    "--usage": usageAction,
-    "--version": versionAction,
     "-v"     : verboseAction,
 }
 
 def main():
-    start_time = time.time()
-    params = list(p for p in sys.argv[1:] if p.startswith('-D'))
-    opts = list(o for o in sys.argv[1:]
-        if o.startswith('-') and o not in params)
-    targets = list(a for a in sys.argv[1:]
-        if a not in opts and a not in params)
     for opt in opts:
         if opt in actions:
             actions[opt]()
@@ -64,38 +45,6 @@ def main():
             exit_codes.append(invoke(t))
     else:
         exit_codes.append(invoke("default"))
-    from xnt.tasks import rm
-    rm("build.pyc",
-       "__pycache__")
-    elapsed_time = time.time() - start_time
-    logger.info("Execution time: %.3f", elapsed_time)
-    ec = sum(exit_codes)
-    logger.info("Success" if ec == 0 else "Failure")
-    if ec != 0:
-        sys.exit(ec)
-
-def invokeBuild(build, targetName, props=[]):
-    def __getProperties():
-        try:
-            return getattr(build, "properties")
-        except AttributeError:
-            return None
-
-    if targetName == "list-targets":
-        return printTargets(build)
-    try:
-        if len(props) > 0:
-            setattr(build, "properties", __processParams(props,
-                                                         __getProperties()))
-        target = getattr(build, targetName)
-        ec = target()
-        return ec if ec else 0
-    except AttributeError:
-        logger.warning("There was no target: %s", targetName)
-        return -2
-    except Exception as e:
-        logger.error(e)
-        return -3
 
 def usage():
     import xnt
@@ -116,29 +65,7 @@ def usage():
         + endl
     return usageText
 
-def version():
-    import xnt
-    return xnt.__version__
-
-def printTargets(build):
-    print(version())
-    print("\n")
-    try:
-        for f in dir(build):
-            try:
-                fa = getattr(build, f)
-                if fa.decorator == "target":
-                    print(f + ":")
-                    if fa.__doc__:
-                        print(fa.__doc__)
-                    print("\n")
-            except AttributeError:
-                pass
-    except Exception as e:
-        logger.error(e)
-    return 1
-
-def __loadBuild(path=""):
+def loadBuild(path=""):
     if not path:
         path = os.getcwd()
     else:
@@ -158,13 +85,6 @@ def __loadBuild(path=""):
         sys.path.remove(path)
         del sys.modules["build"]
         os.chdir(cwd)
-
-def __processParams(params, buildProperties={}):
-    properties = buildProperties if buildProperties is not None else {}
-    for p in params:
-        name, value = p[2:].split("=")
-        properties[name] = value
-    return properties
 
 if __name__ == "__main__":
     main()
