@@ -16,11 +16,12 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from xnt.basecommand import Command, SUCCESS, ERROR
+from xnt.basecommand import Command
+from xnt.status_codes import SUCCESS, ERROR
 from xnt.xenant import loadBuild
 import logging
 
-logger = logging.getLogger("xnt")
+logger = logging.getLogger(__name__)
 
 class ListTargetsCommand(Command):
     name = 'list-targets'
@@ -28,9 +29,11 @@ class ListTargetsCommand(Command):
     summary = "Prints targets in build file"
 
     def run(self, arguments=[]):
-        build = loadBuild
+        build = loadBuild()
+        logger.debug("build is null? %s", build == None)
         try:
             for f in dir(build):
+                logger.debug("Attribute %s:", f)
                 try:
                     fa = getattr(build, f)
                     if fa.decorator == "target":
@@ -44,6 +47,3 @@ class ListTargetsCommand(Command):
             logger.error(ex)
             return ERROR
         return SUCCESS
-        except Exception as ex:
-            logger.error(ex)
-            return ERROR

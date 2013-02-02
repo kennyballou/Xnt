@@ -21,6 +21,7 @@ import sys
 import time
 import logging
 
+logger = logging.getLogger(__name__)
 
 def verboseAction():
     logging.getLogger("xnt").setLevel(logging.INFO)

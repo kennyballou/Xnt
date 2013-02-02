@@ -16,16 +16,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from xnt.basecommand import Command
-from xnt.status_codes import SUCCESS
-
-class VersionCommand(Command):
-    name = 'version'
-    usage = """"""
-    summary = "Print Version of Xnt"
-
-    def run(arguments=[]):
-        from xnt import __version__
-        print(__version__)
-
-        return SUCCESS
+SUCCESS = 0
+ERROR = 1
+UNKNOWN_ERROR = 2

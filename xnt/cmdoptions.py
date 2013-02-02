@@ -16,16 +16,11 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from xnt.basecommand import Command
-from xnt.status_codes import SUCCESS
+import logging
 
-class VersionCommand(Command):
-    name = 'version'
-    usage = """"""
-    summary = "Print Version of Xnt"
+def flipVerboseFlag():
+    logging.getLogger("xnt").setLevel(logging.INFO)
 
-    def run(arguments=[]):
-        from xnt import __version__
-        print(__version__)
-
-        return SUCCESS
+options = {
+    "-v": flipVerboseFlag,
+}

@@ -16,7 +16,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from xnt.basecommand import Command, SUCCESS, ERROR, UNKNOWN_ERROR
+from xnt.basecommand import Command
+from xnt.status_codes import SUCCESS, ERROR, UNKNOWN_ERROR
 from xnt.xenant import loadBuild
 import logging
 
@@ -55,9 +56,9 @@ class TargetCommand(Command):
                 setattr(build,
                         "properties",
                         processParams(props, __getProperties()))
-                target = getattr(build, targetName)
-                ec = target()
-                return ec if ec else 0
+            target = getattr(build, targetName)
+            ec = target()
+            return ec if ec else 0
         except AttributeError:
             logger.warning("There was no target: %s", targetName)
             return ERROR

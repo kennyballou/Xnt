@@ -25,21 +25,21 @@ def read(fname):
 
 setup(
     name="Xnt",
-    version="0.4.1",
+    version="0.5.0dev1",
     author="Kenny Ballou",
     author_email="kennethmgballou@gmail.com",
     url="https://bitbucket.org/devnulltao/xnt",
     description=("High-Level build script for doing more complex build tasks"),
     packages=find_packages(),
     test_suite="xnt.tests",
-    scripts=["xnt/xenant.py",],
+    scripts=["xnt/runner.py",],
     package_data={
     },
     long_description=read("README"),
     platforms=["Linux", "Windows",],
     entry_points={
         'console_scripts': [
-            'xnt = xnt.xenant:main',
+            'xnt = xnt.runner:main',
         ],
     },
     install_requires=['distribute',],
