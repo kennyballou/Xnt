@@ -28,7 +28,7 @@ setup(
     version="0.4.1",
     author="Kenny Ballou",
     author_email="kennethmgballou@gmail.com",
-    url="https://bitbucket.org/devnulltao/xnt",
+    url="https://github.com/devnulltao/Xnt",
     description=("High-Level build script for doing more complex build tasks"),
     packages=find_packages(),
     test_suite="xnt.tests",
