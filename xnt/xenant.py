@@ -23,49 +23,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def verboseAction():
-    logging.getLogger("xnt").setLevel(logging.INFO)
-
-actions = {
-    "-v"     : verboseAction,
-}
-
-def main():
-    for opt in opts:
-        if opt in actions:
-            actions[opt]()
-        else:
-            logger.debug("%s is not a valid option", opt)
-    exit_codes = []
-    def invoke(target):
-        return invokeBuild(__loadBuild(),
-                           target,
-                           params)
-    if targets:
-        for t in targets:
-            exit_codes.append(invoke(t))
-    else:
-        exit_codes.append(invoke("default"))
-
-def usage():
-    import xnt
-    endl = os.linesep
-    usageText = \
-        xnt.__version__ + endl + \
-        xnt.__license__ + endl + \
-        "Usage:\txnt [options] [target]" + endl + \
-        "Where [target] is a target in your ``build.py`` file" + endl + \
-        "  And [options] is one of the falling:" + endl + \
-        "\t-v: print verbose information about Xnt's running" + endl + \
-        "\t--usage: Print this message" + endl + \
-        "In addition to targets defined by your ``build.py`` file" + endl + \
-        "\t``list-targets`` can be used in place of [targets] to" + endl + \
-        "\t\tlist targets and docstrings defined in your ``build.py`` file" + \
-        endl + \
-        "\tIf no [target] is provided, Xnt will try the target: ``default``" \
-        + endl
-    return usageText
-
 def loadBuild(path=""):
     if not path:
         path = os.getcwd()
@@ -86,6 +43,3 @@ def loadBuild(path=""):
         sys.path.remove(path)
         del sys.modules["build"]
         os.chdir(cwd)
-
-if __name__ == "__main__":
-    main()
