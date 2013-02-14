@@ -38,16 +38,22 @@ example::
 
 Will execute `target1` through `targetN` in order of listing.
 
-.. _specialTargets:
+.. _otherCommands:
 
-Special Targets
----------------
+Othes Commands
+--------------
 
-"Special" targets (for lack of a better name) are targets that do not exist in
-the build script, but rather are a part of Xnt.
+Xnt has a number of other commands that can be invoked besides those defined in
+the current directory's `build.py` file. One will need a build file to run. The
+others, however, do not.
 
-Thus far, I have only defined one "special" target, ``list-targets`` (I don't
-think this name is going to change again ...).
+* ``help`` prints a summary message, including information about the version of
+  Xnt, license, and usage.
+
+Usage::
+
+    $ xnt help
+
 
 * ``list-targets`` does exactly what the name should suggest: it prints a list
   of the targets found in the current directory's `build.py` script, along with
@@ -56,6 +62,12 @@ think this name is going to change again ...).
 Usage::
 
     $ xnt list-targets
+
+* ``version`` prints Xnt's installed version.
+
+Usage::
+
+    $ xnt version
 
 .. _xntOptions:
 
@@ -71,12 +83,6 @@ Usage::
 Where options can be any and all of the following (unless otherwise specified):
 
 * ``-v``: add verbose output to the execution of Xnt
-
-* ``--version``: Print the version of Xnt and exit
-
-* ``--usage``: Print version, license, usage information and quit. [I've
-  debatted between putting this as a special target and leaving it as an
-  option.. not sure which is better...]
 
 .. _xntPropertiesParameters:
 
