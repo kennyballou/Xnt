@@ -19,11 +19,13 @@
 from xnt.commands.help import HelpCommand
 from xnt.commands.listtargets import ListTargetsCommand
 from xnt.commands.version import VersionCommand
+from xnt.commands.target import TargetCommand
 
 commands = {
     HelpCommand.name: HelpCommand,
     ListTargetsCommand.name: ListTargetsCommand,
     VersionCommand.name: VersionCommand,
+    TargetCommand.name: TargetCommand,
 }
 
 def get_summaries(ignore_hidden=True):
