@@ -23,6 +23,7 @@ class HelpCommand(Command):
     name = 'help'
     usage = """"""
     summary = 'Print Usage Summary'
+    needs_build = False
 
     def run(self, arguments=[]):
         from xnt.commands import get_summaries

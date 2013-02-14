@@ -23,6 +23,7 @@ class VersionCommand(Command):
     name = 'version'
     usage = """"""
     summary = "Print Version of Xnt"
+    needs_build = False
 
     def run(arguments=[]):
         from xnt import __version__

@@ -23,6 +23,7 @@ class Command(object):
     name = None
     usage = None
     hidden = False
+    need_build = False
 
     def __init__(self):
         pass

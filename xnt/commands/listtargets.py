@@ -18,7 +18,6 @@
 
 from xnt.basecommand import Command
 from xnt.status_codes import SUCCESS, ERROR
-from xnt.xenant import loadBuild
 import logging
 
 logger = logging.getLogger(__name__)
@@ -27,15 +26,18 @@ class ListTargetsCommand(Command):
     name = 'list-targets'
     usage = """"""
     summary = "Prints targets in build file"
+    needs_build = True
+
+    def __init__(self, build):
+        self.build = build
 
     def run(self, arguments=[]):
-        build = loadBuild()
-        logger.debug("build is null? %s", build == None)
+        logger.debug("build is null? %s", self.build == None)
         try:
-            for f in dir(build):
+            for f in dir(self.build):
                 logger.debug("Attribute %s:", f)
                 try:
-                    fa = getattr(build, f)
+                    fa = getattr(self.build, f)
                     if fa.decorator == "target":
                         print(f + ":")
                         if fa.__doc__:

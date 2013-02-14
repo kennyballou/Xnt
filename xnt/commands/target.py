@@ -18,7 +18,6 @@
 
 from xnt.basecommand import Command
 from xnt.status_codes import SUCCESS, ERROR, UNKNOWN_ERROR
-from xnt.xenant import loadBuild
 import logging
 
 logger = logging.getLogger("xnt")
@@ -27,6 +26,10 @@ class TargetCommand(Command):
     name = '<target>'
     usage = """"""
     summary = "Invokes target(s) in build.py"
+    needs_build = True
+
+    def __init__(self, build):
+        self.build = build
 
     def run(self, targets=[], props=[]):
         if targets:
@@ -39,7 +42,6 @@ class TargetCommand(Command):
             return self.callTarget("default", props)
 
     def callTarget(self, targetName, props):
-        build = loadBuild()
         def processParams(params, buildProperties={}):
             properties = buildProperties if buildProperties is not None else {}
             for p in params:
@@ -48,15 +50,15 @@ class TargetCommand(Command):
             return properties
         def __getProperties():
             try:
-                return getattr(build, "properties")
+                return getattr(self.build, "properties")
             except AttributeError:
                 return None
         try:
             if len(props) > 0:
-                setattr(build,
+                setattr(self.build,
                         "properties",
                         processParams(props, __getProperties()))
-            target = getattr(build, targetName)
+            target = getattr(self.build, targetName)
             ec = target()
             return ec if ec else 0
         except AttributeError:

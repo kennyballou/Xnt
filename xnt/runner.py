@@ -46,10 +46,13 @@ def main():
     for cmd in cmds:
         if cmd in commands:
             cmd_found = True
-            command = commands[cmd]()
+            if commands[cmd].needs_build:
+                command = commands[cmd](loadBuild())
+            else:
+                command = commands[cmd]()
             ec = command.run()
     if cmd_found == False:
-        command = TargetCommand()
+        command = TargetCommand(loadBuild())
         ec = command.run(targets=cmds, props=params)
     elapsed_time = time.time() - start_time
     logger.info("Execution time: %.3f", elapsed_time)
@@ -60,6 +63,27 @@ def main():
        "__pycache__")
     if ec != 0:
         sys.exit(ec)
+
+def loadBuild(path=""):
+    if not path:
+        path = os.getcwd()
+    else:
+        path = os.path.abspath(path)
+    sys.path.append(path)
+    cwd = os.getcwd()
+    os.chdir(path)
+    if not os.path.exists("build.py"):
+        logger.error("There was no build file")
+        sys.exit(1)
+    try:
+        return __import__("build", fromlist=[])
+    except ImportError:
+        logger.error("HOW?!")
+        return None
+    finally:
+        sys.path.remove(path)
+        del sys.modules["build"]
+        os.chdir(cwd)
 
 if __name__ == "__main__":
     ec = main()
