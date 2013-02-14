@@ -20,8 +20,49 @@ import os
 import sys
 import time
 import logging
+from xnt.cmdoptions import options
+from xnt.commands import commands
+from xnt.commands.target import TargetCommand
 
-logger = logging.getLogger(__name__)
+logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
+logger = logging.Logger(name=__name__)
+logger.addHandler(logging.StreamHandler())
+
+def main():
+    start_time = time.time()
+    params = list(p for p in sys.argv[1:] if p.startswith('-D'))
+    flags = list(o for o in sys.argv[1:]
+        if o.startswith('-') and o not in params)
+    cmds = list(c for c in sys.argv[1:]
+        if c not in flags and c not in params)
+    #Loop flags and apply them
+    for flag in flags:
+        if flag in options:
+            options[flag]()
+        else:
+            logger.debug("%s is not a vaild option", flag)
+    #run things
+    cmd_found = False
+    for cmd in cmds:
+        if cmd in commands:
+            cmd_found = True
+            if commands[cmd].needs_build:
+                command = commands[cmd](loadBuild())
+            else:
+                command = commands[cmd]()
+            ec = command.run()
+    if cmd_found == False:
+        command = TargetCommand(loadBuild())
+        ec = command.run(targets=cmds, props=params)
+    elapsed_time = time.time() - start_time
+    logger.info("Execution time: %.3f", elapsed_time)
+    if ec != 0:
+        logger.info("Failure")
+    from xnt.tasks import rm
+    rm("build.pyc",
+       "__pycache__")
+    if ec != 0:
+        sys.exit(ec)
 
 def loadBuild(path=""):
     if not path:
@@ -43,3 +84,8 @@ def loadBuild(path=""):
         sys.path.remove(path)
         del sys.modules["build"]
         os.chdir(cwd)
+
+if __name__ == "__main__":
+    ec = main()
+    if ec:
+        sys.exit(ec)

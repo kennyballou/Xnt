@@ -32,14 +32,14 @@ setup(
     description=("High-Level build script for doing more complex build tasks"),
     packages=find_packages(),
     test_suite="xnt.tests",
-    scripts=["xnt/runner.py",],
+    scripts=["xnt/xenant.py",],
     package_data={
     },
     long_description=read("README"),
     platforms=["Linux", "Windows",],
     entry_points={
         'console_scripts': [
-            'xnt = xnt.runner:main',
+            'xnt = xnt.xenant:main',
         ],
     },
     install_requires=['distribute',],
