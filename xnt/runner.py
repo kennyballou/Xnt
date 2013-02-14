@@ -48,13 +48,13 @@ def main():
             cmd_found = True
             command = commands[cmd]()
             ec = command.run()
-    logger.debug("cmd_found = %s", cmd_found)
     if cmd_found == False:
         command = TargetCommand()
         ec = command.run(targets=cmds, props=params)
     elapsed_time = time.time() - start_time
     logger.info("Execution time: %.3f", elapsed_time)
-    logger.info("Success" if ec == 0 else "Failure")
+    if ec != 0:
+        logger.info("Failure")
     from xnt.tasks import rm
     rm("build.pyc",
        "__pycache__")
