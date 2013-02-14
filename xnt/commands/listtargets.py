@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 class ListTargetsCommand(Command):
     name = 'list-targets'
-    usege = """"""
+    usage = """"""
     summary = "Prints targets in build file"
 
     def run(self, arguments=[]):
