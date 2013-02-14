@@ -31,7 +31,7 @@ class HelpCommand(Command):
         commands = get_summaries()
         print(__version__)
         print(__license__)
-        print("\n")
+        print("Available Commands:")
         for name, summary in commands:
             print(name)
             print("\t" + summary)
