@@ -73,10 +73,32 @@ Return Values
 =============
 
 The targets you define can return an error code (or '0' for success) however
-you see fit. Doing this will give you a status message at the end of the
-invocation of Xnt that will inform you if the target ran successfully or not
-given your criteria (or will just say it succeeded if you don't specify a
-return value at all). For example::
+you see fit. Xnt will emit 'Failure' if the status code is *not* zero and will
+otherwise remain silent if the code is zero. Further, the status code returned
+by your target will be returned as the exit code of Xnt when finished
+executing.
+
+*Notice*, this allows Xnt to fail fast when attempting to execute multiple
+targets. That is, if you specify more than one target, Xnt will stop at the
+first failure.
+
+If you don't define a return value for a target, Xnt will assume success and
+return '0'.
+
+Examples
+--------
+
+Not defining the return value::
+
+    @target
+    def foo():
+        pass
+
+Will result in (no success message; other output may be shown)::
+
+    ...
+
+Returning success (no success message; other output may be shown)::
 
     @target
     def foo():
@@ -85,9 +107,19 @@ return value at all). For example::
 Will result in::
 
     ...
-    Success
 
-Most tasks have been updated to return error codes as well to that you can
+Returning failure (not 0)::
+
+    @target
+    def foo():
+        return 1
+
+Will result in::
+
+    ...
+    Failure
+
+Most tasks have been updated to return error codes as well so that you can
 return what it returns. If you find any tasks that can be updated to behave
 this way, please create an issue for it.
 
