@@ -9,8 +9,8 @@ A wrapper build tool
 Release Notes
 =============
 
-0.5.0:<tbd>
------------
+0.5.0:2013-02-21
+----------------
 
 * Rewrite Command Parsing
   * This change does incur some interface change. Namely,
@@ -18,7 +18,10 @@ Release Notes
   * All other commands and switches are the same
   * See `Package Documentation`_ for more information
 
-0.4.1:2012-01-25
+* Rework Return Values
+  * Silently succeed, loudly fail (quickly)
+
+0.4.1:2013-01-25
 ----------------
 
 * Add Multi Target Execution
@@ -27,7 +30,7 @@ Release Notes
 
 * Add Exit Code Return
 
-0.4.0:2012-01-21
+0.4.0:2013-01-21
 ----------------
 
 * Moved to GitHub!
