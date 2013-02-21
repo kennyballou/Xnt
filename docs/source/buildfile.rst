@@ -60,7 +60,7 @@ Next, we will look at a new target::
 This is a standard definition of a Python function with a decorator.
 
 First, the ``target`` decorator marks the function definition as a target (to
-be used by the ``list-targets`` command, see :ref:`specialTargets`). Next, we
+be used by the ``list-targets`` command, see :ref:`otherCommands`). Next, we
 define the function; this function name *is* the name of the target. That is,
 the name given to the function will be name given to the command to invoke this
 target.  Further, we have the docstring; (this is also used by the
