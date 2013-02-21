@@ -20,125 +20,51 @@ import os
 import sys
 import time
 import logging
+from xnt.cmdoptions import options
+from xnt.commands import commands
+from xnt.commands.target import TargetCommand
 
 logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
 logger = logging.Logger(name=__name__)
 logger.addHandler(logging.StreamHandler())
 
-def usageAction():
-    print(usage());
-    sys.exit(0)
-
-def versionAction():
-    print(version())
-    sys.exit(0)
-
-def verboseAction():
-    logging.getLogger("xnt").setLevel(logging.INFO)
-
-actions = {
-    "--usage": usageAction,
-    "--version": versionAction,
-    "-v"     : verboseAction,
-}
-
 def main():
     start_time = time.time()
     params = list(p for p in sys.argv[1:] if p.startswith('-D'))
-    opts = list(o for o in sys.argv[1:]
+    flags = list(o for o in sys.argv[1:]
         if o.startswith('-') and o not in params)
-    targets = list(a for a in sys.argv[1:]
-        if a not in opts and a not in params)
-    for opt in opts:
-        if opt in actions:
-            actions[opt]()
+    cmds = list(c for c in sys.argv[1:]
+        if c not in flags and c not in params)
+    #Loop flags and apply them
+    for flag in flags:
+        if flag in options:
+            options[flag]()
         else:
-            logger.debug("%s is not a valid option", opt)
-    exit_codes = []
-    def invoke(target):
-        return invokeBuild(__loadBuild(),
-                           target,
-                           params)
-    if targets:
-        for t in targets:
-            exit_codes.append(invoke(t))
-    else:
-        exit_codes.append(invoke("default"))
+            logger.debug("%s is not a vaild option", flag)
+    #run things
+    cmd_found = False
+    for cmd in cmds:
+        if cmd in commands:
+            cmd_found = True
+            if commands[cmd].needs_build:
+                command = commands[cmd](loadBuild())
+            else:
+                command = commands[cmd]()
+            ec = command.run()
+    if cmd_found == False:
+        command = TargetCommand(loadBuild())
+        ec = command.run(targets=cmds, props=params)
+    elapsed_time = time.time() - start_time
+    logger.info("Execution time: %.3f", elapsed_time)
+    if ec != 0:
+        logger.info("Failure")
     from xnt.tasks import rm
     rm("build.pyc",
        "__pycache__")
-    elapsed_time = time.time() - start_time
-    logger.info("Execution time: %.3f", elapsed_time)
-    ec = sum(exit_codes)
-    logger.info("Success" if ec == 0 else "Failure")
     if ec != 0:
         sys.exit(ec)
 
-def invokeBuild(build, targetName, props=[]):
-    def __getProperties():
-        try:
-            return getattr(build, "properties")
-        except AttributeError:
-            return None
-
-    if targetName == "list-targets":
-        return printTargets(build)
-    try:
-        if len(props) > 0:
-            setattr(build, "properties", __processParams(props,
-                                                         __getProperties()))
-        target = getattr(build, targetName)
-        ec = target()
-        return ec if ec else 0
-    except AttributeError:
-        logger.warning("There was no target: %s", targetName)
-        return -2
-    except Exception as e:
-        logger.error(e)
-        return -3
-
-def usage():
-    import xnt
-    endl = os.linesep
-    usageText = \
-        xnt.__version__ + endl + \
-        xnt.__license__ + endl + \
-        "Usage:\txnt [options] [target]" + endl + \
-        "Where [target] is a target in your ``build.py`` file" + endl + \
-        "  And [options] is one of the falling:" + endl + \
-        "\t-v: print verbose information about Xnt's running" + endl + \
-        "\t--usage: Print this message" + endl + \
-        "In addition to targets defined by your ``build.py`` file" + endl + \
-        "\t``list-targets`` can be used in place of [targets] to" + endl + \
-        "\t\tlist targets and docstrings defined in your ``build.py`` file" + \
-        endl + \
-        "\tIf no [target] is provided, Xnt will try the target: ``default``" \
-        + endl
-    return usageText
-
-def version():
-    import xnt
-    return xnt.__version__
-
-def printTargets(build):
-    print(version())
-    print("\n")
-    try:
-        for f in dir(build):
-            try:
-                fa = getattr(build, f)
-                if fa.decorator == "target":
-                    print(f + ":")
-                    if fa.__doc__:
-                        print(fa.__doc__)
-                    print("\n")
-            except AttributeError:
-                pass
-    except Exception as e:
-        logger.error(e)
-    return 1
-
-def __loadBuild(path=""):
+def loadBuild(path=""):
     if not path:
         path = os.getcwd()
     else:
@@ -159,12 +85,7 @@ def __loadBuild(path=""):
         del sys.modules["build"]
         os.chdir(cwd)
 
-def __processParams(params, buildProperties={}):
-    properties = buildProperties if buildProperties is not None else {}
-    for p in params:
-        name, value = p[2:].split("=")
-        properties[name] = value
-    return properties
-
 if __name__ == "__main__":
-    main()
+    ec = main()
+    if ec:
+        sys.exit(ec)

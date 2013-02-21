@@ -9,6 +9,15 @@ A wrapper build tool
 Release Notes
 =============
 
+0.5.0:<tbd>
+-----------
+
+* Rewrite Command Parsing
+  * This change does incur some interface change. Namely,
+    ``--version`` is now ``version``, ``--usage`` is now ``help``
+  * All other commands and switches are the same
+  * See `Package Documentation`_ for more information
+
 0.4.1:2012-01-25
 ----------------
 
@@ -197,15 +206,22 @@ Where ``[options]`` are one of the following:
 
 * ``--version``:    print version and quit
 
-And where ``[target]`` is any target method in your ``build.py`` file
-or:
+And where ``[target]+`` are any target(s) method in your ``build.py``
+file or:
 
 * Nothing; if no target is specified, Xnt will attempt to invoke the
   ``default`` target
 
-* ``list-targets``: if this 'special' target is provided, Xnt will
-  print all targets marked by the ``@target`` decorator and possibly
-  their docstrings if they are defined
+Other Commands
+--------------
+
+* ``list-targets``: Xnt will print all targets marked by the
+  ``@target`` decorator and possibly their docstrings if they are
+  defined
+
+* ``version``: Print the current version of Xnt and quit
+
+* ``help``: Print summary information about Xnt and command usage
 
 For more information about Xnt and the build in functions, see the
 `Package Documentation`_.

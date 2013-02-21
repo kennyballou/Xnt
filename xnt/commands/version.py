@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 
 #   Xnt -- A Wrapper Build Tool
@@ -17,25 +16,17 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
-import os
-import shutil
-import xnt
-import xnt.tasks
-import xnt.xenant as xenant
-import unittest
+from xnt.basecommand import Command
+from xnt.status_codes import SUCCESS
 
+class VersionCommand(Command):
+    name = 'version'
+    usage = """"""
+    summary = "Print Version of Xnt"
+    needs_build = False
 
-class XenantTests(unittest.TestCase):
-    def setUp(self):
-        os.mkdir("temp")
+    def run(arguments=[]):
+        from xnt import __version__
+        print(__version__)
 
-    def tearDown(self):
-        shutil.rmtree("temp")
-
-    def test_version(self):
-        actual = xenant.version()
-        self.assertEqual(xnt.__version__, xenant.version())
-
-if __name__ == "__main__":
-    unittest.main()
+        return SUCCESS
