@@ -68,31 +68,53 @@ To install, you can either install from source or use Pip.
 Source
 ------
 
-To install from Source (stable), run the following::
+To install from Source (stable), run the following:
 
-    curl -0 http://pypi.python.org/packages/source/X/Xnt/Xnt-0.2.3.tar.gz \
+.. parsed-literal::
+
+    curl -0 http://pypi.python.org/packages/source/X/Xnt/Xnt-|release|.tar.gz \
     > Xnt.tar.gz
     tar -xzvf Xnt.tar.gz
-    cd Xnt-0.2.3
-    python setup.py install --user
+    cd Xnt-|release|
+    python[2] setup.py install [--user]
 
 Development Build
 -----------------
 
 To build and install from a development build(non-stable/ testing), run::
 
-    curl -0 https://bitbucket.org/devnulltao/xnt/get/default.tar.gz \
-    > Xnt.tar.gz
-    tar -xzvf Xnt.tar.gz
-    cd default
-    python setup.py install --user
+    git clone git://github.com/devnulltao/Xnt.git
+    cd Xnt
+    python[2] setup.py install [--user]
+
+
+Or if you prefer, you can download a zip of the latest build and install; run::
+
+    curl -0 https://github.org/devnulltao/Xnt/archive/master.zip > Xnt.zip
+    unzip Xnt.zip
+    cd Xnt
+    python[2] setup.py install [--user]
 
 Pip
 ---
 
 To install using Pip, run::
 
-    pip install Xnt --user
+    pip[2] install Xnt [--user]
+
+Using `--user`
+--------------
+
+If you install using the ``--user`` option in either source or PyPi installs,
+you may need to add ``~/.local/bin/`` to your ``PATH`` environment variable.
+
+Windows
+-------
+
+If on windows, after installing you will need to edit your ``PATH`` environment
+variable to include the installation location (either
+``<python_install_dir>\Scripts`` or ``$HOME\AppData\Roaming\Python\Scripts``).
+
 
 Indices and tables
 ==================
