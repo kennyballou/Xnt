@@ -25,7 +25,7 @@ def read(fname):
 
 setup(
     name="Xnt",
-    version="0.5.0dev1",
+    version="0.5.0",
     author="Kenny Ballou",
     author_email="kennethmgballou@gmail.com",
     url="https://github.com/devnulltao/Xnt",
