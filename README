@@ -217,7 +217,7 @@ If you find any issues or would like to request a feature, please
 visit `Issues`_.
 
 .. _PyPi: http://pypi.python.org/pypi
-.. _Package Documentation: http://packages.python.org/Xnt
+.. _Package Documentation: http://pythonhosted.org/Xnt
 .. _pip: http://www.pip-installer.org/en/latest/installing.html
 .. _Downloads: https://github.com/devnulltao/Xnt/archive/master.zip
 .. _Xnt: http://pypi.python.org/pypi/Xnt
