@@ -13,12 +13,14 @@ Release Notes
 ----------------
 
 * Rewrite Command Parsing
+
   * This change does incur some interface change. Namely,
     ``--version`` is now ``version``, ``--usage`` is now ``help``
   * All other commands and switches are the same
   * See `Package Documentation`_ for more information
 
 * Rework Return Values
+
   * Silently succeed, loudly fail (quickly)
 
 0.4.1:2013-01-25
