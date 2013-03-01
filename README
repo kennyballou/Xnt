@@ -112,12 +112,10 @@ any other build tool you have used before (e.g. ``$ xnt {target}``).
 Dependencies
 ------------
 
-Xnt has a few dependencies, specifically, Mercurial, CVS, NAnt, Ant,
-Make, and ``distribute``. Currently, the dependencies are just
+Xnt has a few dependencies, specifically, Git, Mercurial, CVS, NAnt,
+Ant, Make, and ``distribute``. Currently, the dependencies are just
 assumed to be there, so you may, if you want, ignore them.  However,
 you may not be able to easily install Xnt without ``distribute``.
-
-I plan to add Git (and maybe SVN) soon...
 
 Source Install
 --------------
