@@ -205,8 +205,6 @@ Where ``[options]`` are one of the following:
 
 * ``-v``:           verbose, turn on logging
 
-* ``--version``:    print version and quit
-
 And where ``[target]+`` are any target(s) method in your ``build.py``
 file or:
 
