@@ -234,7 +234,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'Xnt', u'Xnt Documentation',
-   u'Kenny Ballou', 'Xnt', 'One line description of project.',
+   u'Kenny Ballou', 'Xnt', 'A wrapper build tool',
    'Miscellaneous'),
 ]
 
