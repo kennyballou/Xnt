@@ -9,6 +9,17 @@ A wrapper build tool
 Release Notes
 =============
 
+0.5.1:2013-03-02
+----------------
+
+* Promote to Beta Status
+
+* Internal Refactoring
+
+  * Versioning
+
+* Minor Documentation Changes
+
 0.5.0:2013-02-21
 ----------------
 
