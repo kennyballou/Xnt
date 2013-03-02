@@ -40,7 +40,7 @@ setup(
     scripts=["xnt/xenant.py",],
     package_data={
     },
-    long_description=read("README"),
+    long_description=read("README.rst"),
     platforms=["Linux", "Windows",],
     entry_points={
         'console_scripts': [
