@@ -159,34 +159,33 @@ Here is a simple ``build.py``::
 
     #!/usr/bin/env python
 
-    from xnt import target
-    from xnt.tasks import *
+    import xnt
     from xnt.build import make
 
-    @target
+    @xnt.target
     def init():
-        mkdir("bin")
+        xnt.mkdir("bin")
 
-    @target
+    @xnt.target
     def build():
         init()
         make.ant("build")
 
-    @target
+    @xnt.target
     def clean():
-        rm("bin")
+        xnt.rm("bin")
 
-    @target
+    @xnt.target
     def rebuild():
         clean()
         build()
 
-    @target
+    @xnt.target
     def package():
         rebuild()
-        zip("bin", "packaged.zip")
+        xnt.zip("bin", "packaged.zip")
 
-    @target
+    @xnt.target
     def default():
         package()
 
