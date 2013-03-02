@@ -20,12 +20,17 @@ import os
 import shutil
 from setuptools import setup, find_packages
 
+xnt_version = os.path.join(os.path.abspath(
+    os.path.dirname(__file__)), 'xnt', 'version.py')
+
+exec(compile(open(xnt_version).read(), xnt_version, 'exec'))
+
 def read(fname):
     return "\n" + open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name="Xnt",
-    version="0.5.0",
+    version=__version__,
     author="Kenny Ballou",
     author_email="kennethmgballou@gmail.com",
     url="https://github.com/devnulltao/Xnt",

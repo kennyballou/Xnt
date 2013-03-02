@@ -16,7 +16,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-__version__ = "Xnt 0.5.0"
+import xnt.version
+__version__ = "Xnt " + xnt.version.__version__
 __license__ = """
    Xnt -- A Wrapper Build Tool
    Copyright (C) 2012  Kenny Ballou
