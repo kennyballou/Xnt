@@ -80,7 +80,7 @@ def rm(*fileset):
     except:
         raise
 
-def zip(dir,zipfilename):
+def create_zip(dir,zipfilename):
     logger.info("Zipping %s as %s", dir, zipfilename)
     assert os.path.isdir(dir) and zipfilename
     with contextlib.closing(zipfile.ZipFile(

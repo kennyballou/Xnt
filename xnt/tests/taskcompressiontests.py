@@ -35,7 +35,7 @@ class TaskCompressionTests(unittest.TestCase):
         shutil.rmtree("temp")
 
     def test_zip(self):
-        xnt.tasks.zip("temp/testfolder1", "temp/myzip.zip")
+        xnt.tasks.create_zip("temp/testfolder1", "temp/myzip.zip")
         self.assertTrue(os.path.exists("temp/myzip.zip"))
 
 if __name__ == "__main__":
