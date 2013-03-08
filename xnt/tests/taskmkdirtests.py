@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Test `xnt.tasks.mkdir`"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -16,25 +17,24 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
-import shutil
 import xnt.tasks
+import xnt.tests
 import unittest
 
+#pylint: disable-msg=C0103
+class TaskMkdirTests(unittest.TestCase): #pylint: disable-msg=R0904
+    """Test Cases for Mkdir"""
+    def setUp(self): #pylint: disable-msg=R0201
+        """Test Case Setup"""
+        xnt.tests.set_up()
 
-class TaskMkdirTests(unittest.TestCase):
-    def setUp(self):
-        os.mkdir("temp")
-        os.mkdir("temp/testfolder1")
-        for i in range(1, 5):
-            with open("temp/testfile" + str(i), "w") as f:
-                f.write("this is a test file")
-
-    def tearDown(self):
-        shutil.rmtree("temp")
+    def tearDown(self): #pylint: disable-msg=R0201
+        """Test Case Teardown"""
+        xnt.tests.tear_down()
 
     def test_mkdir(self):
+        """Test mkdir method"""
         xnt.tasks.mkdir("temp/mynewtestfolder")
         self.assertTrue(os.path.exists("temp/mynewtestfolder"))
         self.assertTrue(os.path.exists("temp/testfolder1"))

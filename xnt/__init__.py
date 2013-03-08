@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+"""Main xnt module
+
+Contains definition for version (referenced from version module), license,
+target decorator, and imports task methods from tasks module
+"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -36,12 +41,17 @@ __license__ = """
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from xnt.tasks import *
+from xnt.tasks import cp, mv, mkdir, rm, zip, log, call, setup
 
-def target(fn):
+def target(target_fn):
+    """Decorator function for marking a method in
+       build file as a "target" method, or a method meant
+       to be invoked from Xnt
+    """
     def wrap():
-        print(fn.__name__ + ":")
-        return fn()
+        """Inner wrapper function for decorator"""
+        print(target_fn.__name__ + ":")
+        return target_fn()
     wrap.decorator = "target"
-    wrap.__doc__ = fn.__doc__
+    wrap.__doc__ = target_fn.__doc__
     return wrap

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Commands Module"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -21,7 +22,7 @@ from xnt.commands.listtargets import ListTargetsCommand
 from xnt.commands.version import VersionCommand
 from xnt.commands.target import TargetCommand
 
-commands = {
+COMMANDS = {
     HelpCommand.name: HelpCommand,
     ListTargetsCommand.name: ListTargetsCommand,
     VersionCommand.name: VersionCommand,
@@ -29,9 +30,10 @@ commands = {
 }
 
 def get_summaries(ignore_hidden=True):
+    """Return a list of summaries about each command"""
     items = []
 
-    for name, command_class in commands.items():
+    for name, command_class in COMMANDS.items():
         if ignore_hidden and command_class.hidden:
             continue
         items.append((name, command_class.summary))

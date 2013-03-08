@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Xnt Runner Script"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -20,15 +21,16 @@ import os
 import sys
 import time
 import logging
-from xnt.cmdoptions import options
-from xnt.commands import commands
+from xnt.cmdoptions import OPTIONS
+from xnt.commands import COMMANDS
 from xnt.commands.target import TargetCommand
 
 logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
-logger = logging.Logger(name=__name__)
-logger.addHandler(logging.StreamHandler())
+LOGGER = logging.Logger(name=__name__)
+LOGGER.addHandler(logging.StreamHandler())
 
 def main():
+    """Xnt Entry Point"""
     start_time = time.time()
     params = list(p for p in sys.argv[1:] if p.startswith('-D'))
     flags = list(o for o in sys.argv[1:]
@@ -37,34 +39,38 @@ def main():
         if c not in flags and c not in params)
     #Loop flags and apply them
     for flag in flags:
-        if flag in options:
-            options[flag]()
+        if flag in OPTIONS:
+            OPTIONS[flag]()
         else:
-            logger.debug("%s is not a vaild option", flag)
+            LOGGER.debug("%s is not a vaild option", flag)
     #run things
     cmd_found = False
     for cmd in cmds:
-        if cmd in commands:
+        if cmd in COMMANDS:
             cmd_found = True
-            if commands[cmd].needs_build:
-                command = commands[cmd](loadBuild())
+            if COMMANDS[cmd].needs_build:
+                command = COMMANDS[cmd](load_build())
             else:
-                command = commands[cmd]()
-            ec = command.run()
+                command = COMMANDS[cmd]()
+            error_code = command.run()
     if cmd_found == False:
-        command = TargetCommand(loadBuild())
-        ec = command.run(targets=cmds, props=params)
+        command = TargetCommand(load_build())
+        error_code = command.run(targets=cmds, props=params)
     elapsed_time = time.time() - start_time
-    logger.info("Execution time: %.3f", elapsed_time)
-    if ec != 0:
-        logger.info("Failure")
+    LOGGER.info("Execution time: %.3f", elapsed_time)
+    if error_code != 0:
+        LOGGER.info("Failure")
     from xnt.tasks import rm
     rm("build.pyc",
        "__pycache__")
-    if ec != 0:
-        sys.exit(ec)
+    if error_code != 0:
+        sys.exit(error_code)
 
-def loadBuild(path=""):
+def load_build(path=""):
+    """Load build file
+
+    Load the build.py and return the resulting import
+    """
     if not path:
         path = os.getcwd()
     else:
@@ -73,12 +79,12 @@ def loadBuild(path=""):
     cwd = os.getcwd()
     os.chdir(path)
     if not os.path.exists("build.py"):
-        logger.error("There was no build file")
+        LOGGER.error("There was no build file")
         sys.exit(1)
     try:
         return __import__("build", fromlist=[])
     except ImportError:
-        logger.error("HOW?!")
+        LOGGER.error("HOW?!")
         return None
     finally:
         sys.path.remove(path)
@@ -86,6 +92,4 @@ def loadBuild(path=""):
         os.chdir(cwd)
 
 if __name__ == "__main__":
-    ec = main()
-    if ec:
-        sys.exit(ec)
+    main()

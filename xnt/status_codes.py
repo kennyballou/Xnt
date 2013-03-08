@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+"""Status Code Definitions
+
+Thess are the codes returned by Xenant for success and failure conditions
+"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou

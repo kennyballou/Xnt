@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Basecommand class for xnt commands"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -16,10 +17,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import sys
-
-class Command(object):
+class Command(object): #pylint: disable-msg=R0903
+    """Base Command Class Definition"""
     name = None
     usage = None
     hidden = False
@@ -28,5 +27,6 @@ class Command(object):
     def __init__(self):
         pass
 
-    def run(arguments=[]):
+    def run(self, arguments=None):
+        """Invoke the Command"""
         pass

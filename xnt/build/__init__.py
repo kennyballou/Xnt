@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Build Module"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Test `xnt.tasks.rm`"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -16,31 +17,24 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
-import shutil
 import xnt.tasks
+import xnt.tests
 import unittest
 
+#pylint: disable-msg=C0103
+class TaskRemoveTests(unittest.TestCase): #pylint: disable-msg=R0904
+    """Test Case for Remove"""
+    def setUp(self): #pylint: disable-msg=R0201
+        """Test case Setup"""
+        xnt.tests.set_up()
 
-class TaskRemoveTests(unittest.TestCase):
-    def setUp(self):
-        os.mkdir("temp")
-        os.mkdir("temp/testfolder1")
-        for i in range(1, 5):
-            with open("temp/testfile" + str(i), "w") as f:
-                f.write("this is a test file")
-
-    def tearDown(self):
-        shutil.rmtree("temp")
-
-    def test_mkdir(self):
-        xnt.tasks.mkdir("temp/mynewtestfolder")
-        self.assertTrue(os.path.exists("temp/mynewtestfolder"))
-        self.assertTrue(os.path.exists("temp/testfolder1"))
-        xnt.tasks.mkdir("temp/testfolder1")
+    def tearDown(self): #pylint: disable-msg=R0201
+        """Test case Teardown"""
+        xnt.tests.tear_down()
 
     def test_rm(self):
+        """Remove cases"""
         xnt.tasks.rm("temp/testfolder1")
         self.assertFalse(os.path.exists("temp/testfolder1"))
         xnt.tasks.rm("temp/testfile1")

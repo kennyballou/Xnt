@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Misc Tasks Tests"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -16,36 +17,31 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
-import shutil
 import xnt.tasks
+import xnt.tests
 import unittest
 
+#pylint: disable-msg=C0103
+class TaskMiscTests(unittest.TestCase): #pylint: disable-msg=R0904
+    """Test Misc Tasks"""
+    def setUp(self): #pylint: disable-msg=R0201
+        """Test Case Setup"""
+        xnt.tests.set_up()
 
-class TaskMiscTests(unittest.TestCase):
-    def setUp(self):
-        os.mkdir("temp")
-        os.mkdir("temp/testfolder1")
-        for i in range(1, 5):
-            with open("temp/testfile" + str(i), "w") as f:
-                f.write("this is a test file")
-        with open("temp/test.py", "w") as test:
-            test.write("#!/usr/bin/env python\n")
-            test.write("import sys\n")
-            test.write("sys.stdout.write(sys.argv[1])\n")
-            test.write("sys.stderr.write(sys.argv[2])\n")
-
-    def tearDown(self):
-        shutil.rmtree("temp")
+    def tearDown(self): #pylint: disable-msg=R0201
+        """Test Case Teardown"""
+        xnt.tests.tear_down()
 
     def test_echo(self):
+        """Test Echo Task"""
         xnt.tasks.echo("this is my cool echo", "temp/mynewcoolfile")
         self.assertTrue(os.path.exists("temp/mynewcoolfile"))
-        with open("temp/mynewcoolfile", "r") as f:
-            self.assertEqual("this is my cool echo", f.read())
+        with open("temp/mynewcoolfile", "r") as temp_file:
+            self.assertEqual("this is my cool echo", temp_file.read())
 
     def test_call(self):
+        """Test Call, testing redirection"""
         out = open("temp/testout", "w")
         err = open("temp/testerr", "w")
         xnt.tasks.call(["python",
@@ -57,10 +53,10 @@ class TaskMiscTests(unittest.TestCase):
         err.close()
         self.assertTrue(os.path.exists("temp/testout"))
         self.assertTrue(os.path.exists("temp/testerr"))
-        with open("temp/testout", "r") as o:
-            self.assertEqual("42", o.read())
-        with open("temp/testerr", "r") as e:
-            self.assertEqual("hello", e.read())
+        with open("temp/testout", "r") as std_out:
+            self.assertEqual("42", std_out.read())
+        with open("temp/testerr", "r") as std_err:
+            self.assertEqual("hello", std_err.read())
 
 if __name__ == "__main__":
     unittest.main()
