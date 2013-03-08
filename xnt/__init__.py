@@ -41,7 +41,7 @@ __license__ = """
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from xnt.tasks import cp, mv, mkdir, rm, zip, log, call, setup
+from xnt.tasks import cp, mv, mkdir, rm, create_zip, log, xntcall, call, setup
 
 def target(target_fn):
     """Decorator function for marking a method in

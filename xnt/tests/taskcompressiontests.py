@@ -35,7 +35,7 @@ class TaskCompressionTests(unittest.TestCase): #pylint: disable-msg=R0904
 
     def test_zip(self):
         """Test zip method"""
-        xnt.tasks.zip("temp/testfolder1", "temp/myzip.zip")
+        xnt.tasks.create_zip("temp/testfolder1", "temp/myzip.zip")
         self.assertTrue(os.path.exists("temp/myzip.zip"))
 
 if __name__ == "__main__":

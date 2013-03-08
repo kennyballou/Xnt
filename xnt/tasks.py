@@ -96,7 +96,7 @@ def rm(*fileset): #pylint: disable-msg=C0103
     except:
         raise
 
-def zip(directory, zipfilename):
+def create_zip(directory, zipfilename):
     """Compress (Zip) folder"""
     LOGGER.info("Zipping %s as %s", directory, zipfilename)
     assert os.path.isdir(directory) and zipfilename
@@ -129,8 +129,8 @@ def xntcall(path, targets=None, props=None):
     """
     import xnt.xenant
     from xnt.commands.target import TargetCommand
-    command = TargetCommand(xnt.xenant.loadBuild(path))
-    return command.run(targets=targets, props=None)
+    command = TargetCommand(xnt.xenant.load_build(path))
+    return command.run(targets=targets, props=props)
 
 def call(command, stdout=None, stderr=None):
     """ Execute the given command, redirecting stdout and stderr
