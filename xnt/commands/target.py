@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""(Generic) Target Xnt Command for invoking build targets"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -20,35 +21,42 @@ from xnt.basecommand import Command
 from xnt.status_codes import SUCCESS, ERROR, UNKNOWN_ERROR
 import logging
 
-logger = logging.getLogger("xnt")
+LOGGER = logging.getLogger("xnt")
 
 class TargetCommand(Command):
+    """Target Command"""
     name = '<target>'
     usage = """"""
     summary = "Invokes target(s) in build.py"
     needs_build = True
 
     def __init__(self, build):
+        """Initialization"""
+        Command.__init__(self)
         self.build = build
 
-    def run(self, targets=[], props=[]):
+    def run(self, targets=None, props=None): #pylint: disable-msg=W0221
+        """Invoke Target Command"""
         if targets:
-            for t in targets:
-                ec = self.callTarget(t, props)
-                if ec:
-                    return ec
+            for target in targets:
+                error_code = self.call_target(target, props)
+                if error_code:
+                    return error_code
             return SUCCESS
         else:
-            return self.callTarget("default", props)
+            return self.call_target("default", props)
 
-    def callTarget(self, targetName, props):
-        def processParams(params, buildProperties={}):
-            properties = buildProperties if buildProperties is not None else {}
-            for p in params:
-                name, value = p[2:].split("=")
+    def call_target(self, target_name, props):
+        """Invoke build target"""
+        def process_params(params, buildproperties=None):
+            """Parse the passed properties and append to build properties"""
+            properties = buildproperties if buildproperties is not None else {}
+            for param in params:
+                name, value = param[2:].split("=")
                 properties[name] = value
             return properties
-        def __getProperties():
+        def __get_properties():
+            """Return the properties dictionary of the build module"""
             try:
                 return getattr(self.build, "properties")
             except AttributeError:
@@ -57,14 +65,14 @@ class TargetCommand(Command):
             if len(props) > 0:
                 setattr(self.build,
                         "properties",
-                        processParams(props, __getProperties()))
-            target = getattr(self.build, targetName)
-            ec = target()
-            return ec if ec else 0
+                        process_params(props, __get_properties()))
+            target = getattr(self.build, target_name)
+            error_code = target()
+            return error_code if error_code else 0
         except AttributeError:
-            logger.warning("There was no target: %s", targetName)
+            LOGGER.warning("There was no target: %s", target_name)
             return ERROR
         except Exception as ex:
-            logger.error(ex)
+            LOGGER.error(ex)
             return UNKNOWN_ERROR
 

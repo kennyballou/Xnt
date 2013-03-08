@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Version Xnt Command"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -19,14 +20,15 @@
 from xnt.basecommand import Command
 from xnt.status_codes import SUCCESS
 
-class VersionCommand(Command):
+class VersionCommand(Command): #pylint: disable-msg=R0903
+    """Version Command"""
     name = 'version'
     usage = """"""
     summary = "Print Version of Xnt"
     needs_build = False
 
-    def run(arguments=[]):
+    def run(self, arguments=None):
+        """Invoke Version"""
         from xnt import __version__
         print(__version__)
-
         return SUCCESS

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Xnt Build File"""
 
 import xnt
 
@@ -17,6 +18,7 @@ def clean():
 
 @xnt.target
 def build():
+    """Build Xnt"""
     return xnt.setup(["build"])
 
 @xnt.target
@@ -31,11 +33,16 @@ def test():
     return ec1 | ec2
 
 @xnt.target
+def lint():
+    """pylint xnt"""
+    return xnt.call(["pylint", "--rcfile=pylint.conf", "xnt"])
+
+@xnt.target
 def install():
     """Install Xnt"""
-    ec = xnt.setup(["install", "--user"])
+    error_code = xnt.setup(["install", "--user"])
     clean()
-    return ec
+    return error_code
 
 @xnt.target
 def doc():

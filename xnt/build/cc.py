@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+"""Common Compilers
+
+Definition of commonly used compilers
+"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -16,58 +20,61 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""
-Common Compilers
-"""
-
 import os
 import logging
-import sys
 from xnt.tasks import call
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
-def gcc(src, flags=[]):
+def gcc(src, flags=None):
     """gcc compiler, non-named output file"""
     return _gcc(src, flags)
 
-def gpp(src, flags=[]):
+def gpp(src, flags=None):
     """g++ compiler, non-named output file"""
     return _gcc(src, flags, "g++")
 
-def gcc_o(src, o, flags=[]):
+def gcc_o(src, output, flags=None):
     """gcc compiler, with output file"""
-    return _gcc_o(src, o, flags)
+    return _gcc_o(src, output, flags)
 
-def gpp_o(src, o, flags=[]):
+def gpp_o(src, output, flags=None):
     """g++ compiler, with output file"""
-    return _gcc_o(src, o, flags, "g++")
+    return _gcc_o(src, output, flags, "g++")
 
-def javac(src, flags=[]):
+def javac(src, flags=None):
     """Javac: compile Java programs"""
-    logger.info("Compiling %s", src)
-    cmd = __generateCommand(src, flags, "javac")
+    LOGGER.info("Compiling %s", src)
+    cmd = __generate_command(src, flags, "javac")
     return __compile(cmd)
 
-def _gcc(src, flags=[], compiler="gcc"):
-    logger.info("Compiling %s", src)
-    return __compile(__generateCommand(src, flags, compiler))
+def _gcc(src, flags=None, compiler="gcc"):
+    """Compile using gcc"""
+    LOGGER.info("Compiling %s", src)
+    return __compile(__generate_command(src, flags, compiler))
 
-def _gcc_o(src, o, flags=[], compiler="gcc"):
-    logger.info("Compiling %s to %s", src, o)
-    cmd = __generateCommand(src, flags, compiler)
+def _gcc_o(src, output, flags=None, compiler="gcc"):
+    """Compile with gcc specifying output file name"""
+    LOGGER.info("Compiling %s to %s", src, output)
+    cmd = __generate_command(src, flags, compiler)
     cmd.append("-o")
-    cmd.append(o)
+    cmd.append(output)
     return __compile(cmd)
 
-def __generateCommand(src, flags=[], compiler="gcc"):
+def __generate_command(src, flags=None, compiler="gcc"):
+    """Generate cmd list for call"""
     cmd = [compiler, src]
-    for f in flags:
-        cmd.append(f)
+    if flags:
+        for flag in flags:
+            cmd.append(flag)
     return cmd
 
 def __compile(cmd):
+    """Run Compile, using `xnt.tasks.call`"""
     return call(cmd)
 
-def __is_newer(a, b):
-    return os.path.getmtime(a) > os.path.getmtime(b)
+def __is_newer(file_a, file_b):
+    """Compare mmtimes of files
+    Return True if `file_a` is modified later than `file_b`
+    """
+    return os.path.getmtime(file_a) > os.path.getmtime(file_b)

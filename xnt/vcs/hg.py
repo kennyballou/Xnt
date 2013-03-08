@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Mercurial Version Control Module/Wrapper"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -17,23 +18,20 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import sys
 import xnt.tasks
+import xnt.vcs
 
-def hgclone(url, dest=None,rev=None,branch=None):
+def hgclone(url, dest=None, rev=None, branch=None):
+    """Clone a Mercurial Repository"""
     command = ["hg", "clone"]
     if rev:
         command.append("--rev")
         command.append(rev)
-    if branch:
-        command.append("--branch")
-        command.append(branch)
-    command.append(url)
-    if dest:
-        command.append(dest)
+    command = xnt.vcs.clone_options(command, url, branch, dest)
     xnt.tasks.call(command)
 
 def hgfetch(path, source='default'):
+    """Pull and Update an already cloned Mercurial Repository"""
     command = ["hg", "pull", "-u", source]
     cwd = os.getcwd()
     os.chdir(path)

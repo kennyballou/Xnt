@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+"""Common Tasks Module
+
+Defines a set of operations that are common enough but also are tedious to
+define
+"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -19,14 +24,13 @@
 import os
 import sys
 import subprocess
-import time
 import shutil
 import zipfile
 import contextlib
 import glob
 import logging
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
 #File associated tasks
 def expandpath(path):
@@ -35,103 +39,121 @@ def expandpath(path):
     """
     return glob.iglob(path)
 
-def cp(src="",dst="",files=[]):
+def cp(src="", dst="", files=None): #pylint: disable-msg=C0103
+    """Copy `src` to `dst` or copy `files` to `dst`
+
+    Copy a file or folder to a different file/folder
+    If no `src` file is specified, will attempt to copy `files` to `dst`
+    """
     assert dst and src or len(files) > 0
-    logger.info("Copying %s to %s", src, dst)
-    def copy(s,d):
-        if os.path.isdir(s):
-            shutil.copytree(s,d)
+    LOGGER.info("Copying %s to %s", src, dst)
+    def copy(source, destination):
+        """Copy file or folder to destination.
+
+        Depending on the type of source, call the appropriate method
+        """
+        if os.path.isdir(source):
+            shutil.copytree(source, destination)
         else:
-            shutil.copy2(s,d)
+            shutil.copy2(source, destination)
     if src:
         copy(src, dst)
     else:
-        for f in files:
-            copy(f, dst)
+        for file_to_copy in files:
+            copy(file_to_copy, dst)
 
-def mv(src,dst):
-    logger.info("Moving %s to %s", src, dst)
-    shutil.move(src,dst)
+def mv(src, dst): #pylint: disable-msg=C0103
+    """Move file or folder to destination"""
+    LOGGER.info("Moving %s to %s", src, dst)
+    shutil.move(src, dst)
 
-def mkdir(dir,mode=0o777):
-    if os.path.exists(dir):
+def mkdir(directory, mode=0o777):
+    """Make a directory with mode"""
+    if os.path.exists(directory):
         return
-    logger.info("Making directory %s with mode %o", dir, mode)
+    LOGGER.info("Making directory %s with mode %o", directory, mode)
     try:
-        os.mkdir(dir,mode)
-    except IOError as e:
-        log(e, logging.WARNING)
+        os.mkdir(directory, mode)
+    except IOError as io_error:
+        log(io_error, logging.WARNING)
     except:
         raise
 
-def rm(*fileset):
+def rm(*fileset): #pylint: disable-msg=C0103
+    """Remove a set of files"""
     try:
-        for g in fileset:
-            for f in expandpath(g):
-                if not os.path.exists(f):
+        for glob_set in fileset:
+            for file_to_delete in expandpath(glob_set):
+                if not os.path.exists(file_to_delete):
                     continue
-                logger.info("Removing %s", f)
-                if os.path.isdir(f):
-                    shutil.rmtree(f)
+                LOGGER.info("Removing %s", file_to_delete)
+                if os.path.isdir(file_to_delete):
+                    shutil.rmtree(file_to_delete)
                 else:
-                    os.remove(f)
-    except OSError as e:
-        log(e, logging.WARNING)
+                    os.remove(file_to_delete)
+    except OSError as os_error:
+        log(os_error, logging.WARNING)
     except:
         raise
 
-def zip(dir,zipfilename):
-    logger.info("Zipping %s as %s", dir, zipfilename)
-    assert os.path.isdir(dir) and zipfilename
+def create_zip(directory, zipfilename):
+    """Compress (Zip) folder"""
+    LOGGER.info("Zipping %s as %s", directory, zipfilename)
+    assert os.path.isdir(directory) and zipfilename
     with contextlib.closing(zipfile.ZipFile(
         zipfilename,
         "w",
-        zipfile.ZIP_DEFLATED)) as z:
-        for root, dirs, files in os.walk(dir):
-            for fn in files:
-                absfn = os.path.join(root, fn)
-                zfn = absfn[len(dir)+len(os.sep):]
-                z.write(absfn, zfn)
+        zipfile.ZIP_DEFLATED)) as zip_file:
+        for paths in os.walk(directory):
+            for file_name in paths[2]:
+                absfn = os.path.join(paths[0], file_name)
+                zip_file_name = absfn[len(directory) + len(os.sep):]
+                zip_file.write(absfn, zip_file_name)
 
 #Misc Tasks
 def echo(msg, tofile):
-    with open(tofile, "w") as f:
-        f.write(msg)
+    """Write a string to file"""
+    with open(tofile, "w") as file_to_write:
+        file_to_write.write(msg)
 
-def log(msg="",lvl=logging.INFO):
-    logger.log(lvl, msg)
+def log(msg="", lvl=logging.INFO):
+    """Log message using tasks global logger"""
+    LOGGER.log(lvl, msg)
 
-def xnt(target, path):
-    """
-    Invoke xnt on another build file in a different directory
+def xntcall(path, targets=None, props=None):
+    """Invoke xnt on another build file in a different directory
+
+    param: path - to the build file (including build file)
+    param: targets - list of targets to execute
+    param: props - dictionary of properties to pass to the build module
     """
     import xnt.xenant
-    xnt.xenant.invokeBuild(
-        xnt.xenant.__loadBuild(path),
-        target)
+    from xnt.commands.target import TargetCommand
+    command = TargetCommand(xnt.xenant.load_build(path))
+    return command.run(targets=targets, props=props)
 
 def call(command, stdout=None, stderr=None):
-    """
-    Execute the given command, redirecting stdout and stderr
+    """ Execute the given command, redirecting stdout and stderr
     to optionally given files
+
     param: command - list of command and arguments
     param: stdout - file to redirect standard output to, if given
     param: stderr - file to redirect standard error to, if given
     """
     return subprocess.call(args=command, stdout=stdout, stderr=stderr)
 
-def setup(commands, dir=""):
-    """
-    Invoke the ``setup.py`` file in the current or specified directory
+def setup(commands, directory=""):
+    """Invoke the ``setup.py`` file in the current or specified directory
+
     param: commands - list of commands and options to run/ append
     param: dir - (optional) directory to run from
     """
     cmd = [sys.executable, "setup.py",]
-    for c in commands:
-        cmd.append(c)
+    for command in commands:
+        cmd.append(command)
     cwd = os.getcwd()
-    if dir:
-        os.chdir(dir)
-    ec = call(cmd)
+    if directory:
+        os.chdir(directory)
+    error_code = call(cmd)
     os.chdir(cwd)
-    return ec
+    return error_code

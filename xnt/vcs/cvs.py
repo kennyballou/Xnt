@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""CVS Version Control Wrapper"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -17,10 +18,10 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import sys
 import subprocess
 
 def cvsco(module, rev="", dest=""):
+    """Run CVS Checkout"""
     cmd = ["cvs", "co", "-P"]
     if rev:
         cmd.append("-r")
@@ -32,7 +33,9 @@ def cvsco(module, rev="", dest=""):
     subprocess.call(cmd)
 
 def cvsupdate(path):
-    oldPath = os.path.abspath(os.getcwd())
+    """Run CVS Update"""
+    cwd = os.path.abspath(os.getcwd())
     os.chdir(path)
     cmd = ["cvs", "update"]
-    os.chdir(oldPath)
+    subprocess.call(cmd)
+    os.chdir(cwd)

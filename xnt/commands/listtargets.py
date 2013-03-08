@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""List Targets Xnt Command"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -20,32 +21,36 @@ from xnt.basecommand import Command
 from xnt.status_codes import SUCCESS, ERROR
 import logging
 
-logger = logging.getLogger(__name__)
+LOGGER = logging.getLogger(__name__)
 
-class ListTargetsCommand(Command):
+class ListTargetsCommand(Command): #pylint: disable-msg=R0903
+    """List Targets Command"""
     name = 'list-targets'
     usage = """"""
     summary = "Prints targets in build file"
     needs_build = True
 
     def __init__(self, build):
+        """Initialization"""
+        Command.__init__(self)
         self.build = build
 
-    def run(self, arguments=[]):
-        logger.debug("build is null? %s", self.build == None)
+    def run(self, arguments=None):
+        """Invoke ListTargets"""
+        LOGGER.debug("build is null? %s", self.build == None)
         try:
-            for f in dir(self.build):
-                logger.debug("Attribute %s:", f)
+            for attr in dir(self.build):
+                LOGGER.debug("Attribute %s:", attr)
                 try:
-                    fa = getattr(self.build, f)
-                    if fa.decorator == "target":
-                        print(f + ":")
-                        if fa.__doc__:
-                            print(fa.__doc__)
+                    func = getattr(self.build, attr)
+                    if func.decorator == "target":
+                        print(attr + ":")
+                        if func.__doc__:
+                            print(func.__doc__)
                         print("\n")
                 except AttributeError:
                     pass
-        except Exception as ex:
-            logger.error(ex)
+        except AttributeError as ex:
+            LOGGER.error(ex)
             return ERROR
         return SUCCESS

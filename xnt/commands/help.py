@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Xnt Help Command"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -19,13 +20,15 @@
 from xnt.basecommand import Command
 from xnt.status_codes import SUCCESS
 
-class HelpCommand(Command):
+class HelpCommand(Command): #pylint: disable-msg=R0903
+    """Help Command"""
     name = 'help'
     usage = """"""
     summary = 'Print Usage Summary'
     needs_build = False
 
-    def run(self, arguments=[]):
+    def run(self, arguments=None):
+        """Invoke Help"""
         from xnt.commands import get_summaries
         from xnt import __version__, __license__
         commands = get_summaries()

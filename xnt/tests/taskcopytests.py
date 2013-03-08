@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Test xnt.tasks.cp"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -16,25 +17,24 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
 import os
-import shutil
 import xnt.tasks
+import xnt.tests
 import unittest
 
+#pylint: disable-msg=C0103
+class TaskCopyTests(unittest.TestCase): #pylint: disable-msg=R0904
+    """Test Case for Copy Tasks Method"""
+    def setUp(self): #pylint: disable-msg=R0201
+        """Test Setup"""
+        xnt.tests.set_up()
 
-class TaskCopyTests(unittest.TestCase):
-    def setUp(self):
-        os.mkdir("temp")
-        os.mkdir("temp/testfolder1")
-        for i in range(1, 5):
-            with open("temp/testfile" + str(i), "w") as f:
-                f.write("this is a test file")
-
-    def tearDown(self):
-        shutil.rmtree("temp")
+    def tearDown(self): #pylint: disable-msg=R0201
+        """Test Teardown"""
+        xnt.tests.tear_down()
 
     def test_cp(self):
+        """Test default use of cp"""
         xnt.tasks.cp("temp/testfolder1", "temp/testfolder2")
         self.assertTrue(os.path.exists("temp/testfolder2"))
         self.assertTrue(os.path.exists("temp/testfolder1"))
@@ -45,6 +45,7 @@ class TaskCopyTests(unittest.TestCase):
             self.assertEqual("this is a test file", testfile.read())
 
     def test_cp_filelist(self):
+        """Test filelist copy"""
         xnt.tasks.cp(dst="temp/testfolder2",
                      files=["temp/testfile1",
                             "temp/testfile2",

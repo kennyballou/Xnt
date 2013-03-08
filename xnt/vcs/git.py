@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Git Version Control Module"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -17,20 +18,17 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import sys
 import xnt.tasks
+import xnt.vcs
 
 def gitclone(url, dest=None, branch=None):
+    """Clone a repository"""
     command = ["git", "clone"]
-    if branch:
-        command.append("--branch")
-        command.append(branch)
-    command.append(url)
-    if dest:
-        command.append(dest)
+    command = xnt.vcs.clone_options(command, url, branch, dest)
     xnt.tasks.call(command)
 
 def gitpull(path, source="origin", branch="master"):
+    """Pull/Update a cloned repository"""
     cwd = os.getcwd()
     os.chdir(path)
     command = ["git", "pull", source, branch]

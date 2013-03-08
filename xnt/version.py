@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Version information definition"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -17,4 +18,4 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 __version_info__ = (0, 5, 2)
-__version__ = '.'.join(map(str, __version_info__))
+__version__ = '.'.join(list(str(i) for i in __version_info__ if True))

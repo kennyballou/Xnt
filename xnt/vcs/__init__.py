@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Version Controll Module"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -15,3 +16,14 @@
 
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+def clone_options(cmd, url, branch=None, dest=None):
+    """Build up common options for clone commands"""
+    new_cmd = list(cmd)
+    if branch:
+        new_cmd.append("--branch")
+        new_cmd.append(branch)
+    cmd.append(url)
+    if dest:
+        new_cmd.append(dest)
+    return new_cmd

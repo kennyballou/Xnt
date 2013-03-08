@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+"""Xenant Options Defintion
+
+All available options for Xenant (and there actions)
+"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -18,9 +22,10 @@
 
 import logging
 
-def flipVerboseFlag():
+def __flip_verbose_flag():
+    """Turn on logging for xnt (and submodules)"""
     logging.getLogger("xnt").setLevel(logging.INFO)
 
-options = {
-    "-v": flipVerboseFlag,
+OPTIONS = {
+    "-v": __flip_verbose_flag,
 }

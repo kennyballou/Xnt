@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Wrapping methods around build tools"""
 
 #   Xnt -- A Wrapper Build Tool
 #   Copyright (C) 2012  Kenny Ballou
@@ -18,32 +19,35 @@
 
 import os
 import subprocess
-import logging
 
-
-def ant(path="", target="",flags=[]):
-    cmd = __addFlags(["ant", target], flags)
+def ant(path="", target="", flags=None):
+    """Wrapper around Apache Ant"""
+    cmd = __add_flags(["ant", target], flags)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def make(path="", target="",flags=[]):
-    cmd = __addFlags(["make", target], flags)
+def make(path="", target="", flags=None):
+    """Wrapper around GNU Make"""
+    cmd = __add_flags(["make", target], flags)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def nant(path="", target="",flags=[]):
-    cmd = __addFlags(["nant", target], flags)
+def nant(path="", target="", flags=None):
+    """Wrapper around .NET Ant"""
+    cmd = __add_flags(["nant", target], flags)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def __addFlags(cmd, flags):
-    c = list(cmd)
-    for f in flags:
-        c.append(f)
-    return c
+def __add_flags(cmd, flags):
+    """Add flags to command and return new list"""
+    command = list(cmd)
+    for flag in flags:
+        command.append(flag)
+    return command
 
-def __run_in(path, f):
-    oldPath = os.path.abspath(os.getcwd())
+def __run_in(path, function):
+    """Execute function while in a different running directory"""
+    cwd = os.path.abspath(os.getcwd())
     if path and os.path.exists(path):
         os.chdir(os.path.abspath(path))
-    result = f()
-    if oldPath:
-        os.chdir(oldPath)
+    result = function()
+    if cwd:
+        os.chdir(cwd)
     return result
