@@ -9,6 +9,11 @@ A wrapper build tool
 Release Notes
 =============
 
+0.5.2:TBD
+---------
+
+* pylint ALL THE THINGS
+
 0.5.1:2013-03-02
 ----------------
 
