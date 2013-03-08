@@ -120,12 +120,17 @@ def log(msg="", lvl=logging.INFO):
     """Log message using tasks global logger"""
     LOGGER.log(lvl, msg)
 
-def call_xnt(target, path):
-    """Invoke xnt on another build file in a different directory"""
+def xntcall(path, targets=None, props=None):
+    """Invoke xnt on another build file in a different directory
+
+    param: path - to the build file (including build file)
+    param: targets - list of targets to execute
+    param: props - dictionary of properties to pass to the build module
+    """
     import xnt.xenant
-    xnt.xenant.invokeBuild(
-        xnt.xenant.__loadBuild(path),
-        target)
+    from xnt.commands.target import TargetCommand
+    command = TargetCommand(xnt.xenant.loadBuild(path))
+    return command.run(targets=targets, props=None)
 
 def call(command, stdout=None, stderr=None):
     """ Execute the given command, redirecting stdout and stderr
