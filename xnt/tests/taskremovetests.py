@@ -23,13 +23,13 @@ import xnt.tests
 import unittest
 
 #pylint: disable-msg=C0103
-class TaskRemoveTests(unittest.TestCase): #pylint: disable-msg=R0904
+class TaskRemoveTests(unittest.TestCase):
     """Test Case for Remove"""
-    def setUp(self): #pylint: disable-msg=R0201
+    def setUp(self):
         """Test case Setup"""
         xnt.tests.set_up()
 
-    def tearDown(self): #pylint: disable-msg=R0201
+    def tearDown(self):
         """Test case Teardown"""
         xnt.tests.tear_down()
 

@@ -42,12 +42,11 @@ def which(program):
 
     return None
 
-#pylint: disable-msg=R0904
 #pylint: disable-msg=C0103
 @unittest.skipUnless(which("gcc"), "gcc is not in your path")
 class GccTests(unittest.TestCase):
     """Test GCC"""
-    def setUp(self): #pylint: disable-msg=R0201
+    def setUp(self):
         """Test Case Setup"""
         os.mkdir("temp")
         with open("temp/hello.c", "w") as test_code:
@@ -59,7 +58,7 @@ class GccTests(unittest.TestCase):
             }
             """)
 
-    def tearDown(self): #pylint: disable-msg=R0201
+    def tearDown(self):
         """Test Case Teardown"""
         shutil.rmtree("temp")
 
@@ -79,7 +78,7 @@ class GccTests(unittest.TestCase):
 @unittest.skipUnless(which("g++"), "g++ is not in your path")
 class GppTests(unittest.TestCase):
     """Test G++ (C++ GCC)"""
-    def setUp(self): #pylint: disable-msg=R0201
+    def setUp(self):
         """Test Case Setup"""
         os.mkdir("temp")
         with open("temp/hello.cpp", "w") as test_code:
@@ -91,7 +90,7 @@ class GppTests(unittest.TestCase):
             }
             """)
 
-    def tearDown(self): #pylint: disable-msg=R0201
+    def tearDown(self):
         """Test Case Teardown"""
         shutil.rmtree("temp")
 
@@ -111,7 +110,7 @@ class GppTests(unittest.TestCase):
 @unittest.skipUnless(which("javac"), "javac is not in your path")
 class JavacTests(unittest.TestCase):
     """Test Javac"""
-    def setUp(self): #pylint: disable-msg=R0201
+    def setUp(self):
         """Test Case Setup"""
         os.mkdir("temp")
         with open("temp/hello.java", "w") as test_code:
@@ -123,7 +122,7 @@ class JavacTests(unittest.TestCase):
             }
             """)
 
-    def tearDown(self): #pylint: disable-msg=R0201
+    def tearDown(self):
         """Test Case Teardown"""
         shutil.rmtree("temp")
 

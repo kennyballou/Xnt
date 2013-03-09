@@ -23,7 +23,7 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
-class ListTargetsCommand(Command): #pylint: disable-msg=R0903
+class ListTargetsCommand(Command):
     """List Targets Command"""
     name = 'list-targets'
     usage = """"""

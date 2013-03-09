@@ -20,7 +20,7 @@
 from xnt.basecommand import Command
 from xnt.status_codes import SUCCESS
 
-class VersionCommand(Command): #pylint: disable-msg=R0903
+class VersionCommand(Command):
     """Version Command"""
     name = 'version'
     usage = """"""

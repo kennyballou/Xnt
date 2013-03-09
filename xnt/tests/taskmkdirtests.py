@@ -23,13 +23,13 @@ import xnt.tests
 import unittest
 
 #pylint: disable-msg=C0103
-class TaskMkdirTests(unittest.TestCase): #pylint: disable-msg=R0904
+class TaskMkdirTests(unittest.TestCase):
     """Test Cases for Mkdir"""
-    def setUp(self): #pylint: disable-msg=R0201
+    def setUp(self):
         """Test Case Setup"""
         xnt.tests.set_up()
 
-    def tearDown(self): #pylint: disable-msg=R0201
+    def tearDown(self):
         """Test Case Teardown"""
         xnt.tests.tear_down()
 

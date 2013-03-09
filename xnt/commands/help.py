@@ -20,7 +20,7 @@
 from xnt.basecommand import Command
 from xnt.status_codes import SUCCESS
 
-class HelpCommand(Command): #pylint: disable-msg=R0903
+class HelpCommand(Command):
     """Help Command"""
     name = 'help'
     usage = """"""

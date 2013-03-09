@@ -17,7 +17,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-class Command(object): #pylint: disable-msg=R0903
+class Command(object):
     """Base Command Class Definition"""
     name = None
     usage = None

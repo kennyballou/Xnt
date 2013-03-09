@@ -39,7 +39,7 @@ def expandpath(path):
     """
     return glob.iglob(path)
 
-def cp(src="", dst="", files=None): #pylint: disable-msg=C0103
+def cp(src="", dst="", files=None):
     """Copy `src` to `dst` or copy `files` to `dst`
 
     Copy a file or folder to a different file/folder
@@ -62,7 +62,7 @@ def cp(src="", dst="", files=None): #pylint: disable-msg=C0103
         for file_to_copy in files:
             copy(file_to_copy, dst)
 
-def mv(src, dst): #pylint: disable-msg=C0103
+def mv(src, dst):
     """Move file or folder to destination"""
     LOGGER.info("Moving %s to %s", src, dst)
     shutil.move(src, dst)
@@ -79,7 +79,7 @@ def mkdir(directory, mode=0o777):
     except:
         raise
 
-def rm(*fileset): #pylint: disable-msg=C0103
+def rm(*fileset):
     """Remove a set of files"""
     try:
         for glob_set in fileset:
