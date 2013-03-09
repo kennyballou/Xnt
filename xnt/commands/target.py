@@ -62,7 +62,7 @@ class TargetCommand(Command):
             except AttributeError:
                 return None
         try:
-            if len(props) > 0:
+            if props and len(props) > 0:
                 setattr(self.build,
                         "properties",
                         process_params(props, __get_properties()))

@@ -129,8 +129,12 @@ def xntcall(path, targets=None, props=None):
     """
     import xnt.xenant
     from xnt.commands.target import TargetCommand
+    cwd = os.getcwd()
     command = TargetCommand(xnt.xenant.load_build(path))
-    return command.run(targets=targets, props=props)
+    os.chdir(path)
+    error_code = command.run(targets=targets, props=props)
+    os.chdir(cwd)
+    return error_code
 
 def call(command, stdout=None, stderr=None):
     """ Execute the given command, redirecting stdout and stderr
