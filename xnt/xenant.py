@@ -25,9 +25,10 @@ from xnt.cmdoptions import OPTIONS
 from xnt.commands import COMMANDS
 from xnt.commands.target import TargetCommand
 
-logging.basicConfig(format="%(asctime)s:%(levelname)s:%(message)s")
+logging.basicConfig(format="%(message)s")
 LOGGER = logging.Logger(name=__name__)
 LOGGER.addHandler(logging.StreamHandler())
+LOGGER.setLevel(logging.WARNING)
 
 def main():
     """Xnt Entry Point"""
@@ -57,9 +58,9 @@ def main():
         command = TargetCommand(load_build())
         error_code = command.run(targets=cmds, props=params)
     elapsed_time = time.time() - start_time
-    LOGGER.info("Execution time: %.3f", elapsed_time)
+    print("Execution time: %.3f", elapsed_time)
     if error_code != 0:
-        LOGGER.info("Failure")
+        LOGGER.error("Failure")
     from xnt.tasks import rm
     rm("build.pyc",
        "__pycache__")

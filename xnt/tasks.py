@@ -70,12 +70,13 @@ def mv(src, dst):
 def mkdir(directory, mode=0o777):
     """Make a directory with mode"""
     if os.path.exists(directory):
+        LOGGER.warning("Given directory (%s) already exists" % directory)
         return
     LOGGER.info("Making directory %s with mode %o", directory, mode)
     try:
         os.mkdir(directory, mode)
     except IOError as io_error:
-        log(io_error, logging.WARNING)
+        log(io_error, logging.ERROR)
     except:
         raise
 
@@ -92,7 +93,7 @@ def rm(*fileset):
                 else:
                     os.remove(file_to_delete)
     except OSError as os_error:
-        log(os_error, logging.WARNING)
+        log(os_error, logging.ERROR)
     except:
         raise
 
