@@ -26,19 +26,19 @@ File Tasks
     Return a generator for glob expansion of *path*
 
 .. _xnt.tasks.cp:
-.. function:: cp(src="",dst="",files=[])
+.. function:: cp(src="", dst="", files=None)
 
     Copy the source file or directory (*src*) OR files/folders (*files*) to
     destination file or directory (*dst*)
 
 .. _xnt.tasks.mv:
-.. function:: mv(src,dst)
+.. function:: mv(src, dst)
 
     Move the source file or directory (*src*) to destination file or
     directory (*dst*)
 
 .. _xnt.tasks.mkdir:
-.. function:: mkdir(dir,mode=0o777)
+.. function:: mkdir(dir, mode=0o777)
 
     Create a directory specified by *dir* with default mode (where supported)
     or with the specified mode
@@ -56,11 +56,10 @@ File Tasks
 Archive Tasks
 =============
 
-.. _xnt.tasks.zip:
-.. function:: zip(dir,zipfilename)
+.. _xnt.tasks.create_zip:
+.. function:: create_zip(directory, zipfilename)
 
-    Zip the specified directory (*dir*) into the zip file specified by
-    *zipfilename*
+    Zip the specified *directory* into the zip file specified by *zipfilename*
 
 Miscellaneous Tasks
 ===================
@@ -104,10 +103,10 @@ Compile Tasks
 =============
 
 .. _xnt.tasks.setup:
-.. function:: setup(commands, dir="")
+.. function:: setup(commands, directory="")
 
     Invoke Python setup.py given the list of *commands* (or options) in the
-    current directory or in a different directory, specified by *dir*.
+    current directory or in a different directory, specified by *directory*.
 
 SCM Tasks
 =========
