@@ -14,6 +14,10 @@ Release Notes
 
 * pylint ALL THE THINGS
 
+* Fix `xntcall` function
+
+  * Let me know if this still doesn't work
+
 0.5.1:2013-03-02
 ----------------
 
