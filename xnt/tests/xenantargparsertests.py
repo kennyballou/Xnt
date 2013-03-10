@@ -128,5 +128,31 @@ class XenantArgParserTests(unittest.TestCase):
         self.assertIsNotNone(args["targets"])
         self.assertEqual(len(args["targets"]), 0)
 
+    def test_build_file_spec_short(self):
+        """Test build file option"""
+        args_in = ["-b", "mybuildfile.py"]
+        args = xnt.xenant.parse_args(args_in)
+        self.assertIsNotNone(args)
+        self.assertFalse(args["verbose"])
+        self.assertFalse(args["list-targets"])
+        self.assertIsNotNone(args["build-file"])
+        self.assertEqual(args["build-file"], "mybuildfile.py")
+        self.assertIsNone(args["properties"])
+        self.assertIsNotNone(args["targets"])
+        self.assertEqual(len(args["targets"]), 0)
+
+    def test_build_file_spec_long(self):
+        """Test build file option"""
+        args_in = ["--build-file", "mybuildfile.py"]
+        args = xnt.xenant.parse_args(args_in)
+        self.assertIsNotNone(args)
+        self.assertFalse(args["verbose"])
+        self.assertFalse(args["list-targets"])
+        self.assertIsNotNone(args["build-file"])
+        self.assertEqual(args["build-file"], "mybuildfile.py")
+        self.assertIsNone(args["properties"])
+        self.assertIsNotNone(args["targets"])
+        self.assertEqual(len(args["targets"]), 0)
+
 if __name__ == "__main__":
     unittest.main()

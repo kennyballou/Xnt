@@ -120,7 +120,7 @@ def log(msg="", lvl=logging.INFO):
     """Log message using tasks global logger"""
     LOGGER.log(lvl, msg)
 
-def xntcall(path, targets=None, props=None):
+def xntcall(buildfile, targets=None, props=None):
     """Invoke xnt on another build file in a different directory
 
     param: path - to the build file (including build file)
@@ -128,9 +128,11 @@ def xntcall(path, targets=None, props=None):
     param: props - dictionary of properties to pass to the build module
     """
     from xnt.xenant import invoke_build, load_build
+    build = load_build(buildfile)
+    path = os.path.dirname(buildfile)
     cwd = os.getcwd()
     os.chdir(path)
-    error_code = invoke_build(load_build(path), targets=targets, props=props)
+    error_code = invoke_build(build, targets=targets, props=props)
     os.chdir(cwd)
     return error_code
 

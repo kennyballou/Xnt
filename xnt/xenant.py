@@ -33,12 +33,15 @@ def main():
     """Xnt Entry Point"""
     start_time = time.time()
     args = parse_args(sys.argv[1:])
+    build_file = "./build.py"
     if args["verbose"]:
         LOGGER.setLevel(logging.DEBUG)
+    if args["build-file"]:
+        build_file = args["build-file"]
     if args["list-targets"]:
-        error_code = list_targets(load_build())
+        error_code = list_targets(load_build(build_file))
     else:
-        error_code = invoke_build(load_build(),
+        error_code = invoke_build(load_build(build_file),
                                   args["targets"],
                                   args["properties"])
     elapsed_time = time.time() - start_time
@@ -47,15 +50,20 @@ def main():
         LOGGER.info("Failure")
     from xnt.tasks import rm
     rm("build.pyc",
-       "__pycache__")
+       "__pycache__",
+       build_file + "c",
+       os.path.join(os.path.dirname(build_file), "__pycache__"))
     if error_code != 0:
         sys.exit(error_code)
 
-def load_build(path=""):
+def load_build(buildfile="./build.py"):
     """Load build file
 
     Load the build.py and return the resulting import
     """
+    path = os.path.dirname(buildfile)
+    build = os.path.basename(buildfile)
+    buildmodule = os.path.splitext(build)[0]
     if not path:
         path = os.getcwd()
     else:
@@ -63,17 +71,17 @@ def load_build(path=""):
     sys.path.append(path)
     cwd = os.getcwd()
     os.chdir(path)
-    if not os.path.exists("build.py"):
+    if not os.path.exists(build):
         LOGGER.error("There was no build file")
         sys.exit(1)
     try:
-        return __import__("build", fromlist=[])
+        return __import__(buildmodule, fromlist=[])
     except ImportError:
         LOGGER.error("HOW?!")
         return None
     finally:
         sys.path.remove(path)
-        del sys.modules["build"]
+        del sys.modules[buildmodule]
         os.chdir(cwd)
 
 def invoke_build(build, targets=None, props=None):
@@ -147,6 +155,11 @@ def parse_args(args_in):
         action="version",
         version=__version__,
         help="Print Xnt Version and quit")
+    parser.add_argument(
+        "-b", "--build-file",
+        dest="build-file",
+        help="""Specify a build file if different than defaut or in different
+             path""")
     parser.add_argument("-l", "--list-targets",
                         action="store_true",
                         dest="list-targets",
