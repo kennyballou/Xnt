@@ -127,12 +127,10 @@ def xntcall(path, targets=None, props=None):
     param: targets - list of targets to execute
     param: props - dictionary of properties to pass to the build module
     """
-    import xnt.xenant
-    from xnt.commands.target import TargetCommand
+    from xnt.xenant import invoke_build, load_build
     cwd = os.getcwd()
-    command = TargetCommand(xnt.xenant.load_build(path))
     os.chdir(path)
-    error_code = command.run(targets=targets, props=props)
+    error_code = invoke_build(load_build(path), targets=targets, props=props)
     os.chdir(cwd)
     return error_code
 
