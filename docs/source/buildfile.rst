@@ -134,16 +134,16 @@ Build Properties
 
 As mentioned in :ref:`xntPropertiesParameters`, Xnt can accept parameters from
 the command line and pass them into the build file. Xnt doesn't necessarily
-expect the dictionary (named `properties`) to exist; but if you ever intend to
+expect the dictionary (named `PROPERTIES`) to exist; but if you ever intend to
 use it, it will have to be defined one way or another (either to an empty
 dictionary or actually hold values). For example, to define an empty
-`properties` dictionary, one could write their build file as such::
+`PROPERTIES` dictionary, one could write their build file as such::
 
     #!/usr/bin/env python
 
     from xnt import target
 
-    properties = {}
+    PROPERTIES = {}
 
     @target
     def foo():

@@ -58,13 +58,13 @@ class TargetCommand(Command):
         def __get_properties():
             """Return the properties dictionary of the build module"""
             try:
-                return getattr(self.build, "properties")
+                return getattr(self.build, "PROPERTIES")
             except AttributeError:
                 return None
         try:
             if props and len(props) > 0:
                 setattr(self.build,
-                        "properties",
+                        "PROPERTIES",
                         process_params(props, __get_properties()))
             target = getattr(self.build, target_name)
             error_code = target()
