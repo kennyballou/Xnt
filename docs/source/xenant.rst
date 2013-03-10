@@ -84,6 +84,9 @@ Where options can be any and all of the following (unless otherwise specified):
 
 * ``-v`` or ``--verbose``: add verbose output to the execution of Xnt
 
+* ``-b BUILDFILE`` or ``--build-file BUILDFILE``: specifiy to Xnt the build
+ module to load
+
 .. _xntPropertiesParameters:
 
 Properties and Parameter Passing

@@ -226,6 +226,9 @@ Where ``[options]`` are one of the following:
 
 * ``-v``:           verbose, turn on logging
 
+* ``-b BUILDFILE`` or ``--build-file BUILDFILE``: Specify build file
+  for Xnt to load
+
 And where ``[target]+`` are any target(s) method in your ``build.py``
 file or:
 
