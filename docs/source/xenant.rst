@@ -47,27 +47,27 @@ Xnt has a number of other commands that can be invoked besides those defined in
 the current directory's `build.py` file. One will need a build file to run. The
 others, however, do not.
 
-* ``help`` prints a summary message, including information about the version of
-  Xnt, license, and usage.
+* ``-h`` or ``--help`` prints a summary message, including information about
+  the version of Xnt, license, and usage.
 
 Usage::
 
-    $ xnt help
+    $ xnt --help
 
 
-* ``list-targets`` does exactly what the name should suggest: it prints a list
-  of the targets found in the current directory's `build.py` script, along with
-  any docstrings that may be defined with them.
-
-Usage::
-
-    $ xnt list-targets
-
-* ``version`` prints Xnt's installed version.
+* ``-l`` or ``--list-targets`` does exactly what the name should suggest: it
+  prints a list of the targets found in the current directory's `build.py`
+  script, along with any docstrings that may be defined with them.
 
 Usage::
 
-    $ xnt version
+    $ xnt --list-targets
+
+* ``--version`` prints Xnt's installed version.
+
+Usage::
+
+    $ xnt --version
 
 .. _xntOptions:
 
@@ -82,7 +82,7 @@ Usage::
 
 Where options can be any and all of the following (unless otherwise specified):
 
-* ``-v``: add verbose output to the execution of Xnt
+* ``-v`` or ``--verbose``: add verbose output to the execution of Xnt
 
 .. _xntPropertiesParameters:
 

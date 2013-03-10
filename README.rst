@@ -224,7 +224,7 @@ Command Usage:
 
 Where ``[options]`` are one of the following:
 
-* ``-v``:           verbose, turn on logging
+* ``-v`` or ``--verbose``: verbose, turn on logging
 
 And where ``[target]+`` are any target(s) method in your ``build.py``
 file or:
@@ -235,13 +235,14 @@ file or:
 Other Commands
 --------------
 
-* ``list-targets``: Xnt will print all targets marked by the
-  ``@target`` decorator and possibly their docstrings if they are
+* ``-l`` or ``--list-targets``: Xnt will print all targets marked by
+  the ``@target`` decorator and possibly their docstrings if they are
   defined
 
-* ``version``: Print the current version of Xnt and quit
+* ``--version``: Print the current version of Xnt and quit
 
-* ``help``: Print summary information about Xnt and command usage
+* ``-h`` or ``--help``: Print summary information about Xnt and
+  command usage
 
 For more information about Xnt and the build in functions, see the
 `Package Documentation`_.
