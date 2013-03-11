@@ -12,6 +12,8 @@ Overview
 
 * `Compiler Collection`_
 
+* `Tex`_
+
 Make
 ====
 
@@ -53,25 +55,25 @@ gcc/g++
 -------
 
 .. _xnt.build.cc.gcc:
-.. function:: gcc(src, flags=[])
+.. function:: gcc(src, flags=None)
 
     Compile `src` with the `gcc` to the default `out` (:ref:`defaultOut`) of
     that source. Passing `flags` as given.
 
 .. _xnt.build.cc.gcc_o:
-.. function:: gcc_o(src, o, flags=[])
+.. function:: gcc_o(src, o, flags=None)
 
     Compile `src` with `gcc` to the out file specified by `o`. Passing `flags`
     as given.
 
 .. _xnt.build.cc.gpp:
-.. function:: gpp(src, flags=[])
+.. function:: gpp(src, flags=None)
 
     Compile `src` with `g++` to the default `out` (:ref:`defaultOut`) of that
     source. Passing `flags` as given.
 
 .. _xnt.bulid.cc.gpp_o:
-.. function:: gpp_o(src, o, flags=[])
+.. function:: gpp_o(src, o, flags=None)
 
     Compile `src` with `g++` to the out file specified by `o`. Passing `flags`
     as given.
@@ -80,7 +82,7 @@ Javac
 -----
 
 .. _xnt.build.cc.javac:
-.. function:: javac(src, flags=[])
+.. function:: javac(src, flags=None)
 
     Compile `src` with `javac` to the default out file for the source. Passing
     `flags` as given.
@@ -108,3 +110,20 @@ compilation. That is, *all* compile steps will `rebuild` regardless if the
 binary file is modified later than the source file. This would be a nice
 feature, but I fear it would be too expensive (complicated) and out of the
 scope of this project to implement correctly.
+
+Tex
+===
+
+Building LaTeX documents can be confusing and sometimes tricky to do correctly.
+
+pdflatex
+--------
+
+.. _xnt.build.tex.pdflatex:
+.. function:: pdflatex(document, path="./", bibtex=False, makeglossary=False)
+
+    Use `pdflatex` to build a LaTeX PDF document. Can optionally execute steps
+    to properly build in `bibtex` references and/ or glossaries.
+
+    Where *document* is the master tex file of the document and *path* is the
+    full or relative path to exectue `pdflatex` in.
