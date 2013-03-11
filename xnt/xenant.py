@@ -46,7 +46,7 @@ def main():
                                   args["targets"],
                                   args["properties"])
     elapsed_time = time.time() - start_time
-    print("Execution time: %.3f", elapsed_time)
+    print("Execution time: %.3f" % elapsed_time)
     if error_code != 0:
         LOGGER.error("Failure")
     from xnt.tasks import rm
