@@ -36,7 +36,8 @@ def main():
     args = parse_args(sys.argv[1:])
     build_file = "./build.py"
     if args["verbose"]:
-        LOGGER.setLevel(logging.DEBUG)
+        LOGGER.setLevel(logging.INFO)
+        logging.getLogger("xnt.tasks").setLevel(logging.INFO)
     if args["build-file"]:
         build_file = args["build-file"]
     if args["list-targets"]:
