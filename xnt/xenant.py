@@ -149,33 +149,32 @@ def parse_args(args_in):
     """Parse and group arguments"""
     parser = argparse.ArgumentParser(prog="Xnt")
     parser.add_argument("-v", "--verbose",
-                        help="Enable verbose output",
+                        help="be verbose",
                         action="store_true",
                         dest="verbose")
     parser.add_argument(
         "--version",
         action="version",
         version=__version__,
-        help="Print Xnt Version and quit")
+        help="print the version information and quit")
     parser.add_argument(
         "-b", "--build-file",
         dest="build-file",
-        help="""Specify a build file if different than defaut or in different
-             path""")
+        help="use the given buildfile")
     parser.add_argument("-l", "--list-targets",
                         action="store_true",
                         dest="list-targets",
-                        help="Print build targets")
+                        help="print build targets")
     # Properties Group
     params_group = parser.add_argument_group("Properties")
     params_group.add_argument(
         "-D", dest="properties", action="append",
-        help="Property values to be passed to the build module")
+        help="use value for gvien property")
     target_group = parser.add_argument_group("Targets")
 
     # Targets Group
     target_group.add_argument("targets", nargs=argparse.REMAINDER,
-                              help="Name(s) of targets to invoke")
+                              help="name(s) of targets to invoke")
     return vars(parser.parse_args(args_in))
 
 if __name__ == "__main__":
