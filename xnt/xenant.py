@@ -21,9 +21,9 @@ import os
 import sys
 import time
 import logging
-from xnt.cmdoptions import OPTIONS
-from xnt.commands import COMMANDS
-from xnt.commands.target import TargetCommand
+import argparse
+from xnt import __version__
+from xnt.status_codes import SUCCESS, ERROR, UNKNOWN_ERROR
 
 logging.basicConfig(format="%(message)s")
 LOGGER = logging.Logger(name=__name__)
@@ -33,45 +33,38 @@ LOGGER.setLevel(logging.WARNING)
 def main():
     """Xnt Entry Point"""
     start_time = time.time()
-    params = list(p for p in sys.argv[1:] if p.startswith('-D'))
-    flags = list(o for o in sys.argv[1:]
-        if o.startswith('-') and o not in params)
-    cmds = list(c for c in sys.argv[1:]
-        if c not in flags and c not in params)
-    #Loop flags and apply them
-    for flag in flags:
-        if flag in OPTIONS:
-            OPTIONS[flag]()
-        else:
-            LOGGER.debug("%s is not a vaild option", flag)
-    #run things
-    cmd_found = False
-    for cmd in cmds:
-        if cmd in COMMANDS:
-            cmd_found = True
-            if COMMANDS[cmd].needs_build:
-                command = COMMANDS[cmd](load_build())
-            else:
-                command = COMMANDS[cmd]()
-            error_code = command.run()
-    if cmd_found == False:
-        command = TargetCommand(load_build())
-        error_code = command.run(targets=cmds, props=params)
+    args = parse_args(sys.argv[1:])
+    build_file = "./build.py"
+    if args["verbose"]:
+        LOGGER.setLevel(logging.DEBUG)
+    if args["build-file"]:
+        build_file = args["build-file"]
+    if args["list-targets"]:
+        error_code = list_targets(load_build(build_file))
+    else:
+        error_code = invoke_build(load_build(build_file),
+                                  args["targets"],
+                                  args["properties"])
     elapsed_time = time.time() - start_time
     print("Execution time: %.3f", elapsed_time)
     if error_code != 0:
         LOGGER.error("Failure")
     from xnt.tasks import rm
     rm("build.pyc",
-       "__pycache__")
+       "__pycache__",
+       build_file + "c",
+       os.path.join(os.path.dirname(build_file), "__pycache__"))
     if error_code != 0:
         sys.exit(error_code)
 
-def load_build(path=""):
+def load_build(buildfile="./build.py"):
     """Load build file
 
     Load the build.py and return the resulting import
     """
+    path = os.path.dirname(buildfile)
+    build = os.path.basename(buildfile)
+    buildmodule = os.path.splitext(build)[0]
     if not path:
         path = os.getcwd()
     else:
@@ -79,18 +72,110 @@ def load_build(path=""):
     sys.path.append(path)
     cwd = os.getcwd()
     os.chdir(path)
-    if not os.path.exists("build.py"):
+    if not os.path.exists(build):
         LOGGER.error("There was no build file")
         sys.exit(1)
     try:
-        return __import__("build", fromlist=[])
+        return __import__(buildmodule, fromlist=[])
     except ImportError:
         LOGGER.error("HOW?!")
         return None
     finally:
         sys.path.remove(path)
-        del sys.modules["build"]
+        del sys.modules[buildmodule]
         os.chdir(cwd)
+
+def invoke_build(build, targets=None, props=None):
+    """Invoke Build with `targets` passing `props`"""
+    def call_target(target_name, props):
+        """Call target on build module"""
+        def process_params(params, existing_props=None):
+            """Parse and separate properties and append to build module"""
+            properties = existing_props if existing_props is not None else {}
+            for param in params:
+                name, value = param.split("=")
+                properties[name] = value
+            return properties
+        def __get_properties():
+            """Return the properties dictionary of the build module"""
+            try:
+                return getattr(build, "PROPERTIES")
+            except AttributeError:
+                LOGGER.warning("Build file specifies no properties")
+                return None
+        try:
+            if props and len(props) > 0:
+                setattr(build,
+                        "PROPERTIES",
+                        process_params(props, __get_properties()))
+            target = getattr(build, target_name)
+            error_code = target()
+            return error_code if error_code else 0
+        except AttributeError:
+            LOGGER.error("There was no target: %s", target_name)
+            return ERROR
+        except Exception as ex:
+            LOGGER.critical(ex)
+            return UNKNOWN_ERROR
+    if targets and len(targets) > 0:
+        for target in targets:
+            error_code = call_target(target, props)
+            if error_code:
+                return error_code
+        return SUCCESS
+    else:
+        return call_target("default", props)
+
+def list_targets(build):
+    """List targets (and doctstrings) of the provided build module"""
+    try:
+        for attr in dir(build):
+            try:
+                func = getattr(build, attr)
+                if func.decorator == "target":
+                    print(attr + ":")
+                    if func.__doc__:
+                        print(func.__doc__)
+                    print("")
+            except AttributeError:
+                pass
+    except AttributeError as ex:
+        LOGGER.error(ex)
+        return ERROR
+    return SUCCESS
+
+def parse_args(args_in):
+    """Parse and group arguments"""
+    parser = argparse.ArgumentParser(prog="Xnt")
+    parser.add_argument("-v", "--verbose",
+                        help="Enable verbose output",
+                        action="store_true",
+                        dest="verbose")
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=__version__,
+        help="Print Xnt Version and quit")
+    parser.add_argument(
+        "-b", "--build-file",
+        dest="build-file",
+        help="""Specify a build file if different than defaut or in different
+             path""")
+    parser.add_argument("-l", "--list-targets",
+                        action="store_true",
+                        dest="list-targets",
+                        help="Print build targets")
+    # Properties Group
+    params_group = parser.add_argument_group("Properties")
+    params_group.add_argument(
+        "-D", dest="properties", action="append",
+        help="Property values to be passed to the build module")
+    target_group = parser.add_argument_group("Targets")
+
+    # Targets Group
+    target_group.add_argument("targets", nargs=argparse.REMAINDER,
+                              help="Name(s) of targets to invoke")
+    return vars(parser.parse_args(args_in))
 
 if __name__ == "__main__":
     main()
