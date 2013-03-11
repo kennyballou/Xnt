@@ -9,8 +9,8 @@ A wrapper build tool
 Release Notes
 =============
 
-0.5.3:TBD
----------
+0.6.0:2013-03-10
+----------------
 
 * pylint ALL THE THINGS
 
@@ -24,6 +24,8 @@ Release Notes
     documentation)
 
 * Add option for build file specification
+
+* Add LaTeX Build Module
 
 0.5.1:2013-03-02
 ----------------
