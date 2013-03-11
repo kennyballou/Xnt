@@ -2,7 +2,7 @@
 """Mercurial Version Control Module/Wrapper"""
 
 #   Xnt -- A Wrapper Build Tool
-#   Copyright (C) 2012  Kenny Ballou
+#   Copyright (C) 2013  Kenny Ballou
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
