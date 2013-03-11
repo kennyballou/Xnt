@@ -9,14 +9,21 @@ A wrapper build tool
 Release Notes
 =============
 
-0.5.2:TBD
+0.5.3:TBD
 ---------
 
 * pylint ALL THE THINGS
 
+  * `properties` is now `PROPERTIES` for build files
+
 * Fix `xntcall` function
 
-  * Let me know if this still doesn't work
+* Rewrite Parser/Parsing (again)
+
+  * Like last time, this changes the options again (see below or
+    documentation)
+
+* Add option for build file specification
 
 0.5.1:2013-03-02
 ----------------
