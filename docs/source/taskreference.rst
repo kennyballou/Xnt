@@ -89,15 +89,14 @@ Miscellaneous Tasks
     change; I'm not sure how I feel about that yet.]
 
 .. _xnt.tasks.xntcall:
-.. function:: xntcall(path, targets=None, props=None)
+.. function:: xntcall(buildfile, targets=None, props=None)
 
     Invoke the *target(s)* of a build file in a different *path*.
 
     *target* is the name of the target to invoke (similar to *target* of a
     regular invocation.
 
-    *path* is the relative or full path to where the "sub" *build.py* file can
-    be found.
+    *buildfile* is the path (relative or full) and build file to use
 
 Compile Tasks
 =============
