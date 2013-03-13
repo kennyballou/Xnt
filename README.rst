@@ -229,20 +229,17 @@ Usage
 
 Command Usage:
 
-    $ xnt [options] [target]+
+    $ xnt [options] [target]*
 
-Where ``[options]`` are one of the following:
+Where ``[options]`` are of the following:
 
 * ``-v`` or ``--verbose``: verbose, turn on logging
 
 * ``-b BUILDFILE`` or ``--build-file BUILDFILE``: Specify build file
   for Xnt to load
 
-And where ``[target]+`` are any target(s) method in your ``build.py``
-file or:
-
-* Nothing; if no target is specified, Xnt will attempt to invoke the
-  ``default`` target
+And where ``[target]*`` are any target(s) method in your ``build.py``
+file or, if no target is given, Xnt will attempt to call ``default``.
 
 Other Commands
 --------------
@@ -256,7 +253,7 @@ Other Commands
 * ``-h`` or ``--help``: Print summary information about Xnt and
   command usage
 
-For more information about Xnt and the build in functions, see the
+For more information about Xnt and the built in functions, see the
 `Package Documentation`_.
 
 Issues
