@@ -127,3 +127,10 @@ pdflatex
 
     Where *document* is the master tex file of the document and *path* is the
     full or relative path to exectue `pdflatex` in.
+
+.. _xnt.build.tex.clean:
+.. function:: clean(path="./", remove_pdf=False)
+
+    Clean up generated output files of `pdflatex` and similar. Currently, the
+    function removes `out`, `log`, `aux`, `toc`, `tol`, `tof`, `tot`, `bbl`,
+    and `blg`. Conditionally, it will remove the generated `pdf` as well.

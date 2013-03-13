@@ -56,3 +56,20 @@ def pdflatex(document,
     error_codes.append(pdf(draftmode=False))
     os.chdir(cwd)
     return sum(error_codes)
+
+def clean(path="./", remove_pdf=False):
+    """Clean up generated files of PDF compiliation"""
+    cwd = os.getcwd()
+    os.chdir(path)
+    xnt.tasks.rm("*.out",
+                 "*.log",
+                 "*.aux",
+                 "*.toc",
+                 "*.tol",
+                 "*.tof",
+                 "*.tot",
+                 "*.bbl",
+                 "*.blg")
+    if remove_pdf:
+        xnt.tasks.rm("*.pdf")
+    os.chdir(cwd)
