@@ -212,7 +212,7 @@ Here is a simple ``build.py``::
     @xnt.target
     def package():
         rebuild()
-        xnt.zip("bin", "packaged.zip")
+        xnt.create_zip("bin", "packaged.zip")
 
     @xnt.target
     def default():
