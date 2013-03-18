@@ -21,29 +21,34 @@ Apache Ant
 ----------
 
 .. _xnt.build.make.ant:
-.. function:: ant(path="", target="")
+.. function:: ant(path="", target="", flags=None)
 
     Invoke Apache Ant in either the current working directory or the specified
-    directory using the empty (default) target or the specified target.
+    directory using the empty (default) target or the specified target, passing
+    a list of *flags* to the invocation. Where *flags* is a list of valid
+    flags for *ant*.
 
 Gnu Make
 --------
 
 .. _xnt.bulid.make.make:
-.. function:: make(path="", target="")
+.. function:: make(path="", target="", flags=None)
 
     Invoke Gnu Make (*make*) in either the current working directory or the
     specified directory using the empty (default) target or the specified
-    target.
+    target, passing a list of *flags* to the invocation. Where *flags* is a
+    list of valid flags for *make*.
 
 (.NET)Ant
 ---------
 
 .. _xnt.build.make.nant:
-.. function:: nant(path="", target="")
+.. function:: nant(path="", target="", flags=None)
 
     Invoke NAnt in either the current working directory or the specified
-    directory using the empty (default) target or the specified target.
+    directory using the empty (default) target or the specified target, passing
+    a list of *flags* to the invocation. Where *flags* is a list of valid flags
+    for *nant*.
 
 Compiler Collection
 ===================
