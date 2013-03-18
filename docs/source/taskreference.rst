@@ -44,7 +44,7 @@ File Tasks
     or with the specified mode
 
     Notice, if the directory already exists, *mkdir* will not attempt to
-    creat it again (or change the mode)
+    create it again (or change the mode)
 
 .. _xnt.tasks.rm:
 .. function:: rm(*fileset)
