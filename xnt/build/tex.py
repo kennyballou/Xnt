@@ -73,7 +73,9 @@ def clean(path="./", remove_pdf=False):
                  "*.nav",
                  "*.snm",
                  "*.mtc",
-                 "*.mtc0")
+                 "*.mtc0",
+                 "*.glo",
+                 "*.ist")
     if remove_pdf:
         xnt.tasks.rm("*.pdf")
     os.chdir(cwd)
