@@ -44,7 +44,7 @@ def pdflatex(document,
 
     def makeglossaries():
         """Generate Glossary"""
-        return xnt.tasks.call(["makeglossaries", document])
+        return xnt.tasks.call(["makeglossaries", documentbase])
 
     error_codes = []
     error_codes.append(pdf(draftmode=True))
