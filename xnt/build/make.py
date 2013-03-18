@@ -20,19 +20,29 @@
 import os
 import subprocess
 
-def ant(path="", target="", flags=None):
+def ant(path="", target="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around Apache Ant"""
-    cmd = __add_flags(["ant", target], flags)
+    cmd = __add_params(["ant"],
+                       __build_param_list(pkeys, pvalues),
+                       lambda x: "-D%s" % x)
+    cmd = __add_flags(cmd, flags)
+    cmd.append(target)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def make(path="", target="", flags=None):
+def make(path="", target="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around GNU Make"""
-    cmd = __add_flags(["make", target], flags)
+    cmd = __add_params(["make"], __build_param_list(pkeys, pvalues))
+    cmd = __add_flags(cmd, flags)
+    cmd.append(target)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def nant(path="", target="", flags=None):
+def nant(path="", target="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around .NET Ant"""
-    cmd = __add_flags(["nant", target], flags)
+    cmd = __add_params(["nant"],
+                        __build_param_list(pkeys, pvalues),
+                        lambda x: "-D:%s" % x)
+    cmd = __add_flags(cmd, flags)
+    cmd.append(target)
     return __run_in(path, lambda: subprocess.call(cmd))
 
 def __add_flags(cmd, flags):
@@ -40,6 +50,25 @@ def __add_flags(cmd, flags):
     command = list(cmd)
     for flag in flags:
         command.append(flag)
+    return command
+
+def __build_param_list(keys, values):
+    """Build a list of key-value for appending to the command list"""
+    parameters = []
+    if not keys or not values:
+        return parameters
+    params = zip(keys, values)
+    for param in params:
+        parameters.append("%s=%s" % param)
+    return parameters
+
+def __add_params(cmd, params, param_map=lambda x: x):
+    """Append parameters to cmd list using fn"""
+    if not params:
+        return cmd
+    command = list(cmd)
+    for param in params:
+        command.append(param_map(param))
     return command
 
 def __run_in(path, function):
