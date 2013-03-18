@@ -21,34 +21,43 @@ Apache Ant
 ----------
 
 .. _xnt.build.make.ant:
-.. function:: ant(path="", target="", flags=None)
+.. function:: ant(path="", target="", flags=None, pkeys=None, pvalues=None)
 
     Invoke Apache Ant in either the current working directory or the specified
     directory using the empty (default) target or the specified target, passing
     a list of *flags* to the invocation. Where *flags* is a list of valid
     flags for *ant*.
 
+    *pkeys* and *pvalues* will be zipped together and append to the command
+    in the form: *-Dpkey=pvalue*.
+
 Gnu Make
 --------
 
 .. _xnt.bulid.make.make:
-.. function:: make(path="", target="", flags=None)
+.. function:: make(path="", target="", flags=None, pkeys=None, pvalues=None)
 
     Invoke Gnu Make (*make*) in either the current working directory or the
     specified directory using the empty (default) target or the specified
     target, passing a list of *flags* to the invocation. Where *flags* is a
     list of valid flags for *make*.
 
+    *pkeys* and *pvalues* will be zipped together and append to the command
+    in the form: *pkey=pvalue*.
+
 (.NET)Ant
 ---------
 
 .. _xnt.build.make.nant:
-.. function:: nant(path="", target="", flags=None)
+.. function:: nant(path="", target="", flags=None, pkeys=None, pvalues=None)
 
     Invoke NAnt in either the current working directory or the specified
     directory using the empty (default) target or the specified target, passing
     a list of *flags* to the invocation. Where *flags* is a list of valid flags
     for *nant*.
+
+    *pkeys* and *pvalues* will be zipped together and append to the command
+    in the form: *-D:pkey=pvalue*.
 
 Compiler Collection
 ===================
