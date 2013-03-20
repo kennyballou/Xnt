@@ -22,7 +22,7 @@ import sys
 import time
 import logging
 import argparse
-from xnt import __version__
+import xnt
 from xnt.status_codes import SUCCESS, ERROR, UNKNOWN_ERROR
 
 logging.basicConfig(format="%(message)s")
@@ -36,6 +36,7 @@ def main():
     args = parse_args(sys.argv[1:])
     build_file = "./build.py"
     if args["verbose"]:
+        xnt.VERBOSE = True
         LOGGER.setLevel(logging.INFO)
         logging.getLogger("xnt.tasks").setLevel(logging.INFO)
     if args["build-file"]:
@@ -155,7 +156,7 @@ def parse_args(args_in):
     parser.add_argument(
         "--version",
         action="version",
-        version=__version__,
+        version=xnt.__version__,
         help="print the version information and quit")
     parser.add_argument(
         "-b", "--build-file",

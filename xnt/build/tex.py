@@ -20,6 +20,7 @@
 import os
 import logging
 import xnt.tasks
+from xnt import VERBOSE
 
 LOGGER = logging.getLogger(__name__)
 
@@ -28,6 +29,7 @@ def pdflatex(document,
              bibtex=False,
              makeglossary=False):
     """Generate PDF LaTeX Document"""
+    devnull = None if VERBOSE else open(os.devnull, 'w')
     documentbase = os.path.splitext(document)[0]
     cwd = os.getcwd()
     os.chdir(path)
@@ -36,15 +38,16 @@ def pdflatex(document,
         cmd = ["pdflatex", document, "-halt-on-error",]
         if draftmode:
             cmd.append('-draftmode')
-        return xnt.tasks.call(cmd)
+        return xnt.tasks.call(cmd, stdout=devnull)
 
     def run_bibtex():
         """Generate BibTex References"""
-        return xnt.tasks.call(["bibtex", documentbase + ".aux"])
+        return xnt.tasks.call(["bibtex", documentbase + ".aux"],
+                              stdout=devnull)
 
     def makeglossaries():
         """Generate Glossary"""
-        return xnt.tasks.call(["makeglossaries", documentbase])
+        return xnt.tasks.call(["makeglossaries", documentbase], stdout=devnull)
 
     error_codes = []
     error_codes.append(pdf(draftmode=True))
@@ -55,6 +58,8 @@ def pdflatex(document,
         error_codes.append(pdf(draftmode=True))
     error_codes.append(pdf(draftmode=False))
     os.chdir(cwd)
+    if devnull:
+        devnull.close()
     return sum(error_codes)
 
 def clean(path="./", remove_pdf=False):

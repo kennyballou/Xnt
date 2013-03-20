@@ -41,6 +41,8 @@ __license__ = """
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+VERBOSE = False
+
 from xnt.tasks import cp, mv, mkdir, rm, create_zip, log, xntcall, call, setup
 
 def target(target_fn):
