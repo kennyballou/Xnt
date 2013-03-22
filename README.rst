@@ -9,6 +9,15 @@ A wrapper build tool
 Release Notes
 =============
 
+0.6.1:TBD
+---------
+
+* Add Parameter Passing to `xnt.build.make`
+
+* Suppress Noisy LaTeX Output
+
+* Update Documentation
+
 0.6.0:2013-03-10
 ----------------
 
