@@ -9,8 +9,8 @@ A wrapper build tool
 Release Notes
 =============
 
-0.6.1:TBD
----------
+0.6.1:2013-03-23
+----------------
 
 * Add Parameter Passing to `xnt.build.make`
 
