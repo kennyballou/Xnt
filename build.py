@@ -24,13 +24,15 @@ def build():
 @xnt.target
 def test():
     """Tests package"""
+    error_codes = []
     print("Python Tests:")
-    ec1 = xnt.setup(["test"])
+    error_codes.append(xnt.setup(["test"]))
     clean()
-    print("Python2 Tests:")
-    ec2 = xnt.call(["python2", "setup.py", "test"])
-    clean()
-    return ec1 | ec2
+    if xnt.in_path("python2"):
+        print("Python2 Tests:")
+        error_codes.append(xnt.call(["python2", "setup.py", "test"]))
+        clean()
+    return sum(error_codes)
 
 @xnt.target
 def lint():
