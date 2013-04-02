@@ -58,5 +58,23 @@ class TaskMiscTests(unittest.TestCase):
         with open("temp/testerr", "r") as std_err:
             self.assertEqual("hello", std_err.read())
 
+    def test_which_finds_python(self):
+        """Test which can find python"""
+        path = xnt.tasks.which("python")
+        self.assertIsNotNone(path)
+
+    def test_which_dne(self):
+        """Test which cannot find not existent program"""
+        path = xnt.tasks.which("arst")
+        self.assertIsNone(path)
+
+    def test_python_in_path(self):
+        """Test in_path task"""
+        self.assertTrue(xnt.tasks.in_path("python"))
+
+    def test_arst_not_in_path(self):
+        """Test not in_path"""
+        self.assertFalse(xnt.tasks.in_path("arst"))
+
 if __name__ == "__main__":
     unittest.main()

@@ -162,3 +162,25 @@ def setup(commands, directory=""):
     error_code = call(cmd)
     os.chdir(cwd)
     return error_code
+
+def which(program):
+    """Similar to Linux/Unix `which`: return (first) path of executable"""
+    def is_exe(fpath):
+        """Determine if argument exists and is executable"""
+        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+
+    fpath = os.path.split(program)
+    if fpath[0]:
+        if is_exe(program):
+            return program
+    else:
+        for path in os.environ["PATH"].split(os.pathsep):
+            path = path.strip('"')
+            exe_file = os.path.join(path, program)
+            if is_exe(exe_file):
+                return exe_file
+    return None
+
+def in_path(program):
+    """Return boolean result if program is in PATH environment variable"""
+    return which(program)

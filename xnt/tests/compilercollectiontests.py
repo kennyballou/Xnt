@@ -19,31 +19,12 @@
 
 import os
 import shutil
+import xnt
 import xnt.build.cc as cc
 import unittest
 
-#http://stackoverflow.com/questions/377017/test-if-executable-exists-in-python
-def which(program):
-    """Similar to Linux/Unix `which`: return path of executable"""
-    def is_exe(fpath):
-        """Determine if arguement exists and is executable"""
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    fpath = os.path.split(program)
-    if fpath[0]:
-        if is_exe(program):
-            return program
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            path = path.strip('"')
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
-
-    return None
-
 #pylint: disable-msg=C0103
-@unittest.skipUnless(which("gcc"), "gcc is not in your path")
+@unittest.skipUnless(xnt.in_path("gcc"), "gcc is not in your path")
 class GccTests(unittest.TestCase):
     """Test GCC"""
     def setUp(self):
@@ -75,7 +56,7 @@ class GccTests(unittest.TestCase):
         cc.gcc_o("temp/hello.c", "temp/hello")
         self.assertTrue(os.path.isfile("temp/hello"))
 
-@unittest.skipUnless(which("g++"), "g++ is not in your path")
+@unittest.skipUnless(xnt.in_path("g++"), "g++ is not in your path")
 class GppTests(unittest.TestCase):
     """Test G++ (C++ GCC)"""
     def setUp(self):
@@ -107,7 +88,7 @@ class GppTests(unittest.TestCase):
         cc.gpp_o("temp/hello.cpp", "temp/hello")
         self.assertTrue(os.path.isfile("temp/hello"))
 
-@unittest.skipUnless(which("javac"), "javac is not in your path")
+@unittest.skipUnless(xnt.in_path("javac"), "javac is not in your path")
 class JavacTests(unittest.TestCase):
     """Test Javac"""
     def setUp(self):
