@@ -47,6 +47,8 @@ def nant(path="", target="", flags=None, pkeys=None, pvalues=None):
 
 def __add_flags(cmd, flags):
     """Add flags to command and return new list"""
+    if not flags:
+        return cmd
     command = list(cmd)
     for flag in flags:
         command.append(flag)
