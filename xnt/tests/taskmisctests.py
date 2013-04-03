@@ -60,7 +60,10 @@ class TaskMiscTests(unittest.TestCase):
 
     def test_which_finds_python(self):
         """Test which can find python"""
-        path = xnt.tasks.which("python")
+        if os.name == 'posix':
+            path = xnt.tasks.which("python")
+        else:
+            path = xnt.tasks.which("python.exe")
         self.assertIsNotNone(path)
 
     def test_which_dne(self):
@@ -70,7 +73,10 @@ class TaskMiscTests(unittest.TestCase):
 
     def test_python_in_path(self):
         """Test in_path task"""
-        self.assertTrue(xnt.tasks.in_path("python"))
+        if os.name == 'posix':
+            self.assertTrue(xnt.tasks.in_path("python"))
+        else:
+            self.assertTrue(xnt.tasks.in_path("python.exe"))
 
     def test_arst_not_in_path(self):
         """Test not in_path"""
