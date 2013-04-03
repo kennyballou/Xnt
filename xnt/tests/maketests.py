@@ -23,7 +23,8 @@ import xnt
 import xnt.build.make
 import xnt.tests
 
-@unittest.skipUnless(xnt.in_path("ant"), "Apache ant is not in your path")
+@unittest.skipUnless(xnt.in_path("ant") or xnt.in_path("ant.exe"),
+                     "Apache ant is not in your path")
 class AntTests(unittest.TestCase):
     """Test Case for Ant Build"""
     def setUp(self):
@@ -93,7 +94,8 @@ class MakeTests(unittest.TestCase):
                                      flags=["-B"])
         self.assertEqual(result, 0)
 
-@unittest.skipUnless(xnt.in_path("nant"), "nant is not in your path")
+@unittest.skipUnless(xnt.in_path("nant") or xnt.in_path("nant.exe"),
+                     "nant is not in your path")
 class NAntTests(unittest.TestCase):
     """.NET Ant Tests"""
 

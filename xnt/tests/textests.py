@@ -23,7 +23,8 @@ import xnt
 import xnt.build.tex
 import xnt.tests
 
-@unittest.skipUnless(xnt.in_path("pdflatex"), "pdflatex is not in your path")
+@unittest.skipUnless(xnt.in_path("pdflatex") or xnt.in_path("pdflatex.exe"),
+                     "pdflatex is not in your path")
 class TexTests(unittest.TestCase):
     """Test Case for TeX Document Building"""
 
