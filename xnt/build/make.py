@@ -20,7 +20,7 @@
 import os
 import subprocess
 
-def ant(path="", target="", flags=None, pkeys=None, pvalues=None):
+def ant(target, path="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around Apache Ant"""
     cmd = __add_params(["ant"],
                        __build_param_list(pkeys, pvalues),
@@ -29,14 +29,14 @@ def ant(path="", target="", flags=None, pkeys=None, pvalues=None):
     cmd.append(target)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def make(path="", target="", flags=None, pkeys=None, pvalues=None):
+def make(target, path="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around GNU Make"""
     cmd = __add_params(["make"], __build_param_list(pkeys, pvalues))
     cmd = __add_flags(cmd, flags)
     cmd.append(target)
     return __run_in(path, lambda: subprocess.call(cmd))
 
-def nant(path="", target="", flags=None, pkeys=None, pvalues=None):
+def nant(target, path="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around .NET Ant"""
     cmd = __add_params(["nant"],
                         __build_param_list(pkeys, pvalues),
