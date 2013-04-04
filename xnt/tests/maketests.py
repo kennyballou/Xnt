@@ -102,11 +102,14 @@ class NAntTests(unittest.TestCase):
     def setUp(self):
         """Test Setup"""
         xnt.tests.set_up()
-        with open("temp/default.config", "w") as default_build:
+        with open("temp/default.build", "w") as default_build:
             default_build.write("<?xml version=\"1.0\"?>\n")
-            default_build.write("<probject name=\"test\">\n")
+            default_build.write("<project name=\"test\">\n")
             default_build.write("<target name=\"test\">\n")
+            default_build.write("<if \n")
+            default_build.write("test=\"${property::exists('test_var')}\">\n")
             default_build.write("<echo>${test_var}</echo>\n")
+            default_build.write("</if>\n")
             default_build.write("</target>\n")
             default_build.write("</project>")
 
