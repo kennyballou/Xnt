@@ -17,7 +17,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import unittest
 import xnt
 import xnt.build.make
@@ -49,7 +48,9 @@ class AntTests(unittest.TestCase):
 
     def test_passing_flags(self):
         """Test ant with passing flags"""
-        result = xnt.build.make.ant(target="test", path="temp", flags=["-verbose"])
+        result = xnt.build.make.ant(target="test",
+                                    path="temp",
+                                    flags=["-verbose"])
         self.assertEqual(result, 0)
 
     def test_pass_var(self):

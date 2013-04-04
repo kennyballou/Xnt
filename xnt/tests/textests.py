@@ -66,7 +66,7 @@ class TexTests(unittest.TestCase):
         self.assertTrue(os.path.exists("temp/test.aux"))
         self.assertTrue(os.path.exists("temp/test.log"))
 
-    def test_pdflatex_build_with_bibtex(self):
+    def test_pdflatex_with_bibtex(self):
         """Test pdflatex with bibtex"""
         xnt.build.tex.pdflatex("test.tex",
                                path="temp",
@@ -75,7 +75,7 @@ class TexTests(unittest.TestCase):
         self.assertTrue(os.path.exists("temp/test.bbl"))
         self.assertTrue(os.path.exists("temp/test.blg"))
 
-    def test_pdflatex_build_with_glossary(self):
+    def test_pdflatex_with_glossary(self):
         """Test pdflatex with glossary output"""
         xnt.build.tex.pdflatex("test.tex",
                                path="temp",
