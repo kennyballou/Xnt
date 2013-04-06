@@ -34,9 +34,7 @@ LOGGER = logging.getLogger(__name__)
 
 #File associated tasks
 def expandpath(path):
-    """
-    Expand path using globs to a possibly empty list of directories
-    """
+    """Return a glob expansion generator of *path*"""
     return glob.iglob(path)
 
 def cp(src="", dst="", files=None):
@@ -63,12 +61,23 @@ def cp(src="", dst="", files=None):
             copy(file_to_copy, dst)
 
 def mv(src, dst):
-    """Move file or folder to destination"""
+    """Move `src` to `dst`
+
+    Move (copy and remove) the source file or directory (*src*) to the
+    destination file or directory (*dst*)
+    """
     LOGGER.info("Moving %s to %s", src, dst)
     shutil.move(src, dst)
 
 def mkdir(directory, mode=0o777):
-    """Make a directory with mode"""
+    """Make a directory with mode
+
+    Create a directory specified by *dir* with default mode (where supported)
+    or with the specified *mode*
+
+    *Notice*, if the directory already exists, *mkdir* will log a warning and
+    return
+    """
     if os.path.exists(directory):
         LOGGER.warning("Given directory (%s) already exists" % directory)
         return
@@ -81,7 +90,14 @@ def mkdir(directory, mode=0o777):
         raise
 
 def rm(*fileset):
-    """Remove a set of files"""
+    """Remove a set of files
+
+    Attempt to remove all the directories given by the fileset. Before *rm*
+    tries to delete each element of *fileset*, it attempts to expand it first
+    using glob expansion (:func:`xnt.tasks.expandpath`), thus allowing the
+    passing of glob elements
+    """
+
     try:
         for glob_set in fileset:
             for file_to_delete in expandpath(glob_set):
@@ -98,7 +114,10 @@ def rm(*fileset):
         raise
 
 def create_zip(directory, zipfilename):
-    """Compress (Zip) folder"""
+    """Compress (Zip) folder
+
+    Zip the specified *directory* into the zip file named *zipfilename*
+    """
     LOGGER.info("Zipping %s as %s", directory, zipfilename)
     assert os.path.isdir(directory) and zipfilename
     with contextlib.closing(zipfile.ZipFile(
@@ -113,20 +132,29 @@ def create_zip(directory, zipfilename):
 
 #Misc Tasks
 def echo(msg, tofile):
-    """Write a string to file"""
+    """Write a string to file
+
+    Write the given *msg* to a file named *tofile*
+
+    *Notice*, `echo` will overwrite the file if it already exists
+    """
     with open(tofile, "w") as file_to_write:
         file_to_write.write(msg)
 
 def log(msg="", lvl=logging.INFO):
-    """Log message using tasks global logger"""
+    """Log *msg* using tasks global logger
+
+    Emit the message (*msg*) to the *xnt.tasks* logger using either the default
+    log level (*INFO*) or any valid specified value of `logging` module
+    """
     LOGGER.log(lvl, msg)
 
 def xntcall(buildfile, targets=None, props=None):
     """Invoke xnt on another build file in a different directory
 
-    param: path - to the build file (including build file)
-    param: targets - list of targets to execute
-    param: props - dictionary of properties to pass to the build module
+    :param: path - to the build file (including build file)
+    :param: targets - list of targets to execute
+    :param: props - dictionary of properties to pass to the build module
     """
     from xnt.xenant import invoke_build, load_build
     build = load_build(buildfile)
@@ -141,17 +169,17 @@ def call(command, stdout=None, stderr=None):
     """ Execute the given command, redirecting stdout and stderr
     to optionally given files
 
-    param: command - list of command and arguments
-    param: stdout - file to redirect standard output to, if given
-    param: stderr - file to redirect standard error to, if given
+    :param: command - list of command and arguments
+    :param: stdout - file to redirect standard output to, if given
+    :param: stderr - file to redirect standard error to, if given
     """
     return subprocess.call(args=command, stdout=stdout, stderr=stderr)
 
 def setup(commands, directory=""):
     """Invoke the ``setup.py`` file in the current or specified directory
 
-    param: commands - list of commands and options to run/ append
-    param: dir - (optional) directory to run from
+    :param: commands - list of commands and options to run/ append
+    :param: dir - (optional) directory to run from
     """
     cmd = [sys.executable, "setup.py",]
     for command in commands:
