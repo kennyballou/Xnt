@@ -51,5 +51,4 @@ def doc():
     """
     Create package documentation
     """
-    clean()
     return xnt.setup(["build_sphinx"])
