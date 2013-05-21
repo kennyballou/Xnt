@@ -79,7 +79,7 @@ def mkdir(directory, mode=0o777):
     return
     """
     if os.path.exists(directory):
-        LOGGER.warning("Given directory (%s) already exists" % directory)
+        LOGGER.warning("Given directory (%s) already exists", directory)
         return
     LOGGER.info("Making directory %s with mode %o", directory, mode)
     try:
