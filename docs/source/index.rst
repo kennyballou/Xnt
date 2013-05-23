@@ -30,6 +30,13 @@ Contents:
    buildfile
    taskreference
    buildreference
+   modules/xnt.build.cc
+   modules/xnt.build.make
+   modules/xnt.build.tex
+   modules/xnt.tasks
+   modules/xnt.vcs.cvs
+   modules/xnt.vcs.hg
+   modules/xnt.vcs.git
 
 Motivation
 ==========
