@@ -70,7 +70,7 @@ challenged by such a tool.
 Installing
 ==========
 
-To install, you can either install from source or use Pip.
+To install, you can either install from source or use ``Pip``.
 
 Source
 ------
