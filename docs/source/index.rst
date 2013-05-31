@@ -72,6 +72,26 @@ Installing
 
 To install, you can either install from source or use ``Pip``.
 
+Dependencies
+------------
+
+There are a few dependencies that Xnt requires and a few that are completely
+optional, depending on your intended use.
+
+* ``distribute``
+* ``Ant`` (Optional)
+* ``CVS`` (Optional)
+* ``Git`` (Optional)
+* ``LaTeX`` (Optional)
+* ``Make`` (Optional)
+* ``Mercurial`` (Optional)
+* ``NAnt`` (Optional)
+
+For developers, there are a few more dependencies.
+
+* ``sphinx``
+* ``pylint``
+
 Source
 ------
 
