@@ -21,7 +21,12 @@ import os
 import subprocess
 
 def cvsco(module, rev="", dest=""):
-    """Run CVS Checkout"""
+    """Run CVS Checkout
+
+    :param module: CVS Module name to checkout
+    :param rev: Revision to checkout
+    :param dest: Destination directory or name of checked out module
+    """
     cmd = ["cvs", "co", "-P"]
     if rev:
         cmd.append("-r")
@@ -33,7 +38,10 @@ def cvsco(module, rev="", dest=""):
     subprocess.call(cmd)
 
 def cvsupdate(path):
-    """Run CVS Update"""
+    """Run CVS Update
+
+    :param path: Directory path to module to update
+    """
     cwd = os.path.abspath(os.getcwd())
     os.chdir(path)
     cmd = ["cvs", "update"]

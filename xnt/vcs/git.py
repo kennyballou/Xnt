@@ -22,13 +22,23 @@ import xnt.tasks
 import xnt.vcs
 
 def gitclone(url, dest=None, branch=None):
-    """Clone a repository"""
+    """Clone a repository
+
+    :param url: URI of the repository to clone
+    :param dest: Destination directory or name of the cloned repository
+    :param branch: Branch to clone
+    """
     command = ["git", "clone"]
     command = xnt.vcs.clone_options(command, url, branch, dest)
     xnt.tasks.call(command)
 
 def gitpull(path, source="origin", branch="master"):
-    """Pull/Update a cloned repository"""
+    """Pull/Update a cloned repository
+
+    :param path: Directory of the repository for which to pull and update
+    :param source: Repository's upstream source
+    :param branch: Repository's upstream branch to pull from
+    """
     cwd = os.getcwd()
     os.chdir(path)
     command = ["git", "pull", source, branch]

@@ -28,7 +28,13 @@ def pdflatex(document,
              path="./",
              bibtex=False,
              makeglossary=False):
-    """Generate PDF LaTeX Document"""
+    """Generate PDF LaTeX Document
+
+    :param document: Name of tex file (with or without `.tex` extension)
+    :param path: Directory of tex file, if different than current directory
+    :param bibtex: Flag to or not to add bibtex. Default: False
+    :param makeglossary: Flag to or not to add a glossary. Default: False
+    """
     devnull = None if VERBOSE else open(os.devnull, 'w')
     documentbase = os.path.splitext(document)[0]
     cwd = os.getcwd()
@@ -63,7 +69,11 @@ def pdflatex(document,
     return sum(error_codes)
 
 def clean(path="./", remove_pdf=False):
-    """Clean up generated files of PDF compiliation"""
+    """Clean up generated files of PDF compilation
+
+    :param path: Directory of output files, if different than current directory
+    :param remove_pdf: Flag to remove the PDF. Default: False
+    """
     cwd = os.getcwd()
     os.chdir(path)
     xnt.tasks.rm("*.out",

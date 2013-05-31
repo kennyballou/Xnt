@@ -33,8 +33,13 @@ import logging
 LOGGER = logging.getLogger(__name__)
 
 #File associated tasks
-def expandpath(path):
-    """Return a glob expansion generator of *path*"""
+def expandpath(path_pattern):
+    """Return a glob expansion generator of *path_pattern*
+
+    :param path_pattern: pattern to expand
+    :rtype: generator of strings
+    :return: List of paths and/ or files
+    """
     return glob.iglob(path)
 
 def cp(src="", dst="", files=None):
@@ -42,6 +47,12 @@ def cp(src="", dst="", files=None):
 
     Copy a file or folder to a different file/folder
     If no `src` file is specified, will attempt to copy `files` to `dst`
+
+    *Notice*, elements of `files` will not be expanded before copying.
+
+    :param src: source directory or file
+    :param dst: destination file or folder (in the case of `files`)
+    :param files: list of files (strings) to copy to `src`
     """
     assert dst and src or len(files) > 0
     LOGGER.info("Copying %s to %s", src, dst)
@@ -65,6 +76,9 @@ def mv(src, dst):
 
     Move (copy and remove) the source file or directory (*src*) to the
     destination file or directory (*dst*)
+
+    :param src: Source file or folder to move
+    :param dst: Destination file or folder
     """
     LOGGER.info("Moving %s to %s", src, dst)
     shutil.move(src, dst)
@@ -77,6 +91,9 @@ def mkdir(directory, mode=0o777):
 
     *Notice*, if the directory already exists, *mkdir* will log a warning and
     return
+
+    :param directory: New directory to create
+    :param mode: Mode to create the directory (where supported). Default: `777`
     """
     if os.path.exists(directory):
         LOGGER.warning("Given directory (%s) already exists", directory)
@@ -96,6 +113,8 @@ def rm(*fileset):
     tries to delete each element of *fileset*, it attempts to expand it first
     using glob expansion (:func:`xnt.tasks.expandpath`), thus allowing the
     passing of glob elements
+
+    :param fileset: List of files to remove
     """
 
     try:
@@ -117,6 +136,9 @@ def create_zip(directory, zipfilename):
     """Compress (Zip) folder
 
     Zip the specified *directory* into the zip file named *zipfilename*
+
+    :param directory: Directory to zip
+    :param zipfilename: Name of resulting compression
     """
     LOGGER.info("Zipping %s as %s", directory, zipfilename)
     assert os.path.isdir(directory) and zipfilename
@@ -137,6 +159,9 @@ def echo(msg, tofile):
     Write the given *msg* to a file named *tofile*
 
     *Notice*, `echo` will overwrite the file if it already exists
+
+    :param msg: Message to write to file
+    :param tofile: file to which the message is written
     """
     with open(tofile, "w") as file_to_write:
         file_to_write.write(msg)
@@ -146,6 +171,9 @@ def log(msg="", lvl=logging.INFO):
 
     Emit the message (*msg*) to the *xnt.tasks* logger using either the default
     log level (*INFO*) or any valid specified value of `logging` module
+
+    :param msg: Message to log
+    :param lvl: Log Level of message. Default `INFO`
     """
     LOGGER.log(lvl, msg)
 
@@ -172,6 +200,7 @@ def call(command, stdout=None, stderr=None):
     :param: command - list of command and arguments
     :param: stdout - file to redirect standard output to, if given
     :param: stderr - file to redirect standard error to, if given
+    :return: the error code of the subbed out call, `$?`
     """
     return subprocess.call(args=command, stdout=stdout, stderr=stderr)
 
@@ -180,6 +209,7 @@ def setup(commands, directory=""):
 
     :param: commands - list of commands and options to run/ append
     :param: dir - (optional) directory to run from
+    :return: the error code of the execution, `$?`
     """
     cmd = [sys.executable, "setup.py",]
     for command in commands:
@@ -192,7 +222,11 @@ def setup(commands, directory=""):
     return error_code
 
 def which(program):
-    """Similar to Linux/Unix `which`: return (first) path of executable"""
+    """Similar to Linux/Unix `which`: return (first) path of executable
+
+    :param program: program name to search for in PATH
+    :return: Return the PATH of `program` or None
+    """
     def is_exe(fpath):
         """Determine if argument exists and is executable"""
         return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
@@ -210,5 +244,9 @@ def which(program):
     return None
 
 def in_path(program):
-    """Return boolean result if program is in PATH environment variable"""
+    """Return boolean result if program is in PATH environment variable
+
+    :param program: Program name to search for in PATH
+    :return: Return the PATH of `program` or None
+    """
     return which(program)

@@ -22,7 +22,13 @@ import xnt.tasks
 import xnt.vcs
 
 def hgclone(url, dest=None, rev=None, branch=None):
-    """Clone a Mercurial Repository"""
+    """Clone a Mercurial Repository
+
+    :param url: URI of repository to clone
+    :param dest: Directory or name of cloned repository
+    :param rev: Revision to clone
+    :param branch: Branch to clone
+    """
     command = ["hg", "clone"]
     if rev:
         command.append("--rev")
@@ -31,7 +37,11 @@ def hgclone(url, dest=None, rev=None, branch=None):
     xnt.tasks.call(command)
 
 def hgfetch(path, source='default'):
-    """Pull and Update an already cloned Mercurial Repository"""
+    """Pull and Update an already cloned Mercurial Repository
+
+    :param path: Directory to the repository for which to pull changes
+    :param source: Repository's upstream source
+    """
     command = ["hg", "pull", "-u", source]
     cwd = os.getcwd()
     os.chdir(path)

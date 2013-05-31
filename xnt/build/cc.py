@@ -27,23 +27,45 @@ from xnt.tasks import call
 LOGGER = logging.getLogger(__name__)
 
 def gcc(src, flags=None):
-    """gcc compiler, non-named output file"""
+    """gcc compiler, non-named output file
+
+    :param src: C source file to compile with default `gcc`
+    :param flags: List of flags to pass onto the compiler
+    """
     return _gcc(src, flags)
 
 def gpp(src, flags=None):
-    """g++ compiler, non-named output file"""
+    """g++ compiler, non-named output file
+
+    :param src: C++ source file to compile with default `g++`
+    :param flags: List of flags to pass onto the compiler
+    """
     return _gcc(src, flags, "g++")
 
 def gcc_o(src, output, flags=None):
-    """gcc compiler, with output file"""
+    """gcc compiler, with output file
+
+    :param src: C source file to compile with default `gcc`
+    :param output: Name of resulting object or executable
+    :param flags: List of flags to pass onto the compiler
+    """
     return _gcc_o(src, output, flags)
 
 def gpp_o(src, output, flags=None):
-    """g++ compiler, with output file"""
+    """g++ compiler, with output file
+
+    :param src: C++ source file to compile with default `g++`
+    :param output: Name of resulting object or executable
+    :param flags: List of flags to pass onto the compiler
+    """
     return _gcc_o(src, output, flags, "g++")
 
 def javac(src, flags=None):
-    """Javac: compile Java programs"""
+    """Javac: compile Java programs
+
+    :param src: Java source file to compile with default `javac`
+    :param flags: List of flags to pass onto the compiler
+    """
     LOGGER.info("Compiling %s", src)
     cmd = __generate_command(src, flags, "javac")
     return __compile(cmd)

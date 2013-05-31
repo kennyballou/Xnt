@@ -21,7 +21,17 @@ import os
 import subprocess
 
 def ant(target, path="", flags=None, pkeys=None, pvalues=None):
-    """Wrapper around Apache Ant"""
+    """Wrapper around Apache Ant
+
+    `pkeys` and `pvalues` are zipped to form a key/value pair passed to Ant as
+    property values
+
+    :param target: Ant Target to execute
+    :param path: Path of the Ant build file if different than current directory
+    :param flags: List of flags to pass to Ant
+    :param pkeys: List of keys to combine with pvalues to pass to Ant
+    :param pvalues: List of values to combine with pkeys to pass to Ant
+    """
     cmd = __add_params(["ant"],
                        __build_param_list(pkeys, pvalues),
                        lambda x: "-D%s" % x)
@@ -30,14 +40,34 @@ def ant(target, path="", flags=None, pkeys=None, pvalues=None):
     return __run_in(path, lambda: subprocess.call(cmd))
 
 def make(target, path="", flags=None, pkeys=None, pvalues=None):
-    """Wrapper around GNU Make"""
+    """Wrapper around GNU Make
+
+    `pkeys` and `pvalues` are zipped together to form a key/value pair that are
+    passed to Make as property values.
+
+    :param target: Make Target to execute
+    :param path: Path of the make file if different than current directory
+    :param flags: List of flags to pass to make
+    :param pkeys: List of keys, zipped with pvalues, to pass to Make
+    :param pvalues: List of values, zipped with pkeys, to pass to Make
+    """
     cmd = __add_params(["make"], __build_param_list(pkeys, pvalues))
     cmd = __add_flags(cmd, flags)
     cmd.append(target)
     return __run_in(path, lambda: subprocess.call(cmd))
 
 def nant(target, path="", flags=None, pkeys=None, pvalues=None):
-    """Wrapper around .NET Ant"""
+    """Wrapper around .NET Ant
+
+    `pkeys` and `pvalues` are zipped together to form a key/ value pair to pass
+    to NAnt as property values.
+
+    :param target: NAnt Target to execute
+    :param path: Path of NAnt build file, if different than current directory
+    :param flags: List of flags to pass to NAnt
+    :param pkeys: List of keys, zipped with pvalues, to pass to NAnt
+    :param pvalues: List of values, zipped with pkeys, to pass to NAnt
+    """
     cmd = __add_params(["nant"],
                         __build_param_list(pkeys, pvalues),
                         lambda x: "-D:%s" % x)
