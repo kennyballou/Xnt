@@ -88,6 +88,45 @@ class GppTests(unittest.TestCase):
         cc.gpp_o("temp/hello.cpp", "temp/hello")
         self.assertTrue(os.path.isfile("temp/hello"))
 
+@unittest.skipUnless(xnt.in_path('nvcc'), 'nvcc is not in your path')
+class NvccTests(unittest.TestCase):
+    """Test NVCC"""
+    def setUp(self):
+        """Test Case Setup"""
+        os.mkdir("temp")
+        with open("temp/hello.cu", "w") as test_code:
+            test_code.write("""
+            __global__ void kernel(float *x) {
+                int idx = threadIdx.x;
+                x[idx] = 42;
+            }
+            int main() {
+                int size = sizeof(float) * 128;
+                float *x = (float*)malloc(size);
+                float *dev_x;
+                cudaMalloc((void**)&dev_x, size);
+                cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
+                kernel<<<128, 1>>>(dev_x);
+                cudaMemcpy(x, dev_x, size, cudaMemcpyDeviceToHost);
+                cudaFree(dev_x);
+            }""")
+    def tearDown(self):
+        """Test Case Teardown"""
+        shutil.rmtree("temp")
+
+    def test_nvcc(self):
+        """Test Default NVCC"""
+        cwd = os.getcwd()
+        os.chdir("temp")
+        cc.nvcc("hello.cu")
+        self.assertTrue(os.path.isfile("a.out"))
+        os.chdir(cwd)
+
+    def test_nvcc_o(self):
+        """Test Named Output NVCC"""
+        cc.nvcc_o("temp/hello.cu", "temp/hello")
+        self.assertTrue(os.path.isfile("temp/hello"))
+
 @unittest.skipUnless(xnt.in_path("javac"), "javac is not in your path")
 class JavacTests(unittest.TestCase):
     """Test Javac"""

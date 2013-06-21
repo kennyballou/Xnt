@@ -22,7 +22,7 @@ Definition of commonly used compilers
 
 import os
 import logging
-from xnt.tasks import call
+from xnt.tasks import call, which
 
 LOGGER = logging.getLogger(__name__)
 
@@ -69,6 +69,25 @@ def javac(src, flags=None):
     LOGGER.info("Compiling %s", src)
     cmd = __generate_command(src, flags, "javac")
     return __compile(cmd)
+
+def nvcc(src, flags=None):
+    """NVCC: compile CUDA C/C++ programs
+
+    :param src: CUDA source file to compile with default `nvcc`
+    :param flags: List of flags to pass onto the compiler
+    """
+    assert which('nvcc')
+    return _gcc(src, flags, compiler='nvcc')
+
+def nvcc_o(src, output, flags=None):
+    """NVCC: compile with named output
+
+    :param src: CUDA source file to compile with default `nvcc`
+    :param output: Name of resulting object or executable
+    :param flags: List of flags to pass onto the compiler
+    """
+    assert which('nvcc')
+    return _gcc_o(src, output, flags, compiler='nvcc')
 
 def _gcc(src, flags=None, compiler="gcc"):
     """Compile using gcc"""
