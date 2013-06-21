@@ -32,6 +32,7 @@ def gcc(src, flags=None):
     :param src: C source file to compile with default `gcc`
     :param flags: List of flags to pass onto the compiler
     """
+    assert which("gcc")
     return _gcc(src, flags)
 
 def gpp(src, flags=None):
@@ -40,6 +41,7 @@ def gpp(src, flags=None):
     :param src: C++ source file to compile with default `g++`
     :param flags: List of flags to pass onto the compiler
     """
+    assert which("g++")
     return _gcc(src, flags, "g++")
 
 def gcc_o(src, output, flags=None):
@@ -49,6 +51,7 @@ def gcc_o(src, output, flags=None):
     :param output: Name of resulting object or executable
     :param flags: List of flags to pass onto the compiler
     """
+    assert which("gcc")
     return _gcc_o(src, output, flags)
 
 def gpp_o(src, output, flags=None):
@@ -58,6 +61,7 @@ def gpp_o(src, output, flags=None):
     :param output: Name of resulting object or executable
     :param flags: List of flags to pass onto the compiler
     """
+    assert which("g++")
     return _gcc_o(src, output, flags, "g++")
 
 def javac(src, flags=None):
@@ -66,6 +70,7 @@ def javac(src, flags=None):
     :param src: Java source file to compile with default `javac`
     :param flags: List of flags to pass onto the compiler
     """
+    assert which("javac")
     LOGGER.info("Compiling %s", src)
     cmd = __generate_command(src, flags, "javac")
     return __compile(cmd)

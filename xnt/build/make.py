@@ -19,6 +19,7 @@
 
 import os
 import subprocess
+from xnt.tasks import which
 
 def ant(target, path="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around Apache Ant
@@ -32,6 +33,7 @@ def ant(target, path="", flags=None, pkeys=None, pvalues=None):
     :param pkeys: List of keys to combine with pvalues to pass to Ant
     :param pvalues: List of values to combine with pkeys to pass to Ant
     """
+    assert which("ant")
     cmd = __add_params(["ant"],
                        __build_param_list(pkeys, pvalues),
                        lambda x: "-D%s" % x)
@@ -51,6 +53,7 @@ def make(target, path="", flags=None, pkeys=None, pvalues=None):
     :param pkeys: List of keys, zipped with pvalues, to pass to Make
     :param pvalues: List of values, zipped with pkeys, to pass to Make
     """
+    assert which("make")
     cmd = __add_params(["make"], __build_param_list(pkeys, pvalues))
     cmd = __add_flags(cmd, flags)
     cmd.append(target)
@@ -68,6 +71,7 @@ def nant(target, path="", flags=None, pkeys=None, pvalues=None):
     :param pkeys: List of keys, zipped with pvalues, to pass to NAnt
     :param pvalues: List of values, zipped with pkeys, to pass to NAnt
     """
+    assert which("nant")
     cmd = __add_params(["nant"],
                         __build_param_list(pkeys, pvalues),
                         lambda x: "-D:%s" % x)

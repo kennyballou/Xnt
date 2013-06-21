@@ -29,6 +29,7 @@ def hgclone(url, dest=None, rev=None, branch=None):
     :param rev: Revision to clone
     :param branch: Branch to clone
     """
+    assert xnt.tasks.which("hg")
     command = ["hg", "clone"]
     if rev:
         command.append("--rev")
@@ -42,6 +43,7 @@ def hgfetch(path, source='default'):
     :param path: Directory to the repository for which to pull changes
     :param source: Repository's upstream source
     """
+    assert xnt.tasks.which("hg")
     command = ["hg", "pull", "-u", source]
     cwd = os.getcwd()
     os.chdir(path)

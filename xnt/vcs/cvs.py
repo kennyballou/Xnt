@@ -19,6 +19,7 @@
 
 import os
 import subprocess
+from xnt.tasks import which
 
 def cvsco(module, rev="", dest=""):
     """Run CVS Checkout
@@ -27,6 +28,7 @@ def cvsco(module, rev="", dest=""):
     :param rev: Revision to checkout
     :param dest: Destination directory or name of checked out module
     """
+    assert which("cvs")
     cmd = ["cvs", "co", "-P"]
     if rev:
         cmd.append("-r")
@@ -42,6 +44,7 @@ def cvsupdate(path):
 
     :param path: Directory path to module to update
     """
+    assert which("cvs")
     cwd = os.path.abspath(os.getcwd())
     os.chdir(path)
     cmd = ["cvs", "update"]

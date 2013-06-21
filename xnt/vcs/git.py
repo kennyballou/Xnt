@@ -28,6 +28,7 @@ def gitclone(url, dest=None, branch=None):
     :param dest: Destination directory or name of the cloned repository
     :param branch: Branch to clone
     """
+    assert xnt.tasks.which("git")
     command = ["git", "clone"]
     command = xnt.vcs.clone_options(command, url, branch, dest)
     xnt.tasks.call(command)
@@ -39,6 +40,7 @@ def gitpull(path, source="origin", branch="master"):
     :param source: Repository's upstream source
     :param branch: Repository's upstream branch to pull from
     """
+    assert xnt.tasks.which("git")
     cwd = os.getcwd()
     os.chdir(path)
     command = ["git", "pull", source, branch]
