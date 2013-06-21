@@ -40,7 +40,7 @@ def expandpath(path_pattern):
     :rtype: generator of strings
     :return: List of paths and/ or files
     """
-    return glob.iglob(path)
+    return glob.iglob(path_pattern)
 
 def cp(src="", dst="", files=None):
     """Copy `src` to `dst` or copy `files` to `dst`
