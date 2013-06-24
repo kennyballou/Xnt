@@ -20,44 +20,21 @@ Make
 Apache Ant
 ----------
 
-.. _xnt.build.make.ant:
-.. function:: ant(path="", target="", flags=None, pkeys=None, pvalues=None)
+.. autofunction:: xnt.build.make.ant
+   :noindex:
 
-    Invoke Apache Ant in either the current working directory or the specified
-    directory using the empty (default) target or the specified target, passing
-    a list of *flags* to the invocation. Where *flags* is a list of valid
-    flags for *ant*.
-
-    *pkeys* and *pvalues* will be zipped together and append to the command
-    in the form: *-Dpkey=pvalue*.
 
 Gnu Make
 --------
 
-.. _xnt.bulid.make.make:
-.. function:: make(path="", target="", flags=None, pkeys=None, pvalues=None)
-
-    Invoke Gnu Make (*make*) in either the current working directory or the
-    specified directory using the empty (default) target or the specified
-    target, passing a list of *flags* to the invocation. Where *flags* is a
-    list of valid flags for *make*.
-
-    *pkeys* and *pvalues* will be zipped together and append to the command
-    in the form: *pkey=pvalue*.
+.. autofunction:: xnt.build.make.make
+   :noindex:
 
 (.NET)Ant
 ---------
 
-.. _xnt.build.make.nant:
-.. function:: nant(path="", target="", flags=None, pkeys=None, pvalues=None)
-
-    Invoke NAnt in either the current working directory or the specified
-    directory using the empty (default) target or the specified target, passing
-    a list of *flags* to the invocation. Where *flags* is a list of valid flags
-    for *nant*.
-
-    *pkeys* and *pvalues* will be zipped together and append to the command
-    in the form: *-D:pkey=pvalue*.
+.. autofunction:: xnt.build.make.nant
+   :noindex:
 
 Compiler Collection
 ===================
@@ -68,38 +45,33 @@ If they are not, an error will be thrown (by subprocess)
 gcc/g++
 -------
 
-.. _xnt.build.cc.gcc:
-.. function:: gcc(src, flags=None)
+.. autofunction:: xnt.build.cc.gcc
+   :noindex:
 
-    Compile `src` with the `gcc` to the default `out` (:ref:`defaultOut`) of
-    that source. Passing `flags` as given.
+.. autofunction:: xnt.build.cc.gcc_o
+   :noindex:
 
-.. _xnt.build.cc.gcc_o:
-.. function:: gcc_o(src, o, flags=None)
+.. autofunction:: xnt.build.cc.gpp
+   :noindex:
 
-    Compile `src` with `gcc` to the out file specified by `o`. Passing `flags`
-    as given.
-
-.. _xnt.build.cc.gpp:
-.. function:: gpp(src, flags=None)
-
-    Compile `src` with `g++` to the default `out` (:ref:`defaultOut`) of that
-    source. Passing `flags` as given.
-
-.. _xnt.bulid.cc.gpp_o:
-.. function:: gpp_o(src, o, flags=None)
-
-    Compile `src` with `g++` to the out file specified by `o`. Passing `flags`
-    as given.
+.. autofunction:: xnt.build.cc.gpp_o
+   :noindex:
 
 Javac
 -----
 
-.. _xnt.build.cc.javac:
-.. function:: javac(src, flags=None)
+.. autofunction:: xnt.build.cc.javac
+   :noindex:
 
-    Compile `src` with `javac` to the default out file for the source. Passing
-    `flags` as given.
+
+NVCC
+----
+
+.. autofunction:: xnt.build.cc.nvcc
+   :noindex:
+
+.. autofunction:: xnt.build.cc.nvcc_o
+   :noindex:
 
 Notes
 -----
@@ -130,21 +102,8 @@ Tex
 
 Building LaTeX documents can be confusing and sometimes tricky to do correctly.
 
-pdflatex
---------
+.. autofunction:: xnt.build.tex.pdflatex
+   :noindex:
 
-.. _xnt.build.tex.pdflatex:
-.. function:: pdflatex(document, path="./", bibtex=False, makeglossary=False)
-
-    Use `pdflatex` to build a LaTeX PDF document. Can optionally execute steps
-    to properly build in `bibtex` references and/ or glossaries.
-
-    Where *document* is the master tex file of the document and *path* is the
-    full or relative path to exectue `pdflatex` in.
-
-.. _xnt.build.tex.clean:
-.. function:: clean(path="./", remove_pdf=False)
-
-    Clean up generated output files of `pdflatex` and similar. Currently, the
-    function removes `out`, `log`, `aux`, `toc`, `tol`, `tof`, `tot`, `bbl`,
-    and `blg`. Conditionally, it will remove the generated `pdf` as well.
+.. autofunction:: xnt.build.tex.clean
+   :noindex:

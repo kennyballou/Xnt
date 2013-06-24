@@ -24,6 +24,10 @@ from xnt.tasks import which
 def ant(target, path="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around Apache Ant
 
+    Invoke Apache Ant in either the current working directory or the specified
+    directory using the specified target, passing a list of *flags* to the
+    invocation. Where *flags* is a list of valid flags for *ant*.
+
     `pkeys` and `pvalues` are zipped to form a key/value pair passed to Ant as
     property values
 
@@ -44,6 +48,10 @@ def ant(target, path="", flags=None, pkeys=None, pvalues=None):
 def make(target, path="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around GNU Make
 
+    Invoke Gnu Make (*make*) in either the current working directory or the
+    specified directory using the specified target, passing a list of *flags*
+    to the invocation. Where *flags* is a list of valid flags for *make*.
+
     `pkeys` and `pvalues` are zipped together to form a key/value pair that are
     passed to Make as property values.
 
@@ -61,6 +69,10 @@ def make(target, path="", flags=None, pkeys=None, pvalues=None):
 
 def nant(target, path="", flags=None, pkeys=None, pvalues=None):
     """Wrapper around .NET Ant
+
+    Invoke NAnt in either the current working directory or the specified
+    directory using the specified target, passing a list of *flags* to the
+    invocation. Where *flags* is a list of valid flags for *nant*.
 
     `pkeys` and `pvalues` are zipped together to form a key/ value pair to pass
     to NAnt as property values.

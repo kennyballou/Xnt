@@ -30,6 +30,9 @@ def pdflatex(document,
              makeglossary=False):
     """Generate PDF LaTeX Document
 
+    Use `pdflatex` to build a LaTeX PDF document. Can optionally execute steps
+    to properly build `bibtex` references and/ or glossaries.
+
     :param document: Name of tex file (with or without `.tex` extension)
     :param path: Directory of tex file, if different than current directory
     :param bibtex: Flag to or not to add bibtex. Default: False
