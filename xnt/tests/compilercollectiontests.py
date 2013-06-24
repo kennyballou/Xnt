@@ -97,7 +97,7 @@ class NvccTests(unittest.TestCase):
         with open("temp/hello.cu", "w") as test_code:
             test_code.write("""
             __global__ void kernel(float *x) {
-                int idx = threadIdx.x;
+                int idx = blockIdx.x;
                 x[idx] = 42;
             }
             int main() {
@@ -109,6 +109,8 @@ class NvccTests(unittest.TestCase):
                 kernel<<<128, 1>>>(dev_x);
                 cudaMemcpy(x, dev_x, size, cudaMemcpyDeviceToHost);
                 cudaFree(dev_x);
+                delete(x);
+                x = NULL;
             }""")
     def tearDown(self):
         """Test Case Teardown"""
