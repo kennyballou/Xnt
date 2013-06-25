@@ -9,6 +9,19 @@ A wrapper build tool
 Release Notes
 =============
 
+0.6.2:soon
+----------
+
+* Add `nvcc` wrapper to `xnt.build.make`
+
+* `xnt.build.make.*` `target` is now required
+
+* Update Documentation
+
+  * Fix autodoc issues
+
+  * Add/ Update Better dependencies section
+
 0.6.1:2013-03-23
 ----------------
 
