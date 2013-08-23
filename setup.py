@@ -47,7 +47,7 @@ setup(
             'xnt = xnt.xenant:main',
         ],
     },
-    install_requires=['distribute',],
+    install_requires=['setuptools',],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
