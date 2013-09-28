@@ -60,10 +60,13 @@ def target(target_fn):
        build file as a "target" method, or a method meant
        to be invoked from Xnt
     """
+    has_run = [False,]
     def wrap():
         """Inner wrapper function for decorator"""
-        print(target_fn.__name__ + ":")
-        return target_fn()
+        if not has_run[0]:
+            has_run[0] = True
+            print(target_fn.__name__ + ":")
+            return target_fn()
     wrap.decorator = "target"
     wrap.__doc__ = target_fn.__doc__
     return wrap
