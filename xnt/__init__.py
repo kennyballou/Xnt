@@ -55,18 +55,24 @@ from xnt.tasks import setup
 from xnt.tasks import which
 from xnt.tasks import in_path
 
-def target(target_fn):
+def target(*args, **kwargs):
     """Decorator function for marking a method in
        build file as a "target" method, or a method meant
        to be invoked from Xnt
     """
-    has_run = [False,]
-    def wrap():
-        """Inner wrapper function for decorator"""
-        if not has_run[0]:
-            has_run[0] = True
-            print(target_fn.__name__ + ":")
-            return target_fn()
-    wrap.decorator = "target"
-    wrap.__doc__ = target_fn.__doc__
-    return wrap
+    def w_target(target_fn):
+        """target wrapping function"""
+        has_run = [False,]
+        def wrap():
+            """Inner wrapper function for decorator"""
+            if not has_run[0] or kwargs.get('always_run', False):
+                has_run[0] = True
+                print(target_fn.__name__ + ":")
+                return target_fn()
+            return None
+        wrap.decorator = "target"
+        wrap.__doc__ = target_fn.__doc__
+        return wrap
+    if len(args) == 1 and callable(args[0]):
+        return w_target(args[0])
+    return w_target
