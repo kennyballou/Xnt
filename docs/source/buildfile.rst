@@ -73,6 +73,55 @@ call ``mkdir`` of the ``xnt`` (internally of the ``xnt.tasks``) module. This
 function, if not obvious by the name, creates a directory named 'build' (see
 :doc:`taskreference`).
 
+Target Decorator
+================
+
+The ``target`` decorator is just a standard Python decorating function with a
+few exceptions. Namely, a new default behaviour is being introduced: a target
+will _not_ execute more than once in a single invocation of ``xnt``. However,
+if you so require a target to execute more than once, the option is provided.
+For example::
+
+    import xnt
+
+    @xnt.target
+    def init():
+        #executes initalization
+
+    @xnt.target
+    def build():
+        init() # depends on init
+        # compiles project
+
+    @xnt.target
+    def package():
+        init() # explicitly depends on init
+        build() # depends on build
+        # packages project together
+
+The ``target`` decorators new default behaviour will not run the ``init``
+target more than once if the ``package`` target was invoked. However, let's say
+we introduce another target, ``clean`` for example, and define it as::
+
+    @xnt.target(always_run=True)
+    def clean():
+        # clean project state
+
+To further illustrate this new optional argument, let us define another
+target, ``test`` that will call ``clean`` twice::
+
+    @xnt.target
+    def test():
+        clean()
+        package()
+        # Run tests
+        clean()
+
+When we run our ``test`` target, we notice we want to start from a fresh, clean
+state and we want to finish on a fresh, clean state. With the new default, this
+wouldn't be possible, but with this new optional argument, ``always_run`` it
+still is.
+
 Return Values
 =============
 
