@@ -9,6 +9,17 @@ A wrapper build tool
 Release Notes
 =============
 
+0.6.3:2013-10-21
+----------------
+
+* Add target run tracking
+
+  * See issue#27
+
+* Update dependencies
+
+  * See issue#26
+
 0.6.2:2013-06-26
 ----------------
 
