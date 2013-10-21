@@ -168,7 +168,7 @@ Dependencies
 There are a few required and optional dependencies to install and run
 Xnt. Namely, reference the following list:
 
-* ``distribute``
+* ``setuptools``
 * ``Ant`` (Optional)
 * ``CVS`` (Optional)
 * ``Git`` (Optional)

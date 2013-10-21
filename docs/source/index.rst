@@ -78,7 +78,7 @@ Dependencies
 There are a few dependencies that Xnt requires and a few that are completely
 optional, depending on your intended use.
 
-* ``distribute``
+* ``setuptools``
 * ``Ant`` (Optional)
 * ``CVS`` (Optional)
 * ``Git`` (Optional)
