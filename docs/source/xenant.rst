@@ -40,7 +40,7 @@ Will execute `target1` through `targetN` in order of listing.
 
 .. _otherCommands:
 
-Othes Commands
+Other Commands
 --------------
 
 Xnt has a number of other commands that can be invoked besides those defined in
