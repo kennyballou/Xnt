@@ -20,8 +20,9 @@
 import os
 import xnt.tasks
 import xnt.vcs
+from xnt.tasks import __apply__, __call__, __which__
 
-def hgclone(url, dest=None, rev=None, branch=None):
+def __hgclone__(url, dest=None, rev=None, branch=None):
     """Clone a Mercurial Repository
 
     :param url: URI of repository to clone
@@ -29,23 +30,32 @@ def hgclone(url, dest=None, rev=None, branch=None):
     :param rev: Revision to clone
     :param branch: Branch to clone
     """
-    assert xnt.tasks.which("hg")
-    command = ["hg", "clone"]
-    if rev:
-        command.append("--rev")
-        command.append(rev)
-    command = xnt.vcs.clone_options(command, url, branch, dest)
-    xnt.tasks.call(command)
+    def __execute__(**kwargs):
+        '''Perform hg clone'''
+        assert __apply__(__which__("hg"))
+        command = ["hg", "clone"]
+        if kwargs['rev']:
+            command.append("--rev")
+            command.append(kwargs['rev'])
+        command = xnt.vcs.clone_options(
+            command, kwargs['url'], kwargs['branch'], kwargs['dest'])
+        return __apply__(__call__(command))
+    args = {'url': url, 'dest': dest, 'rev': rev, 'branch': branch,}
+    return ((__execute__, args),)
 
-def hgfetch(path, source='default'):
+def __hgfetch__(path, source=None):
     """Pull and Update an already cloned Mercurial Repository
 
     :param path: Directory to the repository for which to pull changes
     :param source: Repository's upstream source
     """
-    assert xnt.tasks.which("hg")
-    command = ["hg", "pull", "-u", source]
-    cwd = os.getcwd()
-    os.chdir(path)
-    xnt.tasks.call(command)
-    os.chdir(cwd)
+    def __execute__(**kwargs):
+        '''Perform hg pull'''
+        assert __apply__(__which__("hg"))
+        command = ["hg", "pull", "-u", kwargs['source']]
+        cwd = os.getcwd()
+        os.chdir(kwargs['path'])
+        __apply__(__call__(command))
+        os.chdir(cwd)
+    args = {'path': path, 'source': source if source else 'default',}
+    return ((__execute__, args),)

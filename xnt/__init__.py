@@ -43,17 +43,17 @@ __license__ = """
 
 VERBOSE = False
 
-from xnt.tasks import cp
-from xnt.tasks import mv
-from xnt.tasks import mkdir
-from xnt.tasks import rm
-from xnt.tasks import create_zip
-from xnt.tasks import log
-from xnt.tasks import xntcall
-from xnt.tasks import call
-from xnt.tasks import setup
-from xnt.tasks import which
-from xnt.tasks import in_path
+from xnt.tasks import __copy__
+from xnt.tasks import __move__
+from xnt.tasks import __mkdir__
+from xnt.tasks import __remove__
+from xnt.tasks import __zip__
+from xnt.tasks import __log__
+from xnt.tasks import __xntcall__
+from xnt.tasks import __call__
+from xnt.tasks import __setup__
+from xnt.tasks import __which__
+from xnt.tasks import __in_path__
 
 def target(*args, **kwargs):
     """Decorator function for marking a method in

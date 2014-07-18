@@ -17,127 +17,162 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from xnt.build.make import __make__
+from xnt.build.make import __ant__
+from xnt.build.make import __nant__
+from types import FunctionType
 import unittest
-import xnt
-import xnt.build.make
-import xnt.tests
 
-@unittest.skipUnless(xnt.in_path("ant") or xnt.in_path("ant.exe"),
-                     "Apache ant is not in your path")
 class AntTests(unittest.TestCase):
     """Test Case for Ant Build"""
     def setUp(self):
         """Test Setup"""
-        xnt.tests.set_up()
-        with open("temp/build.xml", "w") as build:
-            build.write("<?xml version=\"1.0\" ?>\n")
-            build.write("<project name=\"test\" default=\"test\">\n")
-            build.write("<target name=\"test\">\n")
-            build.write("<echo>${test_var}</echo>\n")
-            build.write("</target>\n")
-            build.write("</project>\n")
+        pass
 
     def tearDown(self):
         """Test Teardown"""
-        xnt.tests.tear_down()
+        pass
 
     def test_default_build(self):
         """Test the default target of ant"""
-        result = xnt.build.make.ant(target="test", path="temp")
-        self.assertEqual(result, 0)
+        result = __ant__(target="test")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('target' in result[0][1])
+        self.assertEqual('test', result[0][1]['target'])
 
-    def test_passing_flags(self):
-        """Test ant with passing flags"""
-        result = xnt.build.make.ant(target="test",
-                                    path="temp",
-                                    flags=["-verbose"])
-        self.assertEqual(result, 0)
+    def test_ant_when_given_path(self):
+        """Test ant when passing given a path"""
+        result = __ant__(target="test", path="some/other/path/build.xml")
+        self.assertIsNotNone(result)
+        self.assertTrue('path' in result[0][1])
+        self.assertEqual('some/other/path/build.xml', result[0][1]['path'])
 
-    def test_pass_var(self):
+    def test_ant_when_given_flags(self):
+        """Test passing flags to ant"""
+        result = __ant__(target='test', flags=['-verbose'])
+        self.assertIsNotNone(result)
+        self.assertTrue('flags' in result[0][1])
+        self.assertEqual(1, len(result[0][1]['flags']))
+        self.assertEqual('-verbose', result[0][1]['flags'][0])
+
+    def test_ant_when_given_vars(self):
         """Test passing variables to ant"""
-        result = xnt.build.make.ant(target="test", path="temp",
-                                    pkeys=["test_var"],
-                                    pvalues=["testing"])
-        self.assertEqual(result, 0)
+        result = __ant__(target="test",
+                         pkeys=["test_var"],
+                         pvalues=["testing"])
+        self.assertIsNotNone(result)
+        self.assertTrue('pkeys' in result[0][1])
+        self.assertTrue('pvalues' in result[0][1])
+        self.assertEqual(1, len(result[0][1]['pkeys']))
+        self.assertEqual(1, len(result[0][1]['pvalues']))
+        self.assertEqual('test_var', result[0][1]['pkeys'][0])
+        self.assertEqual('testing', result[0][1]['pvalues'][0])
 
-@unittest.skipUnless(xnt.in_path("make"), "make is not in your path")
 class MakeTests(unittest.TestCase):
     """GNU Make Tests"""
 
     def setUp(self):
         """Test Setup"""
-        xnt.tests.set_up()
-        with open("temp/Makefile", "w") as makefile:
-            makefile.write("build:\n")
-            makefile.write("\techo 'testing'\n")
+        pass
 
     def tearDown(self):
         """Test Teardown"""
-        xnt.tests.tear_down()
+        pass
 
     def test_default_make(self):
         """Test Default make"""
-        result = xnt.build.make.make(target="build", path="temp")
-        self.assertEqual(result, 0)
+        result = __make__(target="build")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('target' in result[0][1])
+        self.assertEqual('build', result[0][1]['target'])
+
+    def test_make_with_path(self):
+        '''Test make given a path'''
+        result = __make__(target="build", path="some/other/path/Makefile")
+        self.assertIsNotNone(result)
+        self.assertTrue('path' in result[0][1])
+        self.assertEqual('some/other/path/Makefile', result[0][1]['path'])
 
     def test_passing_vars(self):
         """Test Parameter Passing with Make"""
-        result = xnt.build.make.make(target="build",
-                                     path="temp",
-                                     pkeys=["test_var"],
-                                     pvalues=["testing"])
-        self.assertEqual(result, 0)
+        result = __make__(target='build',
+                          pkeys=["test_var"],
+                          pvalues=["testing"])
+        self.assertIsNotNone(result)
+        self.assertTrue('pkeys' in result[0][1])
+        self.assertTrue('pvalues' in result[0][1])
+        self.assertEqual(1, len(result[0][1]['pkeys']))
+        self.assertEqual(1, len(result[0][1]['pvalues']))
+        self.assertEqual('test_var', result[0][1]['pkeys'][0])
+        self.assertEqual('testing', result[0][1]['pvalues'][0])
 
     def test_passing_flags(self):
         """Test Flag Passing with Make"""
-        result = xnt.build.make.make(target="build",
-                                     path="temp",
-                                     flags=["-B"])
-        self.assertEqual(result, 0)
+        result = __make__(target='build', flags=['-B'])
+        self.assertIsNotNone(result)
+        self.assertTrue('flags' in result[0][1])
+        self.assertEqual(1, len(result[0][1]['flags']))
+        self.assertEqual('-B', result[0][1]['flags'][0])
 
-@unittest.skipUnless(xnt.in_path("nant") or xnt.in_path("nant.exe"),
-                     "nant is not in your path")
 class NAntTests(unittest.TestCase):
     """.NET Ant Tests"""
 
     def setUp(self):
         """Test Setup"""
-        xnt.tests.set_up()
-        with open("temp/default.build", "w") as default_build:
-            default_build.write("<?xml version=\"1.0\"?>\n")
-            default_build.write("<project name=\"test\">\n")
-            default_build.write("<target name=\"test\">\n")
-            default_build.write("<if \n")
-            default_build.write("test=\"${property::exists('test_var')}\">\n")
-            default_build.write("<echo>${test_var}</echo>\n")
-            default_build.write("</if>\n")
-            default_build.write("</target>\n")
-            default_build.write("</project>")
+        pass
 
     def tearDown(self):
         """Test Teardown"""
-        xnt.tests.tear_down()
+        pass
 
-    def test_default_nant(self):
+    def test_nant_with_target(self):
         """Test Deault nant"""
-        result = xnt.build.make.nant(target="test", path="temp")
-        self.assertEqual(result, 0)
+        result = __nant__(target='test')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('target' in result[0][1])
+        self.assertEqual('test', result[0][1]['target'])
 
-    def test_parameters_passing(self):
-        """Test Parameter Passing with NAnt"""
-        result = xnt.build.make.nant(target="test",
-                                     path="temp",
-                                     pkeys=["test_var"],
-                                     pvalues=["testing"])
-        self.assertEqual(result, 0)
+    def test_nant_with_path(self):
+        '''Test NAnt with path'''
+        result = __nant__(target='test', path='some/other/path/build.xml')
+        self.assertIsNotNone(result)
+        self.assertTrue('path' in result[0][1])
+        self.assertEqual('some/other/path/build.xml', result[0][1]['path'])
 
-    def test_flag_passing(self):
-        """Test Flag Passing with NAnt"""
-        result = xnt.build.make.nant(target="test",
-                                     path="temp",
-                                     flags=["-v"])
-        self.assertEqual(result, 0)
+    def test_nant_with_parameters(self):
+        '''Test NAnt with parameters'''
+        result = __nant__(target="test",
+                          pkeys=["test_var"],
+                          pvalues=["testing"])
+        self.assertIsNotNone(result)
+        self.assertTrue('pkeys' in result[0][1])
+        self.assertTrue('pvalues' in result[0][1])
+        self.assertEqual(1, len(result[0][1]['pkeys']))
+        self.assertEqual(1, len(result[0][1]['pvalues']))
+        self.assertEqual('test_var', result[0][1]['pkeys'][0])
 
+    def test_nant_with_flags(self):
+        '''Test NAnt with flags'''
+        result = __nant__(target="test", flags=["-v"])
+        self.assertIsNotNone(result)
+        self.assertTrue('flags' in result[0][1])
+        self.assertEqual(1, len(result[0][1]['flags']))
+        self.assertEqual('-v', result[0][1]['flags'][0])
 
 if __name__ == '__main__':
     unittest.main()

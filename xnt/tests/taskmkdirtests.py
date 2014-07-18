@@ -17,29 +17,26 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import xnt.tasks
-import xnt.tests
+from xnt.tasks import __mkdir__
+from types import FunctionType
 import unittest
 
 #pylint: disable-msg=C0103
 class TaskMkdirTests(unittest.TestCase):
     """Test Cases for Mkdir"""
-    def setUp(self):
-        """Test Case Setup"""
-        xnt.tests.set_up()
-
-    def tearDown(self):
-        """Test Case Teardown"""
-        xnt.tests.tear_down()
-
     def test_mkdir(self):
         """Test mkdir method"""
-        xnt.tasks.mkdir("temp/mynewtestfolder")
-        self.assertTrue(os.path.exists("temp/mynewtestfolder"))
-        self.assertTrue(os.path.exists("temp/testfolder1"))
-        xnt.tasks.mkdir("temp/testfolder1")
-
+        result = __mkdir__("my/new/directory")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('directory' in result[0][1])
+        self.assertEqual('my/new/directory', result[0][1]['directory'])
+        self.assertTrue('mode' in result[0][1])
+        self.assertEqual(0o755, result[0][1]['mode'])
 
 if __name__ == "__main__":
     unittest.main()

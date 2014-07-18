@@ -17,144 +17,142 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import shutil
-import xnt
-import xnt.build.cc as cc
+from xnt.build.cc import __gcc__
+from xnt.build.cc import __gpp__
+from xnt.build.cc import __nvcc__
+from xnt.build.cc import __javac__
+from types import FunctionType
 import unittest
 
 #pylint: disable-msg=C0103
-@unittest.skipUnless(xnt.in_path("gcc"), "gcc is not in your path")
 class GccTests(unittest.TestCase):
     """Test GCC"""
     def setUp(self):
         """Test Case Setup"""
-        os.mkdir("temp")
-        with open("temp/hello.c", "w") as test_code:
-            test_code.write("""
-            #include <stdio.h>
-            int main() {
-                printf("Hello, World!\\n");
-                return 0;
-            }
-            """)
+        pass
 
     def tearDown(self):
         """Test Case Teardown"""
-        shutil.rmtree("temp")
+        pass
 
     def test_gcc(self):
         """Test Default GCC"""
-        cwd = os.getcwd()
-        os.chdir("temp")
-        cc.gcc("hello.c")
-        self.assertTrue(os.path.isfile("a.out"))
-        os.chdir(cwd)
+        result = __gcc__("hello.c")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue("infile" in result[0][1])
+        self.assertTrue('flags' in result[0][1])
 
-    def test_gcc_o(self):
+    def test_gcc_with_output(self):
         """Test GCC with output"""
-        cc.gcc_o("temp/hello.c", "temp/hello")
-        self.assertTrue(os.path.isfile("temp/hello"))
+        result = __gcc__("hello.c", output="hello")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue("infile" in result[0][1])
+        self.assertTrue("outfile" in result[0][1])
+        self.assertTrue('flags' in result[0][1])
 
-@unittest.skipUnless(xnt.in_path("g++"), "g++ is not in your path")
+#pylint: disable-msg=C0103
 class GppTests(unittest.TestCase):
     """Test G++ (C++ GCC)"""
     def setUp(self):
         """Test Case Setup"""
-        os.mkdir("temp")
-        with open("temp/hello.cpp", "w") as test_code:
-            test_code.write("""
-            #include <iostream>
-            int main() {
-                std::cout << "Hello, World!" << std::endl;
-                return 0;
-            }
-            """)
+        pass
 
     def tearDown(self):
         """Test Case Teardown"""
-        shutil.rmtree("temp")
+        pass
 
     def test_gpp(self):
         """Test Default G++"""
-        cwd = os.getcwd()
-        os.chdir("temp")
-        cc.gpp("hello.cpp")
-        self.assertTrue("a.out")
-        os.chdir(cwd)
+        result = __gpp__("hello.cpp")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue("infile" in result[0][1])
+        self.assertTrue('flags' in result[0][1])
 
-    def test_gpp_o(self):
+    def test_gpp_with_output(self):
         """Test G++ with output"""
-        cc.gpp_o("temp/hello.cpp", "temp/hello")
-        self.assertTrue(os.path.isfile("temp/hello"))
+        result = __gpp__("hello.cpp", output="hello")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue("infile" in result[0][1])
+        self.assertTrue("outfile" in result[0][1])
+        self.assertTrue('flags' in result[0][1])
 
-@unittest.skipUnless(xnt.in_path('nvcc'), 'nvcc is not in your path')
+#pylint: disable-msg=C0103
 class NvccTests(unittest.TestCase):
     """Test NVCC"""
     def setUp(self):
         """Test Case Setup"""
-        os.mkdir("temp")
-        with open("temp/hello.cu", "w") as test_code:
-            test_code.write("""
-            __global__ void kernel(float *x) {
-                int idx = blockIdx.x;
-                x[idx] = 42;
-            }
-            int main() {
-                int size = sizeof(float) * 128;
-                float *x = (float*)malloc(size);
-                float *dev_x;
-                cudaMalloc((void**)&dev_x, size);
-                cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
-                kernel<<<128, 1>>>(dev_x);
-                cudaMemcpy(x, dev_x, size, cudaMemcpyDeviceToHost);
-                cudaFree(dev_x);
-                delete(x);
-                x = NULL;
-            }""")
+        pass
+
     def tearDown(self):
         """Test Case Teardown"""
-        shutil.rmtree("temp")
+        pass
 
     def test_nvcc(self):
         """Test Default NVCC"""
-        cwd = os.getcwd()
-        os.chdir("temp")
-        cc.nvcc("hello.cu")
-        self.assertTrue(os.path.isfile("a.out"))
-        os.chdir(cwd)
+        result = __nvcc__("hello.cu")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue("infile" in result[0][1])
+        self.assertTrue('flags' in result[0][1])
 
-    def test_nvcc_o(self):
+    def test_nvcc_with_output(self):
         """Test Named Output NVCC"""
-        cc.nvcc_o("temp/hello.cu", "temp/hello")
-        self.assertTrue(os.path.isfile("temp/hello"))
+        result = __nvcc__("hello.cu", output="hello")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue("infile" in result[0][1])
+        self.assertTrue("outfile" in result[0][1])
+        self.assertTrue('flags' in result[0][1])
 
-@unittest.skipUnless(xnt.in_path("javac"), "javac is not in your path")
 class JavacTests(unittest.TestCase):
     """Test Javac"""
     def setUp(self):
         """Test Case Setup"""
-        os.mkdir("temp")
-        with open("temp/hello.java", "w") as test_code:
-            test_code.write("""
-            class hello {
-                public static void main(String[] args) {
-                    System.out.println("Hello, World!");
-                }
-            }
-            """)
+        pass
 
     def tearDown(self):
         """Test Case Teardown"""
-        shutil.rmtree("temp")
+        pass
 
     def test_javac(self):
         """Test Default Javac"""
-        cwd = os.getcwd()
-        os.chdir("temp")
-        cc.javac("hello.java")
-        self.assertTrue(os.path.isfile("hello.class"))
-        os.chdir(cwd)
+        result = __javac__("HelloWorld.java")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(len(result[0]), 2)
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue("sourcefiles" in result[0][1])
+        self.assertTrue('flags' in result[0][1])
 
 if __name__ == "__main__":
     unittest.main()

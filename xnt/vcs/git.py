@@ -20,29 +20,43 @@
 import os
 import xnt.tasks
 import xnt.vcs
+from xnt.tasks import __apply__, __call__, __which__
 
-def gitclone(url, dest=None, branch=None):
+def __gitclone__(url, dest=None, branch=None):
     """Clone a repository
 
     :param url: URI of the repository to clone
     :param dest: Destination directory or name of the cloned repository
     :param branch: Branch to clone
     """
-    assert xnt.tasks.which("git")
-    command = ["git", "clone"]
-    command = xnt.vcs.clone_options(command, url, branch, dest)
-    xnt.tasks.call(command)
+    def __execute__(**kwargs):
+        '''Perform git clone'''
+        assert __apply__(__which__("git"))
+        command = ["git", "clone"]
+        command = xnt.vcs.clone_options(
+            command, kwargs['url'], kwargs['branch'], kwargs['dest'])
+        return __apply__(__call__(command))
+    args = {'url': url, 'dest': dest, 'branch': branch,}
+    return ((__execute__, args),)
 
-def gitpull(path, source="origin", branch="master"):
+def __gitpull__(path, remote=None, branch=None):
     """Pull/Update a cloned repository
 
     :param path: Directory of the repository for which to pull and update
-    :param source: Repository's upstream source
+    :param remote: Repository's upstream source
     :param branch: Repository's upstream branch to pull from
     """
-    assert xnt.tasks.which("git")
-    cwd = os.getcwd()
-    os.chdir(path)
-    command = ["git", "pull", source, branch]
-    xnt.tasks.call(command)
-    os.chdir(cwd)
+    def __execute__(**kwargs):
+        '''Perform git pull'''
+        assert __apply__(__which__("git"))
+        cwd = os.getcwd()
+        os.chdir(kwargs['path'])
+        command = ["git", "pull", kwargs['remote'], kwargs['branch']]
+        __apply__(__call__(command))
+        os.chdir(cwd)
+    args = {
+        'path': path,
+        'remote': remote if remote else 'origin',
+        'branch': branch if branch else 'master',
+    }
+    return ((__execute__, args),)

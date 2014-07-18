@@ -18,10 +18,11 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import subprocess
-from xnt.tasks import which
+from xnt.tasks import __apply__
+from xnt.tasks import __call__
+from xnt.tasks import __which__
 
-def ant(target, path="", flags=None, pkeys=None, pvalues=None):
+def __ant__(target, path=None, flags=None, pkeys=None, pvalues=None):
     """Wrapper around Apache Ant
 
     Invoke Apache Ant in either the current working directory or the specified
@@ -37,15 +38,27 @@ def ant(target, path="", flags=None, pkeys=None, pvalues=None):
     :param pkeys: List of keys to combine with pvalues to pass to Ant
     :param pvalues: List of values to combine with pkeys to pass to Ant
     """
-    assert which("ant")
-    cmd = __add_params(["ant"],
-                       __build_param_list(pkeys, pvalues),
-                       lambda x: "-D%s" % x)
-    cmd = __add_flags(cmd, flags)
-    cmd.append(target)
-    return __run_in(path, lambda: subprocess.call(cmd))
+    def __execute__(**kwargs):
+        '''Perform execution of ant'''
+        assert __apply__(__which__("ant"))
+        cmd = ['ant',]
+        if 'flags' in kwargs:
+            for flag in kwargs['flags']:
+                cmd.append(flag)
+        if 'pkeys' in kwargs and 'pvalues' in kwargs:
+            for param in zip(kwargs['pkeys'], kwargs['pvalues']):
+                cmd.append('-D%s=%s' % param)
+        cmd.append(target)
+        # TODO: this will need to wait for an upstream refactor
+        return __run_in(path, lambda: __apply__(__call__(cmd)))
+    args = {'target': target,
+            'flags': flags,
+            'pkeys': pkeys,
+            'pvalues': pvalues,
+            'path': path,}
+    return ((__execute__, args),)
 
-def make(target, path="", flags=None, pkeys=None, pvalues=None):
+def __make__(target, path=None, flags=None, pkeys=None, pvalues=None):
     """Wrapper around GNU Make
 
     Invoke Gnu Make (*make*) in either the current working directory or the
@@ -61,13 +74,27 @@ def make(target, path="", flags=None, pkeys=None, pvalues=None):
     :param pkeys: List of keys, zipped with pvalues, to pass to Make
     :param pvalues: List of values, zipped with pkeys, to pass to Make
     """
-    assert which("make")
-    cmd = __add_params(["make"], __build_param_list(pkeys, pvalues))
-    cmd = __add_flags(cmd, flags)
-    cmd.append(target)
-    return __run_in(path, lambda: subprocess.call(cmd))
+    def __execute__(**kwargs):
+        '''Perform invocation of make'''
+        assert __apply__(__which__("make"))
+        cmd = ['make',]
+        if 'flags' in kwargs:
+            for flag in kwargs['flags']:
+                cmd.append(flag)
+        if 'pkeys' in kwargs and 'pvalues' in kwargs:
+            for param in zip(kwargs['pkeys'], kwargs['pvalues']):
+                cmd.append('%s=%s' % param)
+        cmd.append(target)
+        # TODO: this will need to wait for an upstream refactor
+        return __run_in(path, lambda: __apply__(__call__(cmd)))
+    args = {'target': target,
+            'flags': flags,
+            'pkeys': pkeys,
+            'pvalues': pvalues,
+            'path': path,}
+    return ((__execute__, args),)
 
-def nant(target, path="", flags=None, pkeys=None, pvalues=None):
+def __nant__(target, path=None, flags=None, pkeys=None, pvalues=None):
     """Wrapper around .NET Ant
 
     Invoke NAnt in either the current working directory or the specified
@@ -83,41 +110,25 @@ def nant(target, path="", flags=None, pkeys=None, pvalues=None):
     :param pkeys: List of keys, zipped with pvalues, to pass to NAnt
     :param pvalues: List of values, zipped with pkeys, to pass to NAnt
     """
-    assert which("nant")
-    cmd = __add_params(["nant"],
-                        __build_param_list(pkeys, pvalues),
-                        lambda x: "-D:%s" % x)
-    cmd = __add_flags(cmd, flags)
-    cmd.append(target)
-    return __run_in(path, lambda: subprocess.call(cmd))
-
-def __add_flags(cmd, flags):
-    """Add flags to command and return new list"""
-    if not flags:
-        return cmd
-    command = list(cmd)
-    for flag in flags:
-        command.append(flag)
-    return command
-
-def __build_param_list(keys, values):
-    """Build a list of key-value for appending to the command list"""
-    parameters = []
-    if not keys or not values:
-        return parameters
-    params = zip(keys, values)
-    for param in params:
-        parameters.append("%s=%s" % param)
-    return parameters
-
-def __add_params(cmd, params, param_map=lambda x: x):
-    """Append parameters to cmd list using fn"""
-    if not params:
-        return cmd
-    command = list(cmd)
-    for param in params:
-        command.append(param_map(param))
-    return command
+    def __execute__(**kwargs):
+        '''Perform execution of ant'''
+        assert __apply__(__which__("nant"))
+        cmd = ['nant',]
+        if 'flags' in kwargs:
+            for flag in kwargs['flags']:
+                cmd.append(flag)
+        if 'pkeys' in kwargs and 'pvalues' in kwargs:
+            for param in zip(kwargs['pkeys'], kwargs['pvalues']):
+                cmd.append('-D%s=%s' % param)
+        cmd.append(target)
+        # TODO: this will need to wait for an upstream refactor
+        return __run_in(path, lambda: __apply__(__call__(cmd)))
+    args = {'target': target,
+            'flags': flags,
+            'pkeys': pkeys,
+            'pvalues': pvalues,
+            'path': path,}
+    return ((__execute__, args),)
 
 def __run_in(path, function):
     """Execute function while in a different running directory"""

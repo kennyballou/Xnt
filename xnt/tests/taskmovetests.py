@@ -17,32 +17,26 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import xnt.tasks
-import xnt.tests
+from xnt.tasks import __move__
+from types import FunctionType
 import unittest
 
 #pylint: disable-msg=C0103
 class TaskMoveTests(unittest.TestCase):
     """Test cases for move"""
-    def setUp(self):
-        """Test Case Setup"""
-        xnt.tests.set_up()
-
-    def tearDown(self):
-        """Test Case Teardown"""
-        xnt.tests.tear_down()
-
-    def test_mv(self):
+    def test_move(self):
         """Test Moving files and folders"""
-        xnt.tasks.mv("temp/testfolder1", "temp/testfolder2")
-        self.assertTrue(os.path.exists("temp/testfolder2"))
-        self.assertFalse(os.path.exists("temp/testfolder1"))
-        xnt.tasks.mv("temp/testfile1", "temp/testfile5")
-        self.assertTrue(os.path.exists("temp/testfile5"))
-        self.assertFalse(os.path.exists("temp/testfile1"))
-        with open("temp/testfile5", "r") as testfile:
-            self.assertEqual("this is a test file", testfile.read())
+        result = __move__('test0', 'test1')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('src' in result[0][1])
+        self.assertTrue('dst' in result[0][1])
+        self.assertEqual('test0', result[0][1]['src'])
+        self.assertEqual('test1', result[0][1]['dst'])
 
 if __name__ == "__main__":
     unittest.main()

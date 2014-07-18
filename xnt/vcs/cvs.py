@@ -18,35 +18,43 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import subprocess
-from xnt.tasks import which
+from xnt.tasks import __apply__
+from xnt.tasks import __call__
+from xnt.tasks import __which__
 
-def cvsco(module, rev="", dest=""):
+def __cvsco__(module, rev=None, dest=None):
     """Run CVS Checkout
 
     :param module: CVS Module name to checkout
     :param rev: Revision to checkout
     :param dest: Destination directory or name of checked out module
     """
-    assert which("cvs")
-    cmd = ["cvs", "co", "-P"]
-    if rev:
-        cmd.append("-r")
-        cmd.append(rev)
-    if dest:
-        cmd.append("-d")
-        cmd.append(dest)
-    cmd.append(module)
-    subprocess.call(cmd)
+    def __execute__(**kwargs):
+        '''Perform CVS Checkout'''
+        assert __apply__(__which__("cvs"))
+        cmd = ["cvs", "co", "-P"]
+        if kwargs['rev']:
+            cmd.append("-r")
+            cmd.append(kwargs['rev'])
+        if kwargs['dest']:
+            cmd.append("-d")
+            cmd.append(kwargs['dest'])
+        cmd.append(kwargs['module'])
+        return __apply__(__call__(cmd))
+    args = {'module': module, 'rev': rev, 'dest': dest,}
+    return ((__execute__, args),)
 
-def cvsupdate(path):
+def __cvsupdate__(path):
     """Run CVS Update
 
     :param path: Directory path to module to update
     """
-    assert which("cvs")
-    cwd = os.path.abspath(os.getcwd())
-    os.chdir(path)
-    cmd = ["cvs", "update"]
-    subprocess.call(cmd)
-    os.chdir(cwd)
+    def __execute__(**kwargs):
+        '''Perform CVS Update'''
+        assert __apply__(__which__("cvs"))
+        cwd = os.path.abspath(os.getcwd())
+        os.chdir(kwargs['path'])
+        cmd = ["cvs", "update"]
+        __apply__(__call__(cmd))
+        os.chdir(cwd)
+    return ((__execute__, {'path': path,}),)

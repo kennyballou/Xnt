@@ -17,28 +17,24 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import xnt.tasks
-import xnt.tests
+from xnt.tasks import __remove__
+from types import FunctionType
 import unittest
 
 #pylint: disable-msg=C0103
 class TaskRemoveTests(unittest.TestCase):
     """Test Case for Remove"""
-    def setUp(self):
-        """Test case Setup"""
-        xnt.tests.set_up()
-
-    def tearDown(self):
-        """Test case Teardown"""
-        xnt.tests.tear_down()
-
-    def test_rm(self):
-        """Remove cases"""
-        xnt.tasks.rm("temp/testfolder1")
-        self.assertFalse(os.path.exists("temp/testfolder1"))
-        xnt.tasks.rm("temp/testfile1")
-
+    def test_remove(self):
+        """Test removing files and folders"""
+        result = __remove__('test0', 'test1', '*swp')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('fileset' in result[0][1])
+        self.assertEqual(3, len(result[0][1]['fileset']))
 
 if __name__ == "__main__":
     unittest.main()

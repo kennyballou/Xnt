@@ -22,105 +22,87 @@ Definition of commonly used compilers
 
 import os
 import logging
-from xnt.tasks import call, which
+from xnt.tasks import __apply__
+from xnt.tasks import __call__
+from xnt.tasks import __which__
 
 LOGGER = logging.getLogger(__name__)
 
-def gcc(src, flags=None):
-    """gcc compiler, non-named output file
+def __gcc__(src, output=None, flags=None):
+    """gcc compiler
 
-    :param src: C source file to compile with default `gcc`
+    :param src: C source file to compile
+    :param output: Output filename
     :param flags: List of flags to pass onto the compiler
     """
-    assert which("gcc")
-    return _gcc(src, flags)
+    def __compile__(**kwargs):
+        '''Perform GCC compilation'''
+        assert __apply__(__which__("gcc"))
+        cmd = ["gcc", kwargs['infile']]
+        if kwargs.get('flags', None):
+            for flag in kwargs['flags']:
+                cmd.append(flag)
+        if kwargs.get('outfile', None):
+            cmd.append('-o')
+            cmd.append(kwargs['outfile'])
+        return __apply__(__call__(cmd))
+    args = {'infile': src, 'outfile': output, 'flags': flags,}
+    return ((__compile__, args),)
 
-def gpp(src, flags=None):
+def __gpp__(src, output=None, flags=None):
     """g++ compiler, non-named output file
 
-    :param src: C++ source file to compile with default `g++`
+    :param src: C++ source file to compile
+    :param output: Output filename
     :param flags: List of flags to pass onto the compiler
     """
-    assert which("g++")
-    return _gcc(src, flags, "g++")
+    def __compile__(**kwargs):
+        '''Perform G++ compilation'''
+        assert __apply__(__which__("g++"))
+        cmd = ["g++", kwargs['outfile'],]
+        if kwargs.get('flags', None):
+            for flag in kwargs['flags']:
+                cmd.append(flag)
+        if kwargs.get('outfile', None):
+            cmd.append('-o')
+            cmd.append(kwargs['outfile'])
+        return __apply__(__call__(cmd))
+    args = {'infile': src, 'outfile': output, 'flags': flags,}
+    return ((__compile__, args),)
 
-def gcc_o(src, output, flags=None):
-    """gcc compiler, with output file
-
-    :param src: C source file to compile with default `gcc`
-    :param output: Name of resulting object or executable
-    :param flags: List of flags to pass onto the compiler
-    """
-    assert which("gcc")
-    return _gcc_o(src, output, flags)
-
-def gpp_o(src, output, flags=None):
-    """g++ compiler, with output file
-
-    :param src: C++ source file to compile with default `g++`
-    :param output: Name of resulting object or executable
-    :param flags: List of flags to pass onto the compiler
-    """
-    assert which("g++")
-    return _gcc_o(src, output, flags, "g++")
-
-def javac(src, flags=None):
+def __javac__(src, flags=None):
     """Javac: compile Java programs
 
     :param src: Java source file to compile with default `javac`
     :param flags: List of flags to pass onto the compiler
     """
-    assert which("javac")
-    LOGGER.info("Compiling %s", src)
-    cmd = __generate_command(src, flags, "javac")
-    return __compile(cmd)
+    def __compile__(**kwargs):
+        '''Perform javac compilation'''
+        assert __apply__(__which__("javac"))
+        cmd = ['javac', kwargs['sourcefiles'],]
+        if kwargs.get('flags', None):
+            for flag in kwargs['flags']:
+                cmd.append(flag)
+        return __apply__(__call__(cmd))
+    return ((__compile__, {'sourcefiles': src, 'flags': flags,}),)
 
-def nvcc(src, flags=None):
+def __nvcc__(src, output=None, flags=None):
     """NVCC: compile CUDA C/C++ programs
 
-    :param src: CUDA source file to compile with default `nvcc`
+    :param src: CUDA source file to compile
+    :param output: Output filename
     :param flags: List of flags to pass onto the compiler
     """
-    assert which('nvcc')
-    return _gcc(src, flags, compiler='nvcc')
-
-def nvcc_o(src, output, flags=None):
-    """NVCC: compile with named output
-
-    :param src: CUDA source file to compile with default `nvcc`
-    :param output: Name of resulting object or executable
-    :param flags: List of flags to pass onto the compiler
-    """
-    assert which('nvcc')
-    return _gcc_o(src, output, flags, compiler='nvcc')
-
-def _gcc(src, flags=None, compiler="gcc"):
-    """Compile using gcc"""
-    LOGGER.info("Compiling %s", src)
-    return __compile(__generate_command(src, flags, compiler))
-
-def _gcc_o(src, output, flags=None, compiler="gcc"):
-    """Compile with gcc specifying output file name"""
-    LOGGER.info("Compiling %s to %s", src, output)
-    cmd = __generate_command(src, flags, compiler)
-    cmd.append("-o")
-    cmd.append(output)
-    return __compile(cmd)
-
-def __generate_command(src, flags=None, compiler="gcc"):
-    """Generate cmd list for call"""
-    cmd = [compiler, src]
-    if flags:
-        for flag in flags:
-            cmd.append(flag)
-    return cmd
-
-def __compile(cmd):
-    """Run Compile, using `xnt.tasks.call`"""
-    return call(cmd)
-
-def __is_newer(file_a, file_b):
-    """Compare mmtimes of files
-    Return True if `file_a` is modified later than `file_b`
-    """
-    return os.path.getmtime(file_a) > os.path.getmtime(file_b)
+    def __compile__(**kwargs):
+        '''Perform NVCC compilation'''
+        assert __apply__(__call__('nvcc'))
+        cmd = ['nvcc', kwargs['infile'],]
+        if kwargs.get('flags', None):
+            for flag in kwargs['flags']:
+                cmd.append(flag)
+        if kwargs.get('outfile', None):
+            cmd.append('-o')
+            cmd.append(kwargs['outfile'])
+        return __apply__(__call__(cmd))
+    args = {'infile': src, 'outfile': output, 'flags': flags,}
+    return ((__compile__, args),)

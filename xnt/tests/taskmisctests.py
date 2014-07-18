@@ -17,9 +17,14 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import xnt.tasks
-import xnt.tests
+from xnt.tasks import __echo__
+from xnt.tasks import __call__
+from xnt.tasks import __setup__
+from xnt.tasks import __xntcall__
+from xnt.tasks import __which__
+from xnt.tasks import __in_path__
+from xnt.tasks import __log__
+from types import FunctionType
 import unittest
 
 #pylint: disable-msg=C0103
@@ -27,60 +32,121 @@ class TaskMiscTests(unittest.TestCase):
     """Test Misc Tasks"""
     def setUp(self):
         """Test Case Setup"""
-        xnt.tests.set_up()
+        pass
 
     def tearDown(self):
         """Test Case Teardown"""
-        xnt.tests.tear_down()
+        pass
 
     def test_echo(self):
         """Test Echo Task"""
-        xnt.tasks.echo("this is my cool echo", "temp/mynewcoolfile")
-        self.assertTrue(os.path.exists("temp/mynewcoolfile"))
-        with open("temp/mynewcoolfile", "r") as temp_file:
-            self.assertEqual("this is my cool echo", temp_file.read())
+        result = __echo__(msg="foobar", tofile="mytestfile")
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('msg' in result[0][1])
+        self.assertEqual('foobar', result[0][1]['msg'])
+        self.assertTrue('tofile' in result[0][1])
+        self.assertEqual('mytestfile', result[0][1]['tofile'])
+
+    def test_log(self):
+        """Test log function"""
+        result = __log__(msg="testing the logging", lvl=40)
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('msg' in result[0][1])
+        self.assertEqual('testing the logging', result[0][1]['msg'])
+        self.assertTrue('lvl' in result[0][1])
+        self.assertEqual(40, result[0][1]['lvl'])
 
     def test_call(self):
         """Test Call, testing redirection"""
-        out = open("temp/testout", "w")
-        err = open("temp/testerr", "w")
-        xnt.tasks.call(["python",
-                        os.path.abspath("temp/test.py"),
-                        "42", "hello"],
-                       out,
-                       err)
-        out.close()
-        err.close()
-        self.assertTrue(os.path.exists("temp/testout"))
-        self.assertTrue(os.path.exists("temp/testerr"))
-        with open("temp/testout", "r") as std_out:
-            self.assertEqual("42", std_out.read())
-        with open("temp/testerr", "r") as std_err:
-            self.assertEqual("hello", std_err.read())
+        result = __call__(['echo', 'blah'])
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('command' in result[0][1])
+        self.assertEqual(2, len(result[0][1]['command']))
+        self.assertEqual('echo', result[0][1]['command'][0])
+        self.assertEqual('blah', result[0][1]['command'][1])
+        self.assertTrue('stdout' in result[0][1])
+        self.assertIsNone(result[0][1]['stdout'])
+        self.assertTrue('stderr' in result[0][1])
+        self.assertIsNone(result[0][1]['stderr'])
 
-    def test_which_finds_python(self):
-        """Test which can find python"""
-        if os.name == 'posix':
-            path = xnt.tasks.which("python")
-        else:
-            path = xnt.tasks.which("python.exe")
-        self.assertIsNotNone(path)
+    def test_setup_with_single_command(self):
+        '''Test setup function with a single command'''
+        result = __setup__(command='test')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('commands' in result[0][1])
+        self.assertEqual(1, len(result[0][1]['commands']))
 
-    def test_which_dne(self):
-        """Test which cannot find not existent program"""
-        path = xnt.tasks.which("arst")
-        self.assertIsNone(path)
+    def test_setup_with_commands(self):
+        '''Test setup function commands'''
+        result = __setup__(commands=['build', 'test'])
+        self.assertIsNotNone(result)
+        self.assertTrue('commands' in result[0][1])
+        self.assertEqual(2, len(result[0][1]['commands']))
 
-    def test_python_in_path(self):
+    def test_setup_with_directory(self):
+        '''Test setup function with directory'''
+        result = __setup__(command='test', directory='test/')
+        self.assertIsNotNone(result)
+        self.assertTrue('directory' in result[0][1])
+        self.assertEqual('test/', result[0][1]['directory'])
+
+    def test_xntcall(self):
+        """Test xntcall"""
+        result = __xntcall__(buildfile='test/build.py')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('buildfile' in result[0][1])
+        self.assertEqual('test/build.py', result[0][1]['buildfile'])
+        self.assertTrue('targets' in result[0][1])
+        self.assertTrue('props' in result[0][1])
+
+    def test_which(self):
+        """Test which"""
+        result = __which__('python')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('program' in result[0][1])
+        self.assertEqual('python', result[0][1]['program'])
+
+    def test_in_path(self):
         """Test in_path task"""
-        if os.name == 'posix':
-            self.assertTrue(xnt.tasks.in_path("python"))
-        else:
-            self.assertTrue(xnt.tasks.in_path("python.exe"))
-
-    def test_arst_not_in_path(self):
-        """Test not in_path"""
-        self.assertFalse(xnt.tasks.in_path("arst"))
+        result = __in_path__('python')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('program' in result[0][1])
+        self.assertEqual('python', result[0][1]['program'])
 
 if __name__ == "__main__":
     unittest.main()

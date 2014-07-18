@@ -17,95 +17,62 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
+from xnt.build.tex import __pdflatex__
+from xnt.build.tex import __clean__
+from types import FunctionType
 import unittest
-import xnt
-import xnt.build.tex
-import xnt.tests
 
-@unittest.skipUnless(xnt.in_path("pdflatex") or xnt.in_path("pdflatex.exe"),
-                     "pdflatex is not in your path")
 class TexTests(unittest.TestCase):
     """Test Case for TeX Document Building"""
 
-    def setUp(self):
-        """Test Setup"""
-        xnt.tests.set_up()
-        with open("temp/test.tex", "w") as test_tex:
-            test_tex.write('\\documentclass{article}\n')
-            test_tex.write('\\usepackage{glossaries}\n')
-            test_tex.write('\\author{python test}\n')
-            test_tex.write('\\date{\\today}\n')
-            test_tex.write('\\makeglossaries\n')
-            test_tex.write('\\begin{document}\n')
-            test_tex.write('\\nocite{*}\n')
-            test_tex.write('\\newglossaryentry{test}\n')
-            test_tex.write('{name={test},description={this}}\n')
-            test_tex.write('This is a \\gls{test} \\LaTeX document.\n')
-            test_tex.write('\\printglossaries\n')
-            test_tex.write('\\begin{thebibliography}{1}\n')
-            test_tex.write('\\bibitem{test_bib_item}\n')
-            test_tex.write('Leslie Lamport,\n')
-            test_tex.write('\\emph{\\LaTeX: A Document Preperation System}.\n')
-            test_tex.write('Addison Wesley, Massachusetts,\n')
-            test_tex.write('2nd Edition,\n')
-            test_tex.write('1994.\n')
-            test_tex.write('\\end{thebibliography}\n')
-            test_tex.write('\\bibliography{1}\n')
-            test_tex.write('\\end{document}\n')
-
-    def tearDown(self):
-        """Test Teardown"""
-        xnt.tests.tear_down()
-
     def test_pdflatex_build(self):
         """Test default pdflatex build"""
-        xnt.build.tex.pdflatex("test.tex",
-                               path="temp")
-        self.assertTrue(os.path.exists("temp/test.pdf"))
-        self.assertTrue(os.path.exists("temp/test.aux"))
-        self.assertTrue(os.path.exists("temp/test.log"))
+        result = __pdflatex__('test.tex', directory='tex')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('texdocument' in result[0][1])
+        self.assertEqual('test.tex', result[0][1]['texdocument'])
+        self.assertTrue('directory' in result[0][1])
+        self.assertTrue('bibtex' in result[0][1])
+        self.assertFalse(result[0][1]['bibtex'])
+        self.assertTrue('makeglossary' in result[0][1])
+        self.assertFalse(result[0][1]['makeglossary'])
 
     def test_pdflatex_with_bibtex(self):
         """Test pdflatex with bibtex"""
-        xnt.build.tex.pdflatex("test.tex",
-                               path="temp",
-                               bibtex=True)
-        self.assertTrue(os.path.exists("temp/test.pdf"))
-        self.assertTrue(os.path.exists("temp/test.bbl"))
-        self.assertTrue(os.path.exists("temp/test.blg"))
+        result = __pdflatex__('test.tex', bibtex=True)
+        self.assertIsNotNone(result)
+        self.assertTrue(result[0][1]['bibtex'])
 
     def test_pdflatex_with_glossary(self):
         """Test pdflatex with glossary output"""
-        xnt.build.tex.pdflatex("test.tex",
-                               path="temp",
-                               makeglossary=True)
-        self.assertTrue(os.path.exists("temp/test.pdf"))
-        self.assertTrue(os.path.exists("temp/test.glo"))
-        self.assertTrue(os.path.exists("temp/test.glg"))
-        self.assertTrue(os.path.exists("temp/test.gls"))
+        result = __pdflatex__("test.tex", makeglossary=True)
+        self.assertIsNotNone(result)
+        self.assertTrue(result[0][1]['makeglossary'])
 
     def test_tex_clean(self):
         """Test the default clean method removes generated files except pdf"""
-        xnt.build.tex.pdflatex("test.tex",
-                               path="temp",
-                               bibtex=True,
-                               makeglossary=True)
-        xnt.build.tex.clean(path="temp")
-        self.assertTrue(os.path.exists("temp/test.pdf"))
-        self.assertFalse(os.path.exists("temp/test.aux"))
-        self.assertFalse(os.path.exists("temp/test.log"))
+        result = __clean__(directory='tex')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('directory' in result[0][1])
+        self.assertEqual('tex', result[0][1]['directory'])
+        self.assertTrue('remove_pdf' in result[0][1])
+        self.assertFalse(result[0][1]['remove_pdf'])
 
     def test_tex_clean_include_pdf(self):
         """Test Clean; including PDF"""
-        xnt.build.tex.pdflatex("test.tex",
-                               path="temp",
-                               bibtex=True,
-                               makeglossary=True)
-        xnt.build.tex.clean(path="temp", remove_pdf=True)
-        self.assertFalse(os.path.exists("temp/test.pdf"))
-        self.assertFalse(os.path.exists("temp/test.aux"))
-        self.assertFalse(os.path.exists("temp/test.log"))
+        result = __clean__(directory='tex', remove_pdf=True)
+        self.assertIsNotNone(result)
+        self.assertTrue(result[0][1]['remove_pdf'])
 
 if __name__ == '__main__':
     unittest.main()

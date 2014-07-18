@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-"""Test `xnt.tasks.zip`"""
+"""Test `xnt.vcs.cvs`"""
 
 #   Xnt -- A Wrapper Build Tool
-#   Copyright (C) 2013  Kenny Ballou
+#   Copyright (C) 2014  Kenny Ballou
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -17,34 +17,41 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from xnt.tasks import __zip__
+from xnt.vcs.cvs import __cvsco__
+from xnt.vcs.cvs import __cvsupdate__
 from types import FunctionType
 import unittest
 
-#pylint: disable-msg=C0103
-class TaskCompressionTests(unittest.TestCase):
-    """Test Cases for Compression"""
-    def setUp(self):
-        """Test Case Setup"""
-        pass
+class VcsCvsTests(unittest.TestCase):
+    '''VCS CVS Tests'''
 
-    def tearDown(self):
-        """Test Case Teardown"""
-        pass
-
-    def test_zip(self):
-        """Test zip method"""
-        result = __zip__(directory="testfolder", zipfilename="myzip.zip")
+    def test_cvsco(self):
+        '''Test CVS checkout'''
+        result = __cvsco__('mytestmodule')
         self.assertIsNotNone(result)
         self.assertIsInstance(result, tuple)
         self.assertIsInstance(result[0], tuple)
         self.assertEqual(2, len(result[0]))
         self.assertIsInstance(result[0][0], FunctionType)
         self.assertIsInstance(result[0][1], dict)
-        self.assertTrue("directory" in result[0][1])
-        self.assertEqual("testfolder", result[0][1]['directory'])
-        self.assertTrue("zipfile" in result[0][1])
-        self.assertEqual("myzip.zip", result[0][1]['zipfile'])
+        self.assertTrue('module' in result[0][1])
+        self.assertEqual('mytestmodule', result[0][1]['module'])
+        self.assertTrue('rev' in result[0][1])
+        self.assertIsNone(result[0][1]['rev'])
+        self.assertTrue('dest' in result[0][1])
+        self.assertIsNone(result[0][1]['dest'])
+
+    def test_cvsupdate(self):
+        '''Test CVS Update'''
+        result = __cvsupdate__('./')
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, tuple)
+        self.assertIsInstance(result[0], tuple)
+        self.assertEqual(2, len(result[0]))
+        self.assertIsInstance(result[0][0], FunctionType)
+        self.assertIsInstance(result[0][1], dict)
+        self.assertTrue('path' in result[0][1])
+        self.assertEqual('./', result[0][1]['path'])
 
 if __name__ == "__main__":
     unittest.main()
