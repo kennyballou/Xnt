@@ -19,7 +19,7 @@
 
 import os
 import logging
-import xnt.tasks
+import xnt
 from xnt import VERBOSE
 
 LOGGER = logging.getLogger(__name__)
@@ -93,25 +93,25 @@ def __clean__(directory=None, remove_pdf=False):
         '''Perform clean operation'''
         cwd = os.getcwd()
         os.chdir(kwargs['directory'])
-        xnt.tasks.rm("*.out",
-                     "*.log",
-                     "*.aux",
-                     "*.toc",
-                     "*.tol",
-                     "*.tof",
-                     "*.tot",
-                     "*.bbl",
-                     "*.blg",
-                     "*.nav",
-                     "*.snm",
-                     "*.mtc",
-                     "*.mtc0",
-                     "*.glo",
-                     "*.ist",
-                     "*.glg",
-                     "*.gls")
+        xnt.rm("*.out",
+               "*.log",
+               "*.aux",
+               "*.toc",
+               "*.tol",
+               "*.tof",
+               "*.tot",
+               "*.bbl",
+               "*.blg",
+               "*.nav",
+               "*.snm",
+               "*.mtc",
+               "*.mtc0",
+               "*.glo",
+               "*.ist",
+               "*.glg",
+               "*.gls")
         if kwargs['remove_pdf']:
-            xnt.tasks.rm("*.pdf")
+            xnt.rm("*.pdf")
         os.chdir(cwd)
     args = {'directory': directory if directory else os.getcwd(),
             'remove_pdf': remove_pdf,}

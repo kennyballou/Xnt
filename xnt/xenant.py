@@ -51,11 +51,10 @@ def main():
     print("Execution time: %.3f" % elapsed_time)
     if error_code != 0:
         LOGGER.error("Failure")
-    from xnt.tasks import rm
-    rm("build.pyc",
-       "__pycache__",
-       build_file + "c",
-       os.path.join(os.path.dirname(build_file), "__pycache__"))
+    xnt.rm("build.pyc",
+           "__pycache__",
+           build_file + "c",
+           os.path.join(os.path.dirname(build_file), "__pycache__"))
     if error_code != 0:
         sys.exit(error_code)
 
