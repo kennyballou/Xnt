@@ -18,7 +18,6 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import xnt.tasks
 import xnt.vcs
 from xnt.tasks import __apply__, __call__, __which__
 
