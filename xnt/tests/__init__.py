@@ -16,23 +16,3 @@
 
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-import os
-import shutil
-
-def set_up():
-    """Shared Setup Code"""
-    os.mkdir("temp")
-    os.mkdir("temp/testfolder1")
-    for i in range(1, 5):
-        with open("temp/testfile" + str(i), "w") as test_file:
-            test_file.write("this is a test file")
-    with open("temp/test.py", "w") as test:
-        test.write("#!/usr/bin/env python\n")
-        test.write("import sys\n")
-        test.write("sys.stdout.write(sys.argv[1])\n")
-        test.write("sys.stderr.write(sys.argv[2])\n")
-
-def tear_down():
-    """Shared Teardown Code"""
-    shutil.rmtree("temp")
