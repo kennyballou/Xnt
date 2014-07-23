@@ -22,6 +22,7 @@ from xnt.build.tex import __pdflatex__
 from xnt.build.tex import __clean__
 import unittest
 
+# pylint: disable=R0904
 class TexTests(unittest.TestCase):
     """Test Case for TeX Document Building"""
 

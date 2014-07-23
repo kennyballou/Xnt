@@ -21,7 +21,7 @@ from xnt.tests import assert_basic_assumptions
 from xnt.tasks import __remove__
 import unittest
 
-#pylint: disable-msg=C0103
+# pylint: disable=R0904
 class TaskRemoveTests(unittest.TestCase):
     """Test Case for Remove"""
     def test_remove(self):

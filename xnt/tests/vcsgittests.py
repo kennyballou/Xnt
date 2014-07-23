@@ -22,6 +22,7 @@ from xnt.vcs.git import __gitclone__
 from xnt.vcs.git import __gitpull__
 import unittest
 
+# pylint: disable=R0904
 class VcsGitTests(unittest.TestCase):
     '''Test VCS GIT'''
 

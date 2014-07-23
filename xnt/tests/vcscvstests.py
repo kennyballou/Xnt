@@ -22,6 +22,7 @@ from xnt.vcs.cvs import __cvsco__
 from xnt.vcs.cvs import __cvsupdate__
 import unittest
 
+# pylint: disable=R0904
 class VcsCvsTests(unittest.TestCase):
     '''VCS CVS Tests'''
 

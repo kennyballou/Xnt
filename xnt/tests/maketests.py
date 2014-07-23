@@ -23,6 +23,7 @@ from xnt.build.make import __ant__
 from xnt.build.make import __nant__
 import unittest
 
+# pylint: disable=R0904
 class AntTests(unittest.TestCase):
     """Test Case for Ant Build"""
 
@@ -61,6 +62,7 @@ class AntTests(unittest.TestCase):
         self.assertEqual('test_var', result[0][1]['pkeys'][0])
         self.assertEqual('testing', result[0][1]['pvalues'][0])
 
+# pylint: disable=R0904
 class MakeTests(unittest.TestCase):
     """GNU Make Tests"""
 
@@ -99,6 +101,7 @@ class MakeTests(unittest.TestCase):
         self.assertEqual(1, len(result[0][1]['flags']))
         self.assertEqual('-B', result[0][1]['flags'][0])
 
+# pylint: disable=R0904
 class NAntTests(unittest.TestCase):
     """.NET Ant Tests"""
 

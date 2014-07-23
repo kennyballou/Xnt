@@ -20,7 +20,7 @@
 import xnt.xenant
 import unittest
 
-#pylint: disable-msg=C0103
+# pylint: disable=R0904
 class XenantArgParserTests(unittest.TestCase):
     """Test Cases for Xenant Args Parsing"""
 

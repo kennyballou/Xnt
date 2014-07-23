@@ -24,7 +24,7 @@ from xnt.build.cc import __nvcc__
 from xnt.build.cc import __javac__
 import unittest
 
-#pylint: disable-msg=C0103
+# pylint: disable=R0904
 class GccTests(unittest.TestCase):
     """Test GCC"""
 
@@ -43,7 +43,7 @@ class GccTests(unittest.TestCase):
         self.assertTrue("outfile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
 
-#pylint: disable-msg=C0103
+# pylint: disable=R0904
 class GppTests(unittest.TestCase):
     """Test G++ (C++ GCC)"""
 
@@ -62,7 +62,7 @@ class GppTests(unittest.TestCase):
         self.assertTrue("outfile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
 
-#pylint: disable-msg=C0103
+# pylint: disable=R0904
 class NvccTests(unittest.TestCase):
     """Test NVCC"""
 
@@ -81,6 +81,7 @@ class NvccTests(unittest.TestCase):
         self.assertTrue("outfile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
 
+# pylint: disable=R0904
 class JavacTests(unittest.TestCase):
     """Test Javac"""
 

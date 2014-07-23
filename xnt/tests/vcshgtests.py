@@ -22,6 +22,7 @@ from xnt.vcs.hg import __hgclone__
 from xnt.vcs.hg import __hgfetch__
 import unittest
 
+# pylint: disable=R0904
 class VcsHgTests(unittest.TestCase):
     '''VCS Mercurial Tests'''
 

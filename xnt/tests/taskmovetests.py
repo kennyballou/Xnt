@@ -21,7 +21,7 @@ from xnt.tests import assert_basic_assumptions
 from xnt.tasks import __move__
 import unittest
 
-#pylint: disable-msg=C0103
+# pylint: disable=R0904
 class TaskMoveTests(unittest.TestCase):
     """Test cases for move"""
     def test_move(self):

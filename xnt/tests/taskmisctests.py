@@ -27,7 +27,7 @@ from xnt.tasks import __in_path__
 from xnt.tasks import __log__
 import unittest
 
-#pylint: disable-msg=C0103
+# pylint: disable=R0904
 class TaskMiscTests(unittest.TestCase):
     """Test Misc Tasks"""
 
