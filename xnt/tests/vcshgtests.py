@@ -17,9 +17,9 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from xnt.tests import assert_basic_assumptions
 from xnt.vcs.hg import __hgclone__
 from xnt.vcs.hg import __hgfetch__
-from types import FunctionType
 import unittest
 
 class VcsHgTests(unittest.TestCase):
@@ -29,12 +29,7 @@ class VcsHgTests(unittest.TestCase):
         '''Test hg clone'''
         url = 'https://vim.googlecode.com/hg'
         result = __hgclone__(url, dest='vim')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('url' in result[0][1])
         self.assertEqual(url, result[0][1]['url'])
         self.assertTrue('dest' in result[0][1])
@@ -47,12 +42,7 @@ class VcsHgTests(unittest.TestCase):
     def test_hgfetch(self):
         '''Test hg fetch'''
         result = __hgfetch__('./', source='upstream')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('path' in result[0][1])
         self.assertEqual('./', result[0][1]['path'])
         self.assertTrue('source' in result[0][1])

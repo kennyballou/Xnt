@@ -17,8 +17,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from xnt.tests import assert_basic_assumptions
 from xnt.tasks import __mkdir__
-from types import FunctionType
 import unittest
 
 #pylint: disable-msg=C0103
@@ -27,12 +27,7 @@ class TaskMkdirTests(unittest.TestCase):
     def test_mkdir(self):
         """Test mkdir method"""
         result = __mkdir__("my/new/directory")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('directory' in result[0][1])
         self.assertEqual('my/new/directory', result[0][1]['directory'])
         self.assertTrue('mode' in result[0][1])

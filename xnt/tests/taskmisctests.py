@@ -17,6 +17,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from xnt.tests import assert_basic_assumptions
 from xnt.tasks import __echo__
 from xnt.tasks import __call__
 from xnt.tasks import __setup__
@@ -24,29 +25,16 @@ from xnt.tasks import __xntcall__
 from xnt.tasks import __which__
 from xnt.tasks import __in_path__
 from xnt.tasks import __log__
-from types import FunctionType
 import unittest
 
 #pylint: disable-msg=C0103
 class TaskMiscTests(unittest.TestCase):
     """Test Misc Tasks"""
-    def setUp(self):
-        """Test Case Setup"""
-        pass
-
-    def tearDown(self):
-        """Test Case Teardown"""
-        pass
 
     def test_echo(self):
         """Test Echo Task"""
         result = __echo__(msg="foobar", tofile="mytestfile")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('msg' in result[0][1])
         self.assertEqual('foobar', result[0][1]['msg'])
         self.assertTrue('tofile' in result[0][1])
@@ -55,12 +43,7 @@ class TaskMiscTests(unittest.TestCase):
     def test_log(self):
         """Test log function"""
         result = __log__(msg="testing the logging", lvl=40)
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('msg' in result[0][1])
         self.assertEqual('testing the logging', result[0][1]['msg'])
         self.assertTrue('lvl' in result[0][1])
@@ -69,12 +52,7 @@ class TaskMiscTests(unittest.TestCase):
     def test_call(self):
         """Test Call, testing redirection"""
         result = __call__(['echo', 'blah'])
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('command' in result[0][1])
         self.assertEqual(2, len(result[0][1]['command']))
         self.assertEqual('echo', result[0][1]['command'][0])
@@ -87,38 +65,28 @@ class TaskMiscTests(unittest.TestCase):
     def test_setup_with_single_command(self):
         '''Test setup function with a single command'''
         result = __setup__(command='test')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('commands' in result[0][1])
         self.assertEqual(1, len(result[0][1]['commands']))
 
     def test_setup_with_commands(self):
         '''Test setup function commands'''
         result = __setup__(commands=['build', 'test'])
-        self.assertIsNotNone(result)
+        assert_basic_assumptions(self, result)
         self.assertTrue('commands' in result[0][1])
         self.assertEqual(2, len(result[0][1]['commands']))
 
     def test_setup_with_directory(self):
         '''Test setup function with directory'''
         result = __setup__(command='test', directory='test/')
-        self.assertIsNotNone(result)
+        assert_basic_assumptions(self, result)
         self.assertTrue('directory' in result[0][1])
         self.assertEqual('test/', result[0][1]['directory'])
 
     def test_xntcall(self):
         """Test xntcall"""
         result = __xntcall__(buildfile='test/build.py')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('buildfile' in result[0][1])
         self.assertEqual('test/build.py', result[0][1]['buildfile'])
         self.assertTrue('targets' in result[0][1])
@@ -127,24 +95,14 @@ class TaskMiscTests(unittest.TestCase):
     def test_which(self):
         """Test which"""
         result = __which__('python')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('program' in result[0][1])
         self.assertEqual('python', result[0][1]['program'])
 
     def test_in_path(self):
         """Test in_path task"""
         result = __in_path__('python')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('program' in result[0][1])
         self.assertEqual('python', result[0][1]['program'])
 

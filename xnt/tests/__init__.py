@@ -16,3 +16,13 @@
 
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+def assert_basic_assumptions(testcase, result):
+    '''Test function assert basic structure of task code'''
+    from types import FunctionType
+    testcase.assertIsNotNone(result)
+    testcase.assertIsInstance(result, tuple)
+    testcase.assertIsInstance(result[0], tuple)
+    testcase.assertEqual(len(result[0]), 2)
+    testcase.assertIsInstance(result[0][0], FunctionType)
+    testcase.assertIsInstance(result[0][1], dict)

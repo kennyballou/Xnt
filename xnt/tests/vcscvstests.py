@@ -17,9 +17,9 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from xnt.tests import assert_basic_assumptions
 from xnt.vcs.cvs import __cvsco__
 from xnt.vcs.cvs import __cvsupdate__
-from types import FunctionType
 import unittest
 
 class VcsCvsTests(unittest.TestCase):
@@ -28,12 +28,7 @@ class VcsCvsTests(unittest.TestCase):
     def test_cvsco(self):
         '''Test CVS checkout'''
         result = __cvsco__('mytestmodule')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('module' in result[0][1])
         self.assertEqual('mytestmodule', result[0][1]['module'])
         self.assertTrue('rev' in result[0][1])
@@ -44,12 +39,7 @@ class VcsCvsTests(unittest.TestCase):
     def test_cvsupdate(self):
         '''Test CVS Update'''
         result = __cvsupdate__('./')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('path' in result[0][1])
         self.assertEqual('./', result[0][1]['path'])
 

@@ -17,45 +17,28 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from xnt.tests import assert_basic_assumptions
 from xnt.build.cc import __gcc__
 from xnt.build.cc import __gpp__
 from xnt.build.cc import __nvcc__
 from xnt.build.cc import __javac__
-from types import FunctionType
 import unittest
 
 #pylint: disable-msg=C0103
 class GccTests(unittest.TestCase):
     """Test GCC"""
-    def setUp(self):
-        """Test Case Setup"""
-        pass
-
-    def tearDown(self):
-        """Test Case Teardown"""
-        pass
 
     def test_gcc(self):
         """Test Default GCC"""
         result = __gcc__("hello.c")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(len(result[0]), 2)
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue("infile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
 
     def test_gcc_with_output(self):
         """Test GCC with output"""
         result = __gcc__("hello.c", output="hello")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(len(result[0]), 2)
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue("infile" in result[0][1])
         self.assertTrue("outfile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
@@ -63,35 +46,18 @@ class GccTests(unittest.TestCase):
 #pylint: disable-msg=C0103
 class GppTests(unittest.TestCase):
     """Test G++ (C++ GCC)"""
-    def setUp(self):
-        """Test Case Setup"""
-        pass
-
-    def tearDown(self):
-        """Test Case Teardown"""
-        pass
 
     def test_gpp(self):
         """Test Default G++"""
         result = __gpp__("hello.cpp")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(len(result[0]), 2)
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue("infile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
 
     def test_gpp_with_output(self):
         """Test G++ with output"""
         result = __gpp__("hello.cpp", output="hello")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(len(result[0]), 2)
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue("infile" in result[0][1])
         self.assertTrue("outfile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
@@ -99,58 +65,29 @@ class GppTests(unittest.TestCase):
 #pylint: disable-msg=C0103
 class NvccTests(unittest.TestCase):
     """Test NVCC"""
-    def setUp(self):
-        """Test Case Setup"""
-        pass
-
-    def tearDown(self):
-        """Test Case Teardown"""
-        pass
 
     def test_nvcc(self):
         """Test Default NVCC"""
         result = __nvcc__("hello.cu")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(len(result[0]), 2)
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue("infile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
 
     def test_nvcc_with_output(self):
         """Test Named Output NVCC"""
         result = __nvcc__("hello.cu", output="hello")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(len(result[0]), 2)
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue("infile" in result[0][1])
         self.assertTrue("outfile" in result[0][1])
         self.assertTrue('flags' in result[0][1])
 
 class JavacTests(unittest.TestCase):
     """Test Javac"""
-    def setUp(self):
-        """Test Case Setup"""
-        pass
-
-    def tearDown(self):
-        """Test Case Teardown"""
-        pass
 
     def test_javac(self):
         """Test Default Javac"""
         result = __javac__("HelloWorld.java")
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(len(result[0]), 2)
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue("sourcefiles" in result[0][1])
         self.assertTrue('flags' in result[0][1])
 

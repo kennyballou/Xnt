@@ -17,9 +17,9 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from xnt.tests import assert_basic_assumptions
 from xnt.build.tex import __pdflatex__
 from xnt.build.tex import __clean__
-from types import FunctionType
 import unittest
 
 class TexTests(unittest.TestCase):
@@ -28,12 +28,7 @@ class TexTests(unittest.TestCase):
     def test_pdflatex_build(self):
         """Test default pdflatex build"""
         result = __pdflatex__('test.tex', directory='tex')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('texdocument' in result[0][1])
         self.assertEqual('test.tex', result[0][1]['texdocument'])
         self.assertTrue('directory' in result[0][1])
@@ -45,24 +40,19 @@ class TexTests(unittest.TestCase):
     def test_pdflatex_with_bibtex(self):
         """Test pdflatex with bibtex"""
         result = __pdflatex__('test.tex', bibtex=True)
-        self.assertIsNotNone(result)
+        assert_basic_assumptions(self, result)
         self.assertTrue(result[0][1]['bibtex'])
 
     def test_pdflatex_with_glossary(self):
         """Test pdflatex with glossary output"""
         result = __pdflatex__("test.tex", makeglossary=True)
-        self.assertIsNotNone(result)
+        assert_basic_assumptions(self, result)
         self.assertTrue(result[0][1]['makeglossary'])
 
     def test_tex_clean(self):
         """Test the default clean method removes generated files except pdf"""
         result = __clean__(directory='tex')
-        self.assertIsNotNone(result)
-        self.assertIsInstance(result, tuple)
-        self.assertIsInstance(result[0], tuple)
-        self.assertEqual(2, len(result[0]))
-        self.assertIsInstance(result[0][0], FunctionType)
-        self.assertIsInstance(result[0][1], dict)
+        assert_basic_assumptions(self, result)
         self.assertTrue('directory' in result[0][1])
         self.assertEqual('tex', result[0][1]['directory'])
         self.assertTrue('remove_pdf' in result[0][1])
@@ -71,7 +61,7 @@ class TexTests(unittest.TestCase):
     def test_tex_clean_include_pdf(self):
         """Test Clean; including PDF"""
         result = __clean__(directory='tex', remove_pdf=True)
-        self.assertIsNotNone(result)
+        assert_basic_assumptions(self, result)
         self.assertTrue(result[0][1]['remove_pdf'])
 
 if __name__ == '__main__':
