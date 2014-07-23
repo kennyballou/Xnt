@@ -252,8 +252,7 @@ def __setup__(command=None, commands=None, directory=None):
         cwd = os.getcwd()
         if kwargs['directory']:
             os.chdir(kwargs['directory'])
-        call = __call__(cmd)[0]
-        error_code = call[0](**call[1])
+        error_code = __apply__(__call__(cmd))
         os.chdir(cwd)
         return error_code
     if not commands:
@@ -303,7 +302,11 @@ def __in_path__(program):
 
 def __apply__(func_tuple):
     '''Execute function tuple'''
+    error_codes = []
     for statement in func_tuple:
         func = statement[0]
         args = statement[1]
-        func(**args)
+        error_codes.append(func(**args))
+    if error_codes:
+        return error_codes[-1]
+    return None
