@@ -29,6 +29,7 @@ import zipfile
 import contextlib
 import glob
 import logging
+from xnt.status_codes import ERROR, SUCCESS, UNKNOWN_ERROR
 
 LOGGER = logging.getLogger(__name__)
 
@@ -196,6 +197,33 @@ def __log__(msg, lvl=logging.INFO):
         LOGGER.log(kwargs['lvl'], kwargs['msg'])
     return ((__execute__, {'msg': msg, 'lvl': lvl,}),)
 
+def __load_build__(buildfile="./build.py"):
+    """Load build file
+    Load the build.py and return the resulting import
+    """
+    path = os.path.dirname(buildfile)
+    build = os.path.basename(buildfile)
+    buildmodule = os.path.splitext(build)[0]
+    if not path:
+        path = os.getcwd()
+    else:
+        path = os.path.abspath(path)
+    sys.path.append(path)
+    cwd = os.getcwd()
+    os.chdir(path)
+    if not os.path.exists(build):
+        LOGGER.error("There was no build file")
+        sys.exit(1)
+    try:
+        return __import__(buildmodule, fromlist=[])
+    except ImportError:
+        LOGGER.error("HOW?!")
+        return None
+    finally:
+        sys.path.remove(path)
+        del sys.modules[buildmodule]
+        os.chdir(cwd)
+
 def __xntcall__(buildfile, targets=None, props=None):
     """Invoke xnt on another build file in a different directory
 
@@ -205,8 +233,47 @@ def __xntcall__(buildfile, targets=None, props=None):
     """
     def __execute__(**kwargs):
         '''Perform xntcall'''
-        from xnt.xenant import invoke_build, load_build
-        build = load_build(kwargs['buildfile'])
+        def invoke_build(build, targets=None, props=None):
+            """Invoke Build with `targets` passing `props`"""
+            def call_target(target_name, props):
+                """Call target on build module"""
+                def process_params(params, existing_props=None):
+                    """Parse and separate properties"""
+                    properties = existing_props if existing_props else {}
+                    for param in params:
+                        name, value = param.split("=")
+                        properties[name] = value
+                    return properties
+                def __get_properties():
+                    """Return the properties dictionary of the build module"""
+                    try:
+                        return getattr(build, "PROPERTIES")
+                    except AttributeError:
+                        LOGGER.warning("Build file specifies no properties")
+                        return None
+                try:
+                    if props and len(props) > 0:
+                        setattr(build,
+                                "PROPERTIES",
+                                process_params(props, __get_properties()))
+                    target = getattr(build, target_name)
+                    error_code = target()
+                    return error_code if error_code else SUCCESS
+                except AttributeError:
+                    LOGGER.error("There was no target: %s", target_name)
+                    return ERROR
+                except Exception as ex:
+                    LOGGER.critical(ex)
+                    return UNKNOWN_ERROR
+            if not targets:
+                targets = ['default',]
+            for target in targets:
+                error_code = call_target(target, props)
+                if error_code:
+                    return error_code
+            return SUCCESS
+
+        build = __load_build__(kwargs['buildfile'])
         path = os.path.dirname(kwargs['buildfile'])
         cwd = os.getcwd()
         os.chdir(path)
@@ -217,6 +284,28 @@ def __xntcall__(buildfile, targets=None, props=None):
         os.chdir(cwd)
         return error_code
     args = {'buildfile': buildfile, 'targets': targets, 'props': props, }
+    return ((__execute__, args),)
+
+def __xnt_list_targets__(buildfile):
+    '''List targets (and doctstrings) of the provided build module'''
+    def __execute__(**kwargs):
+        '''Perform listing'''
+        try:
+            for attr in dir(kwargs['build']):
+                try:
+                    func = getattr(kwargs['build'], attr)
+                    if func.decorator == "target":
+                        print(attr + ":")
+                        if func.__doc__:
+                            print(func.__doc__)
+                        print("")
+                except AttributeError:
+                    pass
+        except AttributeError as ex:
+            LOGGER.error(ex)
+            return ERROR
+        return SUCCESS
+    args = {'buildfile': buildfile,}
     return ((__execute__, args),)
 
 def __call__(command, stdout=None, stderr=None):

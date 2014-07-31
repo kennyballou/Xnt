@@ -67,6 +67,12 @@ def target(*args, **kwargs):
         return w_target(args[0])
     return w_target
 
+def list_targets(buildfile):
+    '''List targets (and doctstrings) of the provided build module
+
+    :param buildfile: path to build file to list targets'''
+    return xnt.tasks.__apply__(xnt.tasks.__xnt_list_targets__(buildfile))
+
 #pylint: disable=C0103
 def cp(srcdir=None, dstdir=None, files=None):
     '''copy srcdir or files to destdir

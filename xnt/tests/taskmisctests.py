@@ -22,6 +22,7 @@ from xnt.tasks import __echo__
 from xnt.tasks import __call__
 from xnt.tasks import __setup__
 from xnt.tasks import __xntcall__
+from xnt.tasks import __xnt_list_targets__
 from xnt.tasks import __which__
 from xnt.tasks import __in_path__
 from xnt.tasks import __log__
@@ -91,6 +92,13 @@ class TaskMiscTests(unittest.TestCase):
         self.assertEqual('test/build.py', result[0][1]['buildfile'])
         self.assertTrue('targets' in result[0][1])
         self.assertTrue('props' in result[0][1])
+
+    def test_xnt_list_targets(self):
+        '''Test xnt list targets'''
+        result = __xnt_list_targets__('./build.py')
+        assert_basic_assumptions(self, result)
+        self.assertTrue('buildfile' in result[0][1])
+        self.assertEqual('./build.py', result[0][1]['buildfile'])
 
     def test_which(self):
         """Test which"""
