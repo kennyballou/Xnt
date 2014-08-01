@@ -264,7 +264,7 @@ def __xntcall__(buildfile, targets=None, props=None):
                 except AttributeError:
                     LOGGER.error("There was no target: %s", target_name)
                     return ERROR
-                except Exception as ex:
+                except RuntimeError as ex:
                     LOGGER.critical(ex)
                     return UNKNOWN_ERROR
             if not targets:
