@@ -17,7 +17,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 from xnt.tasks.core_tasks import __apply__
 from xnt.tasks.core_tasks import __call__
 from xnt.tasks.core_tasks import __which__
@@ -49,8 +48,7 @@ def __ant__(target, path=None, flags=None, pkeys=None, pvalues=None):
             for param in zip(kwargs['pkeys'], kwargs['pvalues']):
                 cmd.append('-D%s=%s' % param)
         cmd.append(target)
-        # TODO: this will need to wait for an upstream refactor
-        return __run_in(path, lambda: __apply__(__call__(cmd)))
+        return __apply__(__call__(cmd, path=path))
     args = {'target': target,
             'flags': flags,
             'pkeys': pkeys,
@@ -85,8 +83,7 @@ def __make__(target, path=None, flags=None, pkeys=None, pvalues=None):
             for param in zip(kwargs['pkeys'], kwargs['pvalues']):
                 cmd.append('%s=%s' % param)
         cmd.append(target)
-        # TODO: this will need to wait for an upstream refactor
-        return __run_in(path, lambda: __apply__(__call__(cmd)))
+        return __apply__(__call__(cmd, path=path))
     args = {'target': target,
             'flags': flags,
             'pkeys': pkeys,
@@ -121,21 +118,10 @@ def __nant__(target, path=None, flags=None, pkeys=None, pvalues=None):
             for param in zip(kwargs['pkeys'], kwargs['pvalues']):
                 cmd.append('-D%s=%s' % param)
         cmd.append(target)
-        # TODO: this will need to wait for an upstream refactor
-        return __run_in(path, lambda: __apply__(__call__(cmd)))
+        return __apply__(__call__(cmd, path=path))
     args = {'target': target,
             'flags': flags,
             'pkeys': pkeys,
             'pvalues': pvalues,
             'path': path,}
     return ((__execute__, args),)
-
-def __run_in(path, function):
-    """Execute function while in a different running directory"""
-    cwd = os.path.abspath(os.getcwd())
-    if path and os.path.exists(path):
-        os.chdir(os.path.abspath(path))
-    result = function()
-    if cwd:
-        os.chdir(cwd)
-    return result

@@ -117,14 +117,15 @@ def xntcall(buildfile, targets=None, props=None):
     return xnt.tasks.core_tasks.__apply__(
         xnt.tasks.core_tasks.__xntcall__(buildfile, targets, props))
 
-def call(command, stdout=None, stderr=None):
+def call(command, stdout=None, stderr=None, path=None):
     '''Execute given command, redirectoring stdout and stderr
 
     :param command: command, in the form of a list, to execute
     :param stdout: file to write stdout
-    :param stderr: file to write stderr'''
+    :param stderr: file to write stderr
+    :param path: working directory for command'''
     return xnt.tasks.core_tasks.__apply__(
-        xnt.tasks.core_tasks.__call__(command, stdout, stderr))
+        xnt.tasks.core_tasks.__call__(command, stdout, stderr, path))
 
 def setup(commands, directory=None):
     '''Invoke ``setup.py`` file in current or given directory

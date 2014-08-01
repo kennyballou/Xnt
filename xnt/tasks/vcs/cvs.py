@@ -17,7 +17,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 from xnt.tasks.core_tasks import __apply__
 from xnt.tasks.core_tasks import __call__
 from xnt.tasks.core_tasks import __which__
@@ -52,9 +51,6 @@ def __cvsupdate__(path):
     def __execute__(**kwargs):
         '''Perform CVS Update'''
         assert __apply__(__which__("cvs"))
-        cwd = os.path.abspath(os.getcwd())
-        os.chdir(kwargs['path'])
         cmd = ["cvs", "update"]
-        __apply__(__call__(cmd))
-        os.chdir(cwd)
+        __apply__(__call__(cmd, path=kwargs['path']))
     return ((__execute__, {'path': path,}),)

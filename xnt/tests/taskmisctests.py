@@ -63,6 +63,8 @@ class TaskMiscTests(unittest.TestCase):
         self.assertIsNone(result[0][1]['stdout'])
         self.assertTrue('stderr' in result[0][1])
         self.assertIsNone(result[0][1]['stderr'])
+        self.assertTrue('path' in result[0][1])
+        self.assertIsNone(result[0][1]['path'])
 
     def test_setup_with_single_command(self):
         '''Test setup function with a single command'''

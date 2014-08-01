@@ -41,27 +41,32 @@ def __pdflatex__(document,
         '''Perform pdflatex build'''
         devnull = None if VERBOSE else open(os.devnull, 'w')
         documentbase = os.path.splitext(document)[0]
-        cwd = os.getcwd()
-        os.chdir(kwargs['directory'])
         def pdf(draftmode=False):
             """Generate PDF"""
             from xnt.tasks.core_tasks import __call__, __apply__
             cmd = ["pdflatex", document, "-halt-on-error",]
             if draftmode:
                 cmd.append('-draftmode')
-            return __apply__(__call__(cmd, stdout=devnull))
+            return __apply__(__call__(
+                cmd,
+                stdout=devnull,
+                path=kwargs['directory']))
 
         def run_bibtex():
             """Generate BibTex References"""
             from xnt.tasks.core_tasks import __call__, __apply__
-            return __apply__(__call__(["bibtex", documentbase + ".aux"],
-                                      stdout=devnull))
+            return __apply__(__call__(
+                ["bibtex", documentbase + ".aux"],
+                stdout=devnull,
+                path=kwargs['directory']))
 
         def makeglossaries():
             """Generate Glossary"""
             from xnt.tasks.core_tasks import __call__, __apply__
-            return __apply__(__call__(["makeglossaries", documentbase],
-                                      stdout=devnull))
+            return __apply__(__call__(
+                ["makeglossaries", documentbase],
+                stdout=devnull,
+                path=kwargs['directory']))
 
         error_codes = []
         error_codes.append(pdf(draftmode=True))
@@ -71,7 +76,6 @@ def __pdflatex__(document,
             error_codes.append(run_bibtex())
             error_codes.append(pdf(draftmode=True))
         error_codes.append(pdf(draftmode=False))
-        os.chdir(cwd)
         if devnull:
             devnull.close()
         return sum(error_codes)
@@ -90,29 +94,30 @@ def __clean__(directory=None, remove_pdf=False):
     """
     def __execute__(**kwargs):
         '''Perform clean operation'''
-        cwd = os.getcwd()
-        os.chdir(kwargs['directory'])
-        from xnt.tasks.core_tasks import __apply__, __remove__
-        __apply__(__remove__("*.out",
-                             "*.log",
-                             "*.aux",
-                             "*.toc",
-                             "*.tol",
-                             "*.tof",
-                             "*.tot",
-                             "*.bbl",
-                             "*.blg",
-                             "*.nav",
-                             "*.snm",
-                             "*.mtc",
-                             "*.mtc0",
-                             "*.glo",
-                             "*.ist",
-                             "*.glg",
-                             "*.gls"))
-        if kwargs['remove_pdf']:
-            __apply__(__remove__("*.pdf"))
-        os.chdir(cwd)
+        from xnt.tasks.core_tasks import __run_in__
+        def closure():
+            '''closure around removal'''
+            from xnt.tasks.core_tasks import __apply__, __remove__
+            __apply__(__remove__("*.out",
+                                 "*.log",
+                                 "*.aux",
+                                 "*.toc",
+                                 "*.tol",
+                                 "*.tof",
+                                 "*.tot",
+                                 "*.bbl",
+                                 "*.blg",
+                                 "*.nav",
+                                 "*.snm",
+                                 "*.mtc",
+                                 "*.mtc0",
+                                 "*.glo",
+                                 "*.ist",
+                                 "*.glg",
+                                 "*.gls"))
+            if kwargs['remove_pdf']:
+                __apply__(__remove__("*.pdf"))
+        return __run_in__(closure, kwargs['directory'])
     args = {'directory': directory if directory else os.getcwd(),
             'remove_pdf': remove_pdf,}
     return ((__execute__, args),)

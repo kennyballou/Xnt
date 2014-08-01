@@ -17,7 +17,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import xnt.tasks.vcs
 from xnt.tasks.core_tasks import __apply__, __call__, __which__
 
@@ -52,9 +51,6 @@ def __hgfetch__(path, source=None):
         '''Perform hg pull'''
         assert __apply__(__which__("hg"))
         command = ["hg", "pull", "-u", kwargs['source']]
-        cwd = os.getcwd()
-        os.chdir(kwargs['path'])
-        __apply__(__call__(command))
-        os.chdir(cwd)
+        __apply__(__call__(command, path=kwargs['path']))
     args = {'path': path, 'source': source if source else 'default',}
     return ((__execute__, args),)

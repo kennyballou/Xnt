@@ -17,7 +17,6 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
 import xnt.tasks.vcs
 from xnt.tasks.core_tasks import __apply__, __call__, __which__
 
@@ -48,11 +47,8 @@ def __gitpull__(path, remote=None, branch=None):
     def __execute__(**kwargs):
         '''Perform git pull'''
         assert __apply__(__which__("git"))
-        cwd = os.getcwd()
-        os.chdir(kwargs['path'])
         command = ["git", "pull", kwargs['remote'], kwargs['branch']]
-        __apply__(__call__(command))
-        os.chdir(cwd)
+        __apply__(__call__(command, path=kwargs['path']))
     args = {
         'path': path,
         'remote': remote if remote else 'origin',

@@ -278,14 +278,13 @@ def __xntcall__(buildfile, targets=None, props=None):
 
         build = __load_build__(kwargs['buildfile'])
         path = os.path.dirname(kwargs['buildfile'])
-        cwd = os.getcwd()
-        os.chdir(path)
-        error_code = invoke_build(
-            build,
-            targets=kwargs['targets'],
-            props=kwargs['props'])
-        os.chdir(cwd)
-        return error_code
+        def closure():
+            '''closure around build invocation'''
+            return invoke_build(
+                build,
+                targets=kwargs['targets'],
+                props=kwargs['props'])
+        return __run_in__(closure, path)
     args = {'buildfile': buildfile, 'targets': targets, 'props': props, }
     return ((__execute__, args),)
 
@@ -311,21 +310,38 @@ def __xnt_list_targets__(buildfile):
     args = {'buildfile': buildfile,}
     return ((__execute__, args),)
 
-def __call__(command, stdout=None, stderr=None):
+def __run_in__(func, path):
+    cwd = os.getcwd()
+    os.chdir(path)
+    result = func()
+    os.chdir(cwd)
+    return result
+
+def __call__(command, stdout=None, stderr=None, path=None):
     """ Execute the given command, redirecting stdout and stderr
     to optionally given files
 
     :param: command - list of command and arguments
     :param: stdout - file to redirect standard output to, if given
     :param: stderr - file to redirect standard error to, if given
+    :param: path - directory to execute process
     :return: the error code of the subbed out call, `$?`
     """
     def __execute__(**kwargs):
         '''Perform subprocess call'''
-        return subprocess.call(
-            args=kwargs['command'],
-            stdout=kwargs['stdout'], stderr=kwargs['stderr'])
-    args = {'command': command, 'stdout': stdout, 'stderr': stderr,}
+        def closure():
+            '''closure around subprocess call'''
+            return subprocess.call(
+                args=kwargs['command'],
+                stdout=kwargs['stdout'],
+                stderr=kwargs['stderr'])
+        if not kwargs['path']:
+            path = os.getcwd()
+        return __run_in__(closure, path)
+    args = {'command': command,
+            'stdout': stdout,
+            'stderr': stderr,
+            'path': path,}
     return ((__execute__, args),)
 
 def __setup__(command=None, commands=None, directory=None):
@@ -341,12 +357,7 @@ def __setup__(command=None, commands=None, directory=None):
         cmd = [sys.executable, "setup.py",]
         for command in kwargs['commands']:
             cmd.append(command)
-        cwd = os.getcwd()
-        if kwargs['directory']:
-            os.chdir(kwargs['directory'])
-        error_code = __apply__(__call__(cmd))
-        os.chdir(cwd)
-        return error_code
+        return __apply__(__call__(cmd, path=kwargs['directory']))
     if not commands:
         commands = []
     if command:
