@@ -34,14 +34,16 @@ from xnt.status_codes import ERROR, SUCCESS, UNKNOWN_ERROR
 LOGGER = logging.getLogger(__name__)
 
 #File associated tasks
-def expandpath(path_pattern):
+def __expandpath__(path_pattern):
     """Return a glob expansion generator of *path_pattern*
 
     :param path_pattern: pattern to expand
     :rtype: generator of strings
     :return: List of paths and/ or files
     """
-    return glob.iglob(path_pattern)
+    def __execute__(**kwargs):
+        return glob.iglob(kwargs['path_pattern'])
+    return ((__execute__, {'path_pattern': path_pattern}),)
 
 def __copy__(srcdir=None, dstdir=None, files=None):
     """Copy `srcdir` to `dstdir` or copy `files` to `dstdir`
@@ -128,7 +130,7 @@ def __remove__(*fileset):
         '''Perform file/ folder removal'''
         try:
             for glob_set in kwargs['fileset']:
-                for file_to_delete in expandpath(glob_set):
+                for file_to_delete in __apply__(__expandpath__(glob_set)):
                     if not os.path.exists(file_to_delete):
                         continue
                     LOGGER.info("Removing %s", file_to_delete)

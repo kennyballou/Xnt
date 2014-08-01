@@ -71,6 +71,14 @@ def list_targets(buildfile):
     :param buildfile: path to build file to list targets'''
     return xnt.tasks.__apply__(xnt.tasks.__xnt_list_targets__(buildfile))
 
+def expandpath(path_pattern):
+    '''return glob expansion of the given pattern
+
+    :param path_pattern: pattern to expand
+    :rtype: generator of paths
+    :return: list of matching paths and/ or files'''
+    return xnt.tasks.__apply__(xnt.tasks.__expandpath__(path_pattern))
+
 #pylint: disable=C0103
 def cp(srcdir=None, dstdir=None, files=None):
     '''copy srcdir or files to destdir

@@ -26,6 +26,7 @@ from xnt.tasks import __xnt_list_targets__
 from xnt.tasks import __which__
 from xnt.tasks import __in_path__
 from xnt.tasks import __log__
+from xnt.tasks import __expandpath__
 import unittest
 
 # pylint: disable=R0904
@@ -99,6 +100,13 @@ class TaskMiscTests(unittest.TestCase):
         assert_basic_assumptions(self, result)
         self.assertTrue('buildfile' in result[0][1])
         self.assertEqual('./build.py', result[0][1]['buildfile'])
+
+    def test_expandpath(self):
+        '''Test expandpath'''
+        result = __expandpath__('./**.pyc')
+        assert_basic_assumptions(self, result)
+        self.assertTrue('path_pattern', result[0][1])
+        self.assertEqual('./**.pyc', result[0][1]['path_pattern'])
 
     def test_which(self):
         """Test which"""
