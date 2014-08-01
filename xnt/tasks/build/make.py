@@ -18,9 +18,9 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from xnt.tasks import __apply__
-from xnt.tasks import __call__
-from xnt.tasks import __which__
+from xnt.tasks.core_tasks import __apply__
+from xnt.tasks.core_tasks import __call__
+from xnt.tasks.core_tasks import __which__
 
 def __ant__(target, path=None, flags=None, pkeys=None, pvalues=None):
     """Wrapper around Apache Ant

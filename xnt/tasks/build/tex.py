@@ -45,7 +45,7 @@ def __pdflatex__(document,
         os.chdir(kwargs['directory'])
         def pdf(draftmode=False):
             """Generate PDF"""
-            from xnt.tasks import __call__, __apply__
+            from xnt.tasks.core_tasks import __call__, __apply__
             cmd = ["pdflatex", document, "-halt-on-error",]
             if draftmode:
                 cmd.append('-draftmode')
@@ -53,13 +53,13 @@ def __pdflatex__(document,
 
         def run_bibtex():
             """Generate BibTex References"""
-            from xnt.tasks import __call__, __apply__
+            from xnt.tasks.core_tasks import __call__, __apply__
             return __apply__(__call__(["bibtex", documentbase + ".aux"],
                                       stdout=devnull))
 
         def makeglossaries():
             """Generate Glossary"""
-            from xnt.tasks import __call__, __apply__
+            from xnt.tasks.core_tasks import __call__, __apply__
             return __apply__(__call__(["makeglossaries", documentbase],
                                       stdout=devnull))
 
@@ -92,7 +92,7 @@ def __clean__(directory=None, remove_pdf=False):
         '''Perform clean operation'''
         cwd = os.getcwd()
         os.chdir(kwargs['directory'])
-        from xnt.tasks import __apply__, __remove__
+        from xnt.tasks.core_tasks import __apply__, __remove__
         __apply__(__remove__("*.out",
                              "*.log",
                              "*.aux",

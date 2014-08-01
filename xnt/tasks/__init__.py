@@ -1,12 +1,8 @@
 #!/usr/bin/env python
-"""Common Tasks Module
-
-Defines a set of operations that are common enough but also are tedious to
-define
-"""
+'''xnt.tasks module'''
 
 #   Xnt -- A Wrapper Build Tool
-#   Copyright (C) 2013  Kenny Ballou
+#   Copyright (C) 2014  Kenny Ballou
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -21,384 +17,281 @@ define
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os
-import sys
-import subprocess
-import shutil
-import zipfile
-import contextlib
-import glob
 import logging
-from xnt.status_codes import ERROR, SUCCESS, UNKNOWN_ERROR
+import xnt.tasks.core_tasks
+import xnt.tasks.build.cc
+import xnt.tasks.build.make
+import xnt.tasks.build.tex
+import xnt.tasks.vcs.git
+import xnt.tasks.vcs.hg
+import xnt.tasks.vcs.cvs
 
 LOGGER = logging.getLogger(__name__)
 
-#File associated tasks
-def __expandpath__(path_pattern):
-    """Return a glob expansion generator of *path_pattern*
+def list_targets(buildfile):
+    '''List targets (and doctstrings) of the provided build module
+
+    :param buildfile: path to build file to list targets'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__xnt_list_targets__(buildfile))
+
+def expandpath(path_pattern):
+    '''return glob expansion of the given pattern
 
     :param path_pattern: pattern to expand
-    :rtype: generator of strings
-    :return: List of paths and/ or files
-    """
-    def __execute__(**kwargs):
-        return glob.iglob(kwargs['path_pattern'])
-    return ((__execute__, {'path_pattern': path_pattern}),)
+    :rtype: generator of paths
+    :return: list of matching paths and/ or files'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__expandpath__(path_pattern))
 
-def __copy__(srcdir=None, dstdir=None, files=None):
-    """Copy `srcdir` to `dstdir` or copy `files` to `dstdir`
+#pylint: disable=C0103
+def cp(srcdir=None, dstdir=None, files=None):
+    '''copy srcdir or files to destdir
 
-    Copy a file or folder to a different file/folder
-    If no `srcdir` file is specified, will attempt to copy `files` to `dstdir`
+    Copy files or a folder to the destination
 
-    *Notice*, elements of `files` will not be expanded before copying.
+    :param srcdir: source directory or single file to copy
+    :param dstdir: destination file or folder
+    :param files: list of files to copy'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__copy__(srcdir, dstdir, files))
 
-    :param srcdir: source directory or file
-    :param dstdir: destination file or folder (in the case of `files`)
-    :param files: list of files (strings) to copy to `src`
-    """
-    def __execute__(**kwargs):
-        """Perform copy"""
-        assert 'dstdir' in kwargs
-        if 'srcdir' in kwargs:
-            shutil.copytree(kwargs['srcdir'], kwargs['dstdir'])
-        elif 'files' in kwargs:
-            for srcfile in kwargs['files']:
-                shutil.copy(srcfile, kwargs['dstdir'])
-    return (
-        (__execute__, {'srcdir': srcdir, 'dstdir': dstdir, 'files': files,}),
-    )
+#pylint: disable=C0103
+def mv(src, dst):
+    '''Move src to dst
 
-def __move__(src, dst):
-    """Move `src` to `dst`
+    Move (copy and remove) the source file or folder to the destination file or
+    folder
 
-    Move (copy and remove) the source file or directory (*src*) to the
-    destination file or directory (*dst*)
+    :param src: Source file or folder
+    :param dst: Destination file or folder'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__move__(src, dst))
 
-    :param src: Source file or folder to move
-    :param dst: Destination file or folder
-    """
-    def __execute__(**kwargs):
-        '''Perform move'''
-        LOGGER.info("Moving %s to %s", kwargs['src'], kwargs['dst'])
-        shutil.move(kwargs['src'], kwargs['dst'])
-    args = {'src': src, 'dst': dst,}
-    return ((__execute__, args),)
+def mkdir(directory, mode=0o755):
+    '''Create directory with specified mode
 
-def __mkdir__(directory, mode=0o755):
-    """Make a directory with mode
+    :param directory: name of directory to create
+    :param mode: Permission mode of new directory. Default: 755'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__mkdir__(directory, mode))
 
-    Create a directory specified by *dir* with default mode (where supported)
-    or with the specified *mode*
+#pylint: disable=C0103
+def rm(*fileset):
+    '''Remove set of files
 
-    *Notice*, if the directory already exists, *mkdir* will log a warning and
-    return
+    :param fileset: list of files to remove'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__remove__(*fileset))
 
-    :param directory: New directory to create
-    :param mode: Mode to create the directory (where supported). Default: `777`
-    """
-    def __execute__(**kwargs):
-        '''Perform directory creation'''
-        if os.path.exists(directory):
-            LOGGER.warning(
-                "Given directory (%s) already exists",
-                kwargs['directory'])
-            return
-        LOGGER.info(
-            "Making directory %s with mode %o",
-            kwargs['directory'],
-            kwargs['mode'])
-        try:
-            os.mkdir(kwargs['directory'], kwargs['mode'])
-        except IOError as io_error:
-            LOGGER.error(io_error)
-        except:
-            raise
-    return ((__execute__, {'directory': directory, 'mode': mode,}),)
+def create_zip(directory, zipfilename):
+    '''Compress folder to create zip file
 
-def __remove__(*fileset):
-    """Remove a set of files
+    :param directory: directory to zip
+    :param zipfilename: name of resulting compression'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__zip__(directory, zipfilename))
 
-    Attempt to remove all the directories given by the fileset. Before *rm*
-    tries to delete each element of *fileset*, it attempts to expand it first
-    using glob expansion (:func:`xnt.tasks.expandpath`), thus allowing the
-    passing of glob elements
+def echo(msg, tofile):
+    '''Echo a message to a file
 
-    :param fileset: List of files to remove
-    """
-    def __execute__(**kwargs):
-        '''Perform file/ folder removal'''
-        try:
-            for glob_set in kwargs['fileset']:
-                for file_to_delete in __apply__(__expandpath__(glob_set)):
-                    if not os.path.exists(file_to_delete):
-                        continue
-                    LOGGER.info("Removing %s", file_to_delete)
-                    if os.path.isdir(file_to_delete):
-                        shutil.rmtree(file_to_delete)
-                    else:
-                        os.remove(file_to_delete)
-        except OSError as os_error:
-            LOGGER.error(os_error)
-        except:
-            raise
-    args = {'fileset': fileset,}
-    return ((__execute__, args),)
+    :param msg: content to write
+    :param tofile: name of file to write message'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__echo__(msg, tofile))
 
-def __zip__(directory, zipfilename):
-    """Compress (Zip) folder
+def log(msg, lvl=logging.INFO):
+    '''Log message with LOGGER instance
 
-    Zip the specified *directory* into the zip file named *zipfilename*
+    :param msg: message to log
+    :param lvl: Level of message. Default INFO'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__log__(msg, lvl))
 
-    :param directory: Directory to zip
-    :param zipfilename: Name of resulting compression
-    """
-    def __execute__(**kwargs):
-        '''Perform zip'''
-        assert os.path.isdir(kwargs['directory']) and kwargs['zipfile']
-        LOGGER.info("Zipping %s as %s", kwargs['directory'], kwargs['zipfile'])
-        with contextlib.closing(zipfile.ZipFile(
-            kwargs['zipfile'],
-            "w",
-            zipfile.ZIP_DEFLATED)) as zip_file:
-            for paths in os.walk(kwargs['directory']):
-                for file_name in paths[2]:
-                    absfn = os.path.join(paths[0], file_name)
-                    zip_file_name = absfn[len(directory) + len(os.sep):]
-                    zip_file.write(absfn, zip_file_name)
-    return ((__execute__, {'directory': directory, 'zipfile': zipfilename,}),)
+def xntcall(buildfile, targets=None, props=None):
+    '''Invoke xnt with different build file
 
-#Misc Tasks
-def __echo__(msg, tofile):
-    """Write a string to file
+    :param buildfile: name of build file to load
+    :param targets: list of targets to invoke
+    :param props: dictionary of properties to pass'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__xntcall__(buildfile, targets, props))
 
-    Write the given *msg* to a file named *tofile*
+def call(command, stdout=None, stderr=None):
+    '''Execute given command, redirectoring stdout and stderr
 
-    *Notice*, `echo` will overwrite the file if it already exists
+    :param command: command, in the form of a list, to execute
+    :param stdout: file to write stdout
+    :param stderr: file to write stderr'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__call__(command, stdout, stderr))
 
-    :param msg: Message to write to file
-    :param tofile: file to which the message is written
-    """
-    def __execute__(**kwargs):
-        '''Perform echo to file'''
-        with open(kwargs['tofile'], "w") as file_to_write:
-            file_to_write.write(kwargs['msg'])
-    return ((__execute__, {'msg': msg, 'tofile': tofile,}),)
+def setup(commands, directory=None):
+    '''Invoke ``setup.py`` file in current or given directory
 
-def __log__(msg, lvl=logging.INFO):
-    """Log *msg* using tasks global logger
+    :param commands: list of commands (or options) to pass
+    :param directory: directory of setup file to run against'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__setup__(commands=commands, directory=directory))
 
-    Emit the message (*msg*) to the *xnt.tasks* logger using either the default
-    log level (*INFO*) or any valid specified value of `logging` module
+def which(program):
+    '''Return (first) path of given executale, ``program``
 
-    :param msg: Message to log
-    :param lvl: Log Level of message. Default `INFO`
-    """
-    def __execute__(**kwargs):
-        '''Perform logging operation'''
-        LOGGER.log(kwargs['lvl'], kwargs['msg'])
-    return ((__execute__, {'msg': msg, 'lvl': lvl,}),)
+    :param program: program name to search'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__which__(program))
 
-def __load_build__(buildfile="./build.py"):
-    """Load build file
-    Load the build.py and return the resulting import
-    """
-    path = os.path.dirname(buildfile)
-    build = os.path.basename(buildfile)
-    buildmodule = os.path.splitext(build)[0]
-    if not path:
-        path = os.getcwd()
-    else:
-        path = os.path.abspath(path)
-    sys.path.append(path)
-    cwd = os.getcwd()
-    os.chdir(path)
-    if not os.path.exists(build):
-        LOGGER.error("There was no build file")
-        sys.exit(1)
-    try:
-        return __import__(buildmodule, fromlist=[])
-    except ImportError:
-        LOGGER.error("HOW?!")
-        return None
-    finally:
-        sys.path.remove(path)
-        del sys.modules[buildmodule]
-        os.chdir(cwd)
+def in_path(program):
+    '''Return true if program is in path, otherwise false
 
-def __xntcall__(buildfile, targets=None, props=None):
-    """Invoke xnt on another build file in a different directory
+    :param program: program name to search
+    :return: True if program in path else false'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.core_tasks.__in_path__(program))
 
-    :param: path - to the build file (including build file)
-    :param: targets - list of targets to execute
-    :param: props - dictionary of properties to pass to the build module
-    """
-    def __execute__(**kwargs):
-        '''Perform xntcall'''
-        def invoke_build(build, targets=None, props=None):
-            """Invoke Build with `targets` passing `props`"""
-            def call_target(target_name, props):
-                """Call target on build module"""
-                def process_params(params, existing_props=None):
-                    """Parse and separate properties"""
-                    properties = existing_props if existing_props else {}
-                    for param in params:
-                        name, value = param.split("=")
-                        properties[name] = value
-                    return properties
-                def __get_properties():
-                    """Return the properties dictionary of the build module"""
-                    try:
-                        return getattr(build, "PROPERTIES")
-                    except AttributeError:
-                        LOGGER.warning("Build file specifies no properties")
-                        return None
-                try:
-                    if props and len(props) > 0:
-                        setattr(build,
-                                "PROPERTIES",
-                                process_params(props, __get_properties()))
-                    target = getattr(build, target_name)
-                    error_code = target()
-                    return error_code if error_code else SUCCESS
-                except AttributeError:
-                    LOGGER.error("There was no target: %s", target_name)
-                    return ERROR
-                except Exception as ex:
-                    LOGGER.critical(ex)
-                    return UNKNOWN_ERROR
-            if not targets:
-                targets = ['default',]
-            for target in targets:
-                error_code = call_target(target, props)
-                if error_code:
-                    return error_code
-            return SUCCESS
+def gcc(src, output=None, flags=None):
+    '''GCC compiler
 
-        build = __load_build__(kwargs['buildfile'])
-        path = os.path.dirname(kwargs['buildfile'])
-        cwd = os.getcwd()
-        os.chdir(path)
-        error_code = invoke_build(
-            build,
-            targets=kwargs['targets'],
-            props=kwargs['props'])
-        os.chdir(cwd)
-        return error_code
-    args = {'buildfile': buildfile, 'targets': targets, 'props': props, }
-    return ((__execute__, args),)
+    :param src: C source file to compile
+    :param output: Optional name of object
+    :param flags: list of compiler flags'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.build.cc.__gcc__(src, output, flags))
 
-def __xnt_list_targets__(buildfile):
-    '''List targets (and doctstrings) of the provided build module'''
-    def __execute__(**kwargs):
-        '''Perform listing'''
-        try:
-            for attr in dir(kwargs['build']):
-                try:
-                    func = getattr(kwargs['build'], attr)
-                    if func.decorator == "target":
-                        print(attr + ":")
-                        if func.__doc__:
-                            print(func.__doc__)
-                        print("")
-                except AttributeError:
-                    pass
-        except AttributeError as ex:
-            LOGGER.error(ex)
-            return ERROR
-        return SUCCESS
-    args = {'buildfile': buildfile,}
-    return ((__execute__, args),)
+def gpp(src, output=None, flags=None):
+    '''G++ compiler
 
-def __call__(command, stdout=None, stderr=None):
-    """ Execute the given command, redirecting stdout and stderr
-    to optionally given files
+    :param src: C++ source file to compile
+    :param output: Optional name of object
+    :param flags: List of compiler flags'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.build.cc.__gpp__(src, output, flags))
 
-    :param: command - list of command and arguments
-    :param: stdout - file to redirect standard output to, if given
-    :param: stderr - file to redirect standard error to, if given
-    :return: the error code of the subbed out call, `$?`
-    """
-    def __execute__(**kwargs):
-        '''Perform subprocess call'''
-        return subprocess.call(
-            args=kwargs['command'],
-            stdout=kwargs['stdout'], stderr=kwargs['stderr'])
-    args = {'command': command, 'stdout': stdout, 'stderr': stderr,}
-    return ((__execute__, args),)
+def javac(src, flags=None):
+    '''Java compiler
 
-def __setup__(command=None, commands=None, directory=None):
-    """Invoke the ``setup.py`` file in the current or specified directory
+    :param src: Java source class
+    :param flags: List of compiler flags'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.build.cc.__javac__(src, flags))
 
-    :param: command - a single command to run
-    :param: commands - list of commands and options to run/ append
-    :param: dir - (optional) directory to run from
-    :return: the error code of the execution, `$?`
-    """
-    def __execute__(**kwargs):
-        '''Perform python setup.py commands'''
-        cmd = [sys.executable, "setup.py",]
-        for command in kwargs['commands']:
-            cmd.append(command)
-        cwd = os.getcwd()
-        if kwargs['directory']:
-            os.chdir(kwargs['directory'])
-        error_code = __apply__(__call__(cmd))
-        os.chdir(cwd)
-        return error_code
-    if not commands:
-        commands = []
-    if command:
-        commands.append(command)
-    assert len(commands) > 0
-    args = {'commands': commands, 'directory': directory,}
-    return ((__execute__, args),)
+def nvcc(src, output=None, flags=None):
+    '''CUDA C/C++ compiler
 
-def __which__(program):
-    """Similar to Linux/Unix `which`: return (first) path of executable
+    :param src: CUDA source to compile
+    :param output: Optional object name
+    :param flags: List of compiler flags'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.build.cc.__nvcc__(src, output, flags))
 
-    :param program: program name to search for in PATH
-    :return: Return the PATH of `program` or None
-    """
-    def __execute__(**kwargs):
-        '''Perform which lookup'''
-        def is_exe(fpath):
-            """Determine if argument exists and is executable"""
-            return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
+#pylint: disable=W0621
+def ant(target, path=None, flags=None, pkeys=None, pvalues=None):
+    '''Apache Ant Build Wrapper
 
-        fpath = os.path.split(kwargs['program'])
-        if fpath[0]:
-            if is_exe(kwargs['program']):
-                return kwargs['program']
-        else:
-            for path in os.environ["PATH"].split(os.pathsep):
-                path = path.strip('"')
-                exe_file = os.path.join(path, kwargs['program'])
-                if is_exe(exe_file):
-                    return exe_file
-        return None
+    :param target: target to invoke
+    :param path: path to ant build
+    :param flags: list of flags to pass to ant
+    :param pkeys: key names for properties to pass to ant
+    :param pvalues: value names for properties to pass to ant'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.build.make.__ant__(target, path, flags, pkeys, pvalues))
 
-    return ((__execute__, {'program': program,}),)
+#pylint: disable=W0621
+def make(target, path=None, flags=None, pkeys=None, pvalues=None):
+    '''GNU Make Build Wrapper
 
-def __in_path__(program):
-    """Return boolean result if program is in PATH environment variable
+    :param target: target to invoke
+    :param path: path to makefile
+    :param flags: list of flags to pass to make
+    :param pkeys: key names for properties to pass to make
+    :parram pvalues: value names for properties to pass to make'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.build.make.__make__(target, path, flags, pkeys, pvalues))
 
-    :param program: Program name to search for in PATH
-    :return: Return the PATH of `program` or None
-    """
-    def __execute__(**kwargs):
-        '''Perform which test'''
-        return __apply__(__which__(kwargs['program']))
-    return ((__execute__, {'program': program,}),)
+#pylint: disable=W0621
+def nant(target, path=None, flags=None, pkeys=None, pvalues=None):
+    '''.NET Ant Build Wrapper
 
-# pylint: disable=W0142
-def __apply__(func_tuple):
-    '''Execute function tuple'''
-    error_codes = []
-    for statement in func_tuple:
-        func = statement[0]
-        args = statement[1]
-        error_codes.append(func(**args))
-    if error_codes:
-        return error_codes[-1]
-    return None
+    :param target: target to invoke
+    :param path: path to ant build
+    :param flags: list of flags to pass to ant
+    :param pkeys: key names for properties to pass to ant
+    :param pvalues: value names for properties to pass to ant'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.build.make.__nant__(target, path, flags, pkeys, pvalues))
+
+def gitclone(url, dest=None, branch=None):
+    '''Git Clone
+
+    :param url: URL to respository
+    :param dest: destination directory or name of repository
+    :param branch: branch name to clone'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.vcs.git.__gitclone__(url, dest, branch))
+
+def gitpull(path, remote=None, branch=None):
+    '''Git pull
+
+    :param path: local path to git repository
+    :param remote: repository remote to pull
+    :param branch: branch name to pull'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.vcs.git.__gitpull__(path, remote, branch))
+
+def hgclone(url, dest=None, rev=None, branch=None):
+    '''HG clone
+
+    :param url: URL to repository
+    :param dest: Directory or name of repository
+    :param rev: Revision to clone
+    :param branch: Branch to clone'''
+    return xnt.tasks.core_tasks.__apply__(xnt.tasks.vcs.hg.__hgclone__(
+        url,
+        dest,
+        rev,
+        branch))
+
+def hgfetch(path, source=None):
+    '''HG Pull
+
+    :param path: local path to repository
+    :param source: remote source to pull'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.vcs.hg.__hgfetch__(path, source))
+
+def cvsco(module, rev=None, dest=None):
+    '''CVS Checkout
+
+    :param module: CVS module to checkout
+    :param rev: Revision to checkout
+    :param dest: Destination directory or name'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.vcs.cvs.__cvsco__(module, rev, dest))
+
+def cvsupdate(path):
+    '''CVS Update
+
+    :param path: local path to csv checkout'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.vcs.cvs.__cvsupdate__(path))
+
+def pdflatex(document, directory=None, bibtex=False, makeglossary=False):
+    '''PDFLaTeX
+
+    :param document: name of document.tex
+    :param directory: path to document
+    :param bibtex: generate bibtex entries: default false
+    :param makeglossary: generate glossary entries: default false'''
+    return xnt.tasks.core_tasks.__apply__(xnt.tasks.build.tex.__pdflatex__(
+        document,
+        directory,
+        bibtex,
+        makeglossary))
+
+def latexclean(directory=None, remove_pdf=False):
+    '''Clean up PDFLaTeX generated files
+
+    :param directory: path to document
+    :param remove_pdf: remove the generated pdf: default false'''
+    return xnt.tasks.core_tasks.__apply__(
+        xnt.tasks.build.tex.__clean__(directory, remove_pdf))

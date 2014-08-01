@@ -19,7 +19,7 @@
 
 import os
 import xnt.tasks.vcs
-from xnt.tasks import __apply__, __call__, __which__
+from xnt.tasks.core_tasks import __apply__, __call__, __which__
 
 def __hgclone__(url, dest=None, rev=None, branch=None):
     """Clone a Mercurial Repository

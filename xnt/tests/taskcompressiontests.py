@@ -18,7 +18,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from xnt.tests import assert_basic_assumptions
-from xnt.tasks import __zip__
+from xnt.tasks.core_tasks import __zip__
 import unittest
 
 # pylint: disable=R0904

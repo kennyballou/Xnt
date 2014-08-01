@@ -20,9 +20,9 @@ Definition of commonly used compilers
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from xnt.tasks import __apply__
-from xnt.tasks import __call__
-from xnt.tasks import __which__
+from xnt.tasks.core_tasks import __apply__
+from xnt.tasks.core_tasks import __call__
+from xnt.tasks.core_tasks import __which__
 
 def __gcc__(src, output=None, flags=None):
     """gcc compiler
