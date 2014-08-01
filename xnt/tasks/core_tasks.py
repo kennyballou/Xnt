@@ -226,6 +226,7 @@ def __load_build__(buildfile="./build.py"):
         del sys.modules[buildmodule]
         os.chdir(cwd)
 
+#pylint: disable=R0912
 def __xntcall__(buildfile, targets=None, props=None):
     """Invoke xnt on another build file in a different directory
 
