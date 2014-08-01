@@ -43,8 +43,6 @@ __license__ = """
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-VERBOSE = False
-
 def target(*args, **kwargs):
     """Decorator function for marking a method in
        build file as a "target" method, or a method meant

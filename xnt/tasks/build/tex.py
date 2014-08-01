@@ -19,7 +19,7 @@
 
 import os
 import logging
-from xnt import VERBOSE
+from xnt.verbose import VERBOSE
 
 LOGGER = logging.getLogger(__name__)
 

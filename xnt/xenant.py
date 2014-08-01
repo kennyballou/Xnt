@@ -23,6 +23,7 @@ import time
 import logging
 import argparse
 import xnt
+import xnt.verbose
 
 logging.basicConfig(format="%(message)s")
 LOGGER = logging.Logger(name=__name__)
@@ -35,7 +36,7 @@ def main():
     args = parse_args(sys.argv[1:])
     build_file = "./build.py"
     if args["verbose"]:
-        xnt.VERBOSE = True
+        xnt.verbose.VERBOSE = True
         LOGGER.setLevel(logging.INFO)
         logging.getLogger("xnt.tasks").setLevel(logging.INFO)
     if args["build-file"]:
