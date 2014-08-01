@@ -20,20 +20,20 @@ Make
 Apache Ant
 ----------
 
-.. autofunction:: xnt.build.make.ant
+.. autofunction:: xnt.tasks.build.make.ant
    :noindex:
 
 
 Gnu Make
 --------
 
-.. autofunction:: xnt.build.make.make
+.. autofunction:: xnt.tasks.build.make.make
    :noindex:
 
 (.NET)Ant
 ---------
 
-.. autofunction:: xnt.build.make.nant
+.. autofunction:: xnt.tasks.build.make.nant
    :noindex:
 
 Compiler Collection
@@ -45,32 +45,32 @@ If they are not, an error will be thrown (by subprocess)
 gcc/g++
 -------
 
-.. autofunction:: xnt.build.cc.gcc
+.. autofunction:: xnt.tasks.build.cc.gcc
    :noindex:
 
-.. autofunction:: xnt.build.cc.gcc_o
+.. autofunction:: xnt.tasks.build.cc.gcc_o
    :noindex:
 
-.. autofunction:: xnt.build.cc.gpp
+.. autofunction:: xnt.tasks.build.cc.gpp
    :noindex:
 
-.. autofunction:: xnt.build.cc.gpp_o
+.. autofunction:: xnt.tasks.build.cc.gpp_o
    :noindex:
 
 Javac
 -----
 
-.. autofunction:: xnt.build.cc.javac
+.. autofunction:: xnt.tasks.build.cc.javac
    :noindex:
 
 
 NVCC
 ----
 
-.. autofunction:: xnt.build.cc.nvcc
+.. autofunction:: xnt.tasks.build.cc.nvcc
    :noindex:
 
-.. autofunction:: xnt.build.cc.nvcc_o
+.. autofunction:: xnt.tasks.build.cc.nvcc_o
    :noindex:
 
 Notes
@@ -102,8 +102,8 @@ Tex
 
 Building LaTeX documents can be confusing and sometimes tricky to do correctly.
 
-.. autofunction:: xnt.build.tex.pdflatex
+.. autofunction:: xnt.tasks.build.tex.pdflatex
    :noindex:
 
-.. autofunction:: xnt.build.tex.clean
+.. autofunction:: xnt.tasks.build.tex.clean
    :noindex:

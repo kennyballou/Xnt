@@ -18,7 +18,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import xnt.vcs
+import xnt.tasks.vcs
 from xnt.tasks import __apply__, __call__, __which__
 
 def __hgclone__(url, dest=None, rev=None, branch=None):
@@ -36,7 +36,7 @@ def __hgclone__(url, dest=None, rev=None, branch=None):
         if kwargs['rev']:
             command.append("--rev")
             command.append(kwargs['rev'])
-        command = xnt.vcs.clone_options(
+        command = xnt.tasks.vcs.clone_options(
             command, kwargs['url'], kwargs['branch'], kwargs['dest'])
         return __apply__(__call__(command))
     args = {'url': url, 'dest': dest, 'rev': rev, 'branch': branch,}

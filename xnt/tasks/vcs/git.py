@@ -18,7 +18,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import xnt.vcs
+import xnt.tasks.vcs
 from xnt.tasks import __apply__, __call__, __which__
 
 def __gitclone__(url, dest=None, branch=None):
@@ -32,7 +32,7 @@ def __gitclone__(url, dest=None, branch=None):
         '''Perform git clone'''
         assert __apply__(__which__("git"))
         command = ["git", "clone"]
-        command = xnt.vcs.clone_options(
+        command = xnt.tasks.vcs.clone_options(
             command, kwargs['url'], kwargs['branch'], kwargs['dest'])
         return __apply__(__call__(command))
     args = {'url': url, 'dest': dest, 'branch': branch,}

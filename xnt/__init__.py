@@ -174,8 +174,8 @@ def gcc(src, output=None, flags=None):
     :param src: C source file to compile
     :param output: Optional name of object
     :param flags: list of compiler flags'''
-    import xnt.build.cc
-    return xnt.tasks.__apply__(xnt.build.cc.__gcc__(src, output, flags))
+    import xnt.tasks.build.cc
+    return xnt.tasks.__apply__(xnt.tasks.build.cc.__gcc__(src, output, flags))
 
 def gpp(src, output=None, flags=None):
     '''G++ compiler
@@ -183,16 +183,17 @@ def gpp(src, output=None, flags=None):
     :param src: C++ source file to compile
     :param output: Optional name of object
     :param flags: List of compiler flags'''
-    import xnt.build.cc
-    return xnt.tasks.__apply__(xnt.build.cc.__gpp__(src, output, flags))
+    import xnt.tasks.build.cc
+    return xnt.tasks.__apply__(xnt.tasks.build.cc.__gpp__(src, output, flags))
 
 def javac(src, flags=None):
     '''Java compiler
 
     :param src: Java source class
     :param flags: List of compiler flags'''
-    import xnt.build.cc
-    return xnt.tasks.__apply__(xnt.build.cc.__javac__(src, flags))
+    import xnt.tasks.build.cc
+    return xnt.tasks.__apply__(
+        xnt.tasks.build.cc.__javac__(src, flags))
 
 def nvcc(src, output=None, flags=None):
     '''CUDA C/C++ compiler
@@ -200,8 +201,9 @@ def nvcc(src, output=None, flags=None):
     :param src: CUDA source to compile
     :param output: Optional object name
     :param flags: List of compiler flags'''
-    import xnt.build.cc
-    return xnt.tasks.__apply__(xnt.build.cc.__nvcc__(src, output, flags))
+    import xnt.tasks.build.cc
+    return xnt.tasks.__apply__(
+        xnt.tasks.build.cc.__nvcc__(src, output, flags))
 
 #pylint: disable=W0621
 def ant(target, path=None, flags=None, pkeys=None, pvalues=None):
@@ -212,9 +214,9 @@ def ant(target, path=None, flags=None, pkeys=None, pvalues=None):
     :param flags: list of flags to pass to ant
     :param pkeys: key names for properties to pass to ant
     :param pvalues: value names for properties to pass to ant'''
-    import xnt.build.make
+    import xnt.tasks.build.make
     return xnt.tasks.__apply__(
-        xnt.build.make.__ant__(target, path, flags, pkeys, pvalues))
+        xnt.tasks.build.make.__ant__(target, path, flags, pkeys, pvalues))
 
 #pylint: disable=W0621
 def make(target, path=None, flags=None, pkeys=None, pvalues=None):
@@ -225,9 +227,9 @@ def make(target, path=None, flags=None, pkeys=None, pvalues=None):
     :param flags: list of flags to pass to make
     :param pkeys: key names for properties to pass to make
     :parram pvalues: value names for properties to pass to make'''
-    import xnt.build.make
+    import xnt.tasks.build.make
     return xnt.tasks.__apply__(
-        xnt.build.make.__make__(target, path, flags, pkeys, pvalues))
+        xnt.tasks.build.make.__make__(target, path, flags, pkeys, pvalues))
 
 #pylint: disable=W0621
 def nant(target, path=None, flags=None, pkeys=None, pvalues=None):
@@ -238,9 +240,9 @@ def nant(target, path=None, flags=None, pkeys=None, pvalues=None):
     :param flags: list of flags to pass to ant
     :param pkeys: key names for properties to pass to ant
     :param pvalues: value names for properties to pass to ant'''
-    import xnt.build.make
+    import xnt.tasks.build.make
     return xnt.tasks.__apply__(
-        xnt.build.make.__nant__(target, path, flags, pkeys, pvalues))
+        xnt.tasks.build.make.__nant__(target, path, flags, pkeys, pvalues))
 
 def gitclone(url, dest=None, branch=None):
     '''Git Clone
@@ -248,8 +250,9 @@ def gitclone(url, dest=None, branch=None):
     :param url: URL to respository
     :param dest: destination directory or name of repository
     :param branch: branch name to clone'''
-    import xnt.vcs.git
-    return xnt.tasks.__apply__(xnt.vcs.git.__gitclone__(url, dest, branch))
+    import xnt.tasks.vcs.git
+    return xnt.tasks.__apply__(
+        xnt.tasks.vcs.git.__gitclone__(url, dest, branch))
 
 def gitpull(path, remote=None, branch=None):
     '''Git pull
@@ -257,8 +260,9 @@ def gitpull(path, remote=None, branch=None):
     :param path: local path to git repository
     :param remote: repository remote to pull
     :param branch: branch name to pull'''
-    import xnt.vcs.git
-    return xnt.tasks.__apply__(xnt.vcs.git.__gitpull__(path, remote, branch))
+    import xnt.tasks.vcs.git
+    return xnt.tasks.__apply__(
+        xnt.tasks.vcs.git.__gitpull__(path, remote, branch))
 
 def hgclone(url, dest=None, rev=None, branch=None):
     '''HG clone
@@ -267,16 +271,20 @@ def hgclone(url, dest=None, rev=None, branch=None):
     :param dest: Directory or name of repository
     :param rev: Revision to clone
     :param branch: Branch to clone'''
-    import xnt.vcs.hg
-    return xnt.tasks.__apply__(xnt.vcs.hg.__hgclone__(url, dest, rev, branch))
+    import xnt.tasks.vcs.hg
+    return xnt.tasks.__apply__(xnt.tasks.vcs.hg.__hgclone__(
+        url,
+        dest,
+        rev,
+        branch))
 
 def hgfetch(path, source=None):
     '''HG Pull
 
     :param path: local path to repository
     :param source: remote source to pull'''
-    import xnt.vcs.hg
-    return xnt.tasks.__apply__(xnt.vcs.hg.__hgfetch__(path, source))
+    import xnt.tasks.vcs.hg
+    return xnt.tasks.__apply__(xnt.tasks.vcs.hg.__hgfetch__(path, source))
 
 def cvsco(module, rev=None, dest=None):
     '''CVS Checkout
@@ -284,15 +292,15 @@ def cvsco(module, rev=None, dest=None):
     :param module: CVS module to checkout
     :param rev: Revision to checkout
     :param dest: Destination directory or name'''
-    import xnt.vcs.cvs
-    return xnt.tasks.__apply__(xnt.vcs.cvs.__cvsco__(module, rev, dest))
+    import xnt.tasks.vcs.cvs
+    return xnt.tasks.__apply__(xnt.tasks.vcs.cvs.__cvsco__(module, rev, dest))
 
 def cvsupdate(path):
     '''CVS Update
 
     :param path: local path to csv checkout'''
-    import xnt.vcs.cvs
-    return xnt.tasks.__apply__(xnt.vcs.cvs.__cvsupdate__(path))
+    import xnt.tasks.vcs.cvs
+    return xnt.tasks.__apply__(xnt.tasks.vcs.cvs.__cvsupdate__(path))
 
 def pdflatex(document, directory=None, bibtex=False, makeglossary=False):
     '''PDFLaTeX
@@ -301,14 +309,18 @@ def pdflatex(document, directory=None, bibtex=False, makeglossary=False):
     :param directory: path to document
     :param bibtex: generate bibtex entries: default false
     :param makeglossary: generate glossary entries: default false'''
-    import xnt.build.tex
-    return xnt.tasks.__apply__(
-        xnt.build.tex.__pdflatex__(document, directory, bibtex, makeglossary))
+    import xnt.tasks.build.tex
+    return xnt.tasks.__apply__(xnt.tasks.build.tex.__pdflatex__(
+        document,
+        directory,
+        bibtex,
+        makeglossary))
 
 def latexclean(directory=None, remove_pdf=False):
     '''Clean up PDFLaTeX generated files
 
     :param directory: path to document
     :param remove_pdf: remove the generated pdf: default false'''
-    import xnt.build.tex
-    return xnt.tasks.__apply__(xnt.build.tex.__clean__(directory, remove_pdf))
+    import xnt.tasks.build.tex
+    return xnt.tasks.__apply__(
+        xnt.tasks.build.tex.__clean__(directory, remove_pdf))

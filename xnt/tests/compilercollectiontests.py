@@ -18,10 +18,10 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from xnt.tests import assert_basic_assumptions
-from xnt.build.cc import __gcc__
-from xnt.build.cc import __gpp__
-from xnt.build.cc import __nvcc__
-from xnt.build.cc import __javac__
+from xnt.tasks.build.cc import __gcc__
+from xnt.tasks.build.cc import __gpp__
+from xnt.tasks.build.cc import __nvcc__
+from xnt.tasks.build.cc import __javac__
 import unittest
 
 # pylint: disable=R0904

@@ -65,35 +65,35 @@ Compile Tasks
 SCM Tasks
 =========
 
-.. _xnt.vcs.hg:
+.. _xnt.tasks.vcs.hg:
 
 Mercurial Tasks
 ---------------
 
-.. autofunction:: xnt.vcs.hg.hgclone
+.. autofunction:: xnt.tasks.vcs.hg.hgclone
    :noindex:
 
-.. autofunction:: xnt.vcs.hg.hgfetch
+.. autofunction:: xnt.tasks.vcs.hg.hgfetch
    :noindex:
 
-.. _xnt.vcs.git:
+.. _xnt.tasks.vcs.git:
 
 Git Tasks
 ---------
 
-.. autofunction:: xnt.vcs.git.gitclone
+.. autofunction:: xnt.tasks.vcs.git.gitclone
    :noindex:
 
-.. autofunction:: xnt.vcs.git.gitpull
+.. autofunction:: xnt.tasks.vcs.git.gitpull
    :noindex:
 
-.. _xnt.vcs.cvs:
+.. _xnt.tasks.vcs.cvs:
 
 CVS Tasks
 ---------
 
-.. autofunction:: xnt.vcs.cvs.cvsco
+.. autofunction:: xnt.tasks.vcs.cvs.cvsco
    :noindex:
 
-.. autofunction:: xnt.vcs.cvs.cvsupdate
+.. autofunction:: xnt.tasks.vcs.cvs.cvsupdate
    :noindex:
