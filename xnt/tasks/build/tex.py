@@ -19,7 +19,7 @@
 
 import os
 import logging
-from xnt.verbose import VERBOSE
+import xnt.verbose
 
 LOGGER = logging.getLogger(__name__)
 
@@ -39,7 +39,7 @@ def __pdflatex__(document,
     """
     def __execute__(**kwargs):
         '''Perform pdflatex build'''
-        devnull = None if VERBOSE else open(os.devnull, 'w')
+        devnull = None if xnt.verbose.VERBOSE else open(os.devnull, 'w')
         documentbase = os.path.splitext(document)[0]
         def pdf(draftmode=False):
             """Generate PDF"""
