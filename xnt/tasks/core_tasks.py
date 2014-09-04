@@ -336,8 +336,10 @@ def __call__(command, stdout=None, stderr=None, path=None):
                 stdout=kwargs['stdout'],
                 stderr=kwargs['stderr'])
         if not kwargs['path']:
-            path = os.getcwd()
-        return __run_in__(closure, path)
+            cwd = os.getcwd()
+        else:
+            cwd = kwargs['path']
+        return __run_in__(closure, cwd)
     args = {'command': command,
             'stdout': stdout,
             'stderr': stderr,
