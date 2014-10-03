@@ -292,10 +292,11 @@ def __xnt_list_targets__(buildfile):
     '''List targets (and doctstrings) of the provided build module'''
     def __execute__(**kwargs):
         '''Perform listing'''
+        build = __load_build__(kwargs['buildfile'])
         try:
-            for attr in dir(kwargs['build']):
+            for attr in dir(build):
                 try:
-                    func = getattr(kwargs['build'], attr)
+                    func = getattr(build, attr)
                     if func.decorator == "target":
                         print(attr + ":")
                         if func.__doc__:
