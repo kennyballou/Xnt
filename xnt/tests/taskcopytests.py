@@ -27,10 +27,10 @@ class TaskCopyTests(unittest.TestCase):
 
     def test_cp(self):
         """Test default use of cp"""
-        result = __copy__(srcdir="test0", dstdir="test1")
+        result = __copy__(src="test0", dstdir="test1")
         assert_basic_assumptions(self, result)
-        self.assertTrue('srcdir' in result[0][1])
-        self.assertEqual('test0', result[0][1]['srcdir'])
+        self.assertTrue('src' in result[0][1])
+        self.assertEqual('test0', result[0][1]['src'])
         self.assertTrue('dstdir' in result[0][1])
         self.assertEqual('test1', result[0][1]['dstdir'])
 

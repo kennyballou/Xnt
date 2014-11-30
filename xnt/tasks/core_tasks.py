@@ -45,28 +45,31 @@ def __expandpath__(path_pattern):
         return glob.iglob(kwargs['path_pattern'])
     return ((__execute__, {'path_pattern': path_pattern}),)
 
-def __copy__(srcdir=None, dstdir=None, files=None):
-    """Copy `srcdir` to `dstdir` or copy `files` to `dstdir`
+def __copy__(src=None, dstdir=None, files=None):
+    """Copy `src` to `dstdir` or copy `files` to `dstdir`
 
     Copy a file or folder to a different file/folder
     If no `srcdir` file is specified, will attempt to copy `files` to `dstdir`
 
     *Notice*, elements of `files` will not be expanded before copying.
 
-    :param srcdir: source directory or file
+    :param src: source directory or file
     :param dstdir: destination file or folder (in the case of `files`)
     :param files: list of files (strings) to copy to `src`
     """
     def __execute__(**kwargs):
         """Perform copy"""
         assert 'dstdir' in kwargs
-        if 'srcdir' in kwargs:
-            shutil.copytree(kwargs['srcdir'], kwargs['dstdir'])
+        if 'src' in kwargs:
+            if os.path.isfile(kwargs['src']):
+                shutil.copyfile(kwargs['src'], kwargs['dstdir'])
+            else:
+                shutil.copytree(kwargs['src'], kwargs['dstdir'])
         elif 'files' in kwargs:
             for srcfile in kwargs['files']:
                 shutil.copy(srcfile, kwargs['dstdir'])
     return (
-        (__execute__, {'srcdir': srcdir, 'dstdir': dstdir, 'files': files,}),
+        (__execute__, {'src': src, 'dstdir': dstdir, 'files': files,}),
     )
 
 def __move__(src, dst):
