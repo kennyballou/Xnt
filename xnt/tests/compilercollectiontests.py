@@ -32,16 +32,16 @@ class GccTests(unittest.TestCase):
         """Test Default GCC"""
         result = __gcc__("hello.c")
         assert_basic_assumptions(self, result)
-        self.assertTrue("infile" in result[0][1])
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn("infile", result[0][1])
+        self.assertIn('flags', result[0][1])
 
     def test_gcc_with_output(self):
         """Test GCC with output"""
         result = __gcc__("hello.c", output="hello")
         assert_basic_assumptions(self, result)
-        self.assertTrue("infile" in result[0][1])
-        self.assertTrue("outfile" in result[0][1])
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn("infile", result[0][1])
+        self.assertIn("outfile", result[0][1])
+        self.assertIn('flags', result[0][1])
 
 # pylint: disable=R0904
 class GppTests(unittest.TestCase):
@@ -51,16 +51,16 @@ class GppTests(unittest.TestCase):
         """Test Default G++"""
         result = __gpp__("hello.cpp")
         assert_basic_assumptions(self, result)
-        self.assertTrue("infile" in result[0][1])
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn("infile", result[0][1])
+        self.assertIn('flags', result[0][1])
 
     def test_gpp_with_output(self):
         """Test G++ with output"""
         result = __gpp__("hello.cpp", output="hello")
         assert_basic_assumptions(self, result)
-        self.assertTrue("infile" in result[0][1])
-        self.assertTrue("outfile" in result[0][1])
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn("infile", result[0][1])
+        self.assertIn("outfile", result[0][1])
+        self.assertIn('flags', result[0][1])
 
 # pylint: disable=R0904
 class NvccTests(unittest.TestCase):
@@ -70,16 +70,16 @@ class NvccTests(unittest.TestCase):
         """Test Default NVCC"""
         result = __nvcc__("hello.cu")
         assert_basic_assumptions(self, result)
-        self.assertTrue("infile" in result[0][1])
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn("infile", result[0][1])
+        self.assertIn('flags', result[0][1])
 
     def test_nvcc_with_output(self):
         """Test Named Output NVCC"""
         result = __nvcc__("hello.cu", output="hello")
         assert_basic_assumptions(self, result)
-        self.assertTrue("infile" in result[0][1])
-        self.assertTrue("outfile" in result[0][1])
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn("infile", result[0][1])
+        self.assertIn("outfile", result[0][1])
+        self.assertIn('flags', result[0][1])
 
 # pylint: disable=R0904
 class JavacTests(unittest.TestCase):
@@ -89,8 +89,8 @@ class JavacTests(unittest.TestCase):
         """Test Default Javac"""
         result = __javac__("HelloWorld.java")
         assert_basic_assumptions(self, result)
-        self.assertTrue("sourcefiles" in result[0][1])
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn("sourcefiles", result[0][1])
+        self.assertIn('flags', result[0][1])
 
 if __name__ == "__main__":
     unittest.main()

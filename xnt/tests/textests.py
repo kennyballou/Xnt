@@ -9,7 +9,7 @@
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   This program is distributed, the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -30,12 +30,12 @@ class TexTests(unittest.TestCase):
         """Test default pdflatex build"""
         result = __pdflatex__('test.tex', directory='tex')
         assert_basic_assumptions(self, result)
-        self.assertTrue('texdocument' in result[0][1])
+        self.assertIn('texdocument', result[0][1])
         self.assertEqual('test.tex', result[0][1]['texdocument'])
-        self.assertTrue('directory' in result[0][1])
-        self.assertTrue('bibtex' in result[0][1])
+        self.assertIn('directory', result[0][1])
+        self.assertIn('bibtex', result[0][1])
         self.assertFalse(result[0][1]['bibtex'])
-        self.assertTrue('makeglossary' in result[0][1])
+        self.assertIn('makeglossary', result[0][1])
         self.assertFalse(result[0][1]['makeglossary'])
 
     def test_pdflatex_with_bibtex(self):
@@ -54,9 +54,9 @@ class TexTests(unittest.TestCase):
         """Test the default clean method removes generated files except pdf"""
         result = __clean__(directory='tex')
         assert_basic_assumptions(self, result)
-        self.assertTrue('directory' in result[0][1])
+        self.assertIn('directory', result[0][1])
         self.assertEqual('tex', result[0][1]['directory'])
-        self.assertTrue('remove_pdf' in result[0][1])
+        self.assertIn('remove_pdf', result[0][1])
         self.assertFalse(result[0][1]['remove_pdf'])
 
     def test_tex_clean_include_pdf(self):

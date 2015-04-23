@@ -31,21 +31,21 @@ class AntTests(unittest.TestCase):
         """Test the default target of ant"""
         result = __ant__(target="test")
         assert_basic_assumptions(self, result)
-        self.assertTrue('target' in result[0][1])
+        self.assertIn('target', result[0][1])
         self.assertEqual('test', result[0][1]['target'])
 
     def test_ant_when_given_path(self):
         """Test ant when passing given a path"""
         result = __ant__(target="test", path="some/other/path/build.xml")
         assert_basic_assumptions(self, result)
-        self.assertTrue('path' in result[0][1])
+        self.assertIn('path', result[0][1])
         self.assertEqual('some/other/path/build.xml', result[0][1]['path'])
 
     def test_ant_when_given_flags(self):
         """Test passing flags to ant"""
         result = __ant__(target='test', flags=['-verbose'])
         assert_basic_assumptions(self, result)
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn('flags', result[0][1])
         self.assertEqual(1, len(result[0][1]['flags']))
         self.assertEqual('-verbose', result[0][1]['flags'][0])
 
@@ -55,8 +55,8 @@ class AntTests(unittest.TestCase):
                          pkeys=["test_var"],
                          pvalues=["testing"])
         assert_basic_assumptions(self, result)
-        self.assertTrue('pkeys' in result[0][1])
-        self.assertTrue('pvalues' in result[0][1])
+        self.assertIn('pkeys', result[0][1])
+        self.assertIn('pvalues', result[0][1])
         self.assertEqual(1, len(result[0][1]['pkeys']))
         self.assertEqual(1, len(result[0][1]['pvalues']))
         self.assertEqual('test_var', result[0][1]['pkeys'][0])
@@ -70,14 +70,14 @@ class MakeTests(unittest.TestCase):
         """Test Default make"""
         result = __make__(target="build")
         assert_basic_assumptions(self, result)
-        self.assertTrue('target' in result[0][1])
+        self.assertIn('target', result[0][1])
         self.assertEqual('build', result[0][1]['target'])
 
     def test_make_with_path(self):
         '''Test make given a path'''
         result = __make__(target="build", path="some/other/path/Makefile")
         assert_basic_assumptions(self, result)
-        self.assertTrue('path' in result[0][1])
+        self.assertIn('path', result[0][1])
         self.assertEqual('some/other/path/Makefile', result[0][1]['path'])
 
     def test_passing_vars(self):
@@ -86,8 +86,8 @@ class MakeTests(unittest.TestCase):
                           pkeys=["test_var"],
                           pvalues=["testing"])
         assert_basic_assumptions(self, result)
-        self.assertTrue('pkeys' in result[0][1])
-        self.assertTrue('pvalues' in result[0][1])
+        self.assertIn('pkeys', result[0][1])
+        self.assertIn('pvalues', result[0][1])
         self.assertEqual(1, len(result[0][1]['pkeys']))
         self.assertEqual(1, len(result[0][1]['pvalues']))
         self.assertEqual('test_var', result[0][1]['pkeys'][0])
@@ -97,7 +97,7 @@ class MakeTests(unittest.TestCase):
         """Test Flag Passing with Make"""
         result = __make__(target='build', flags=['-B'])
         assert_basic_assumptions(self, result)
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn('flags', result[0][1])
         self.assertEqual(1, len(result[0][1]['flags']))
         self.assertEqual('-B', result[0][1]['flags'][0])
 
@@ -109,14 +109,14 @@ class NAntTests(unittest.TestCase):
         """Test Deault nant"""
         result = __nant__(target='test')
         assert_basic_assumptions(self, result)
-        self.assertTrue('target' in result[0][1])
+        self.assertIn('target', result[0][1])
         self.assertEqual('test', result[0][1]['target'])
 
     def test_nant_with_path(self):
         '''Test NAnt with path'''
         result = __nant__(target='test', path='some/other/path/build.xml')
         assert_basic_assumptions(self, result)
-        self.assertTrue('path' in result[0][1])
+        self.assertIn('path', result[0][1])
         self.assertEqual('some/other/path/build.xml', result[0][1]['path'])
 
     def test_nant_with_parameters(self):
@@ -125,8 +125,8 @@ class NAntTests(unittest.TestCase):
                           pkeys=["test_var"],
                           pvalues=["testing"])
         assert_basic_assumptions(self, result)
-        self.assertTrue('pkeys' in result[0][1])
-        self.assertTrue('pvalues' in result[0][1])
+        self.assertIn('pkeys', result[0][1])
+        self.assertIn('pvalues', result[0][1])
         self.assertEqual(1, len(result[0][1]['pkeys']))
         self.assertEqual(1, len(result[0][1]['pvalues']))
         self.assertEqual('test_var', result[0][1]['pkeys'][0])
@@ -135,7 +135,7 @@ class NAntTests(unittest.TestCase):
         '''Test NAnt with flags'''
         result = __nant__(target="test", flags=["-v"])
         assert_basic_assumptions(self, result)
-        self.assertTrue('flags' in result[0][1])
+        self.assertIn('flags', result[0][1])
         self.assertEqual(1, len(result[0][1]['flags']))
         self.assertEqual('-v', result[0][1]['flags'][0])
 

@@ -9,7 +9,7 @@
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   This program is distributed, the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -29,18 +29,18 @@ class TaskCopyTests(unittest.TestCase):
         """Test default use of cp"""
         result = __copy__(src="test0", dstdir="test1")
         assert_basic_assumptions(self, result)
-        self.assertTrue('src' in result[0][1])
+        self.assertIn('src', result[0][1])
         self.assertEqual('test0', result[0][1]['src'])
-        self.assertTrue('dstdir' in result[0][1])
+        self.assertIn('dstdir', result[0][1])
         self.assertEqual('test1', result[0][1]['dstdir'])
 
     def test_cp_filelist(self):
         """Test filelist copy"""
         result = __copy__(files=['file1', 'file2', 'file3'], dstdir='test1')
         assert_basic_assumptions(self, result)
-        self.assertTrue('files' in result[0][1])
+        self.assertIn('files', result[0][1])
         self.assertEqual(3, len(result[0][1]['files']))
-        self.assertTrue('dstdir' in result[0][1])
+        self.assertIn('dstdir', result[0][1])
         self.assertEqual('test1', result[0][1]['dstdir'])
 
 if __name__ == "__main__":

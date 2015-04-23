@@ -9,7 +9,7 @@
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   This program is distributed, the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -28,9 +28,9 @@ class TaskMkdirTests(unittest.TestCase):
         """Test mkdir method"""
         result = __mkdir__("my/new/directory")
         assert_basic_assumptions(self, result)
-        self.assertTrue('directory' in result[0][1])
+        self.assertIn('directory', result[0][1])
         self.assertEqual('my/new/directory', result[0][1]['directory'])
-        self.assertTrue('mode' in result[0][1])
+        self.assertIn('mode', result[0][1])
         self.assertEqual(0o755, result[0][1]['mode'])
 
 if __name__ == "__main__":

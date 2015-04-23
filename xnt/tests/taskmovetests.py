@@ -9,7 +9,7 @@
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   This program is distributed, the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -28,8 +28,8 @@ class TaskMoveTests(unittest.TestCase):
         """Test Moving files and folders"""
         result = __move__('test0', 'test1')
         assert_basic_assumptions(self, result)
-        self.assertTrue('src' in result[0][1])
-        self.assertTrue('dst' in result[0][1])
+        self.assertIn('src', result[0][1])
+        self.assertIn('dst', result[0][1])
         self.assertEqual('test0', result[0][1]['src'])
         self.assertEqual('test1', result[0][1]['dst'])
 

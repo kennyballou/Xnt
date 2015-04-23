@@ -28,7 +28,7 @@ class TaskRemoveTests(unittest.TestCase):
         """Test removing files and folders"""
         result = __remove__('test0', 'test1', '*swp')
         assert_basic_assumptions(self, result)
-        self.assertTrue('fileset' in result[0][1])
+        self.assertIn('fileset', result[0][1])
         self.assertEqual(3, len(result[0][1]['fileset']))
 
 if __name__ == "__main__":

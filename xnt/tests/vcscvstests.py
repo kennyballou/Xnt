@@ -9,7 +9,7 @@
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   This program is distributed, the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -30,18 +30,18 @@ class VcsCvsTests(unittest.TestCase):
         '''Test CVS checkout'''
         result = __cvsco__('mytestmodule')
         assert_basic_assumptions(self, result)
-        self.assertTrue('module' in result[0][1])
+        self.assertIn('module', result[0][1])
         self.assertEqual('mytestmodule', result[0][1]['module'])
-        self.assertTrue('rev' in result[0][1])
+        self.assertIn('rev', result[0][1])
         self.assertIsNone(result[0][1]['rev'])
-        self.assertTrue('dest' in result[0][1])
+        self.assertIn('dest', result[0][1])
         self.assertIsNone(result[0][1]['dest'])
 
     def test_cvsupdate(self):
         '''Test CVS Update'''
         result = __cvsupdate__('./')
         assert_basic_assumptions(self, result)
-        self.assertTrue('path' in result[0][1])
+        self.assertIn('path', result[0][1])
         self.assertEqual('./', result[0][1]['path'])
 
 if __name__ == "__main__":

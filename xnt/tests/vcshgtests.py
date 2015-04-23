@@ -9,7 +9,7 @@
 #   the Free Software Foundation, either version 3 of the License, or
 #   (at your option) any later version.
 
-#   This program is distributed in the hope that it will be useful,
+#   This program is distributed, the hope that it will be useful,
 #   but WITHOUT ANY WARRANTY; without even the implied warranty of
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
@@ -31,23 +31,23 @@ class VcsHgTests(unittest.TestCase):
         url = 'https://vim.googlecode.com/hg'
         result = __hgclone__(url, dest='vim')
         assert_basic_assumptions(self, result)
-        self.assertTrue('url' in result[0][1])
+        self.assertIn('url', result[0][1])
         self.assertEqual(url, result[0][1]['url'])
-        self.assertTrue('dest' in result[0][1])
+        self.assertIn('dest', result[0][1])
         self.assertEqual('vim', result[0][1]['dest'])
-        self.assertTrue('rev' in result[0][1])
+        self.assertIn('rev', result[0][1])
         self.assertIsNone(result[0][1]['rev'])
-        self.assertTrue('branch' in result[0][1])
+        self.assertIn('branch', result[0][1])
         self.assertIsNone(result[0][1]['branch'])
 
     def test_hgfetch(self):
         '''Test hg fetch'''
         result = __hgfetch__('./', source='upstream')
         assert_basic_assumptions(self, result)
-        self.assertTrue('path' in result[0][1])
+        self.assertIn('path', result[0][1])
         self.assertEqual('./', result[0][1]['path'])
-        self.assertTrue('source' in result[0][1])
-        self.assertTrue('upstream', result[0][1]['source'])
+        self.assertIn('source', result[0][1])
+        self.assertIn('upstream', result[0][1]['source'])
 
 if __name__ == "__main__":
     unittest.main()

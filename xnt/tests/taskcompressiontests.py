@@ -29,9 +29,9 @@ class TaskCompressionTests(unittest.TestCase):
         """Test zip method"""
         result = __zip__(directory="testfolder", zipfilename="myzip.zip")
         assert_basic_assumptions(self, result)
-        self.assertTrue("directory" in result[0][1])
+        self.assertIn("directory", result[0][1])
         self.assertEqual("testfolder", result[0][1]['directory'])
-        self.assertTrue("zipfile" in result[0][1])
+        self.assertIn("zipfile", result[0][1])
         self.assertEqual("myzip.zip", result[0][1]['zipfile'])
 
 if __name__ == "__main__":
