@@ -409,7 +409,6 @@ def __in_path__(program):
         return __apply__(__which__(kwargs['program']))
     return ((__execute__, {'program': program,}),)
 
-# pylint: disable=W0142
 def __apply__(func_tuple):
     '''Execute function tuple'''
     error_codes = []
