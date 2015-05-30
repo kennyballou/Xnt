@@ -18,7 +18,11 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import xnt.xenant
-import unittest
+import sys
+if sys.version_info[0] == 2 and sys.version_info[1] == 6:
+    import unittest2 as unittest
+else:
+    import unittest
 
 # pylint: disable=R0904
 class XenantArgParserTests(unittest.TestCase):

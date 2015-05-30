@@ -27,7 +27,11 @@ from xnt.tasks.core_tasks import __which__
 from xnt.tasks.core_tasks import __in_path__
 from xnt.tasks.core_tasks import __log__
 from xnt.tasks.core_tasks import __expandpath__
-import unittest
+import sys
+if sys.version_info[0] == 2 and sys.version_info[1] == 6:
+    import unittest2 as unittest
+else:
+    import unittest
 
 # pylint: disable=R0904
 class TaskMiscTests(unittest.TestCase):

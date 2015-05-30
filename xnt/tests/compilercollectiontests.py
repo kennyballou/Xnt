@@ -22,7 +22,11 @@ from xnt.tasks.build.cc import __gcc__
 from xnt.tasks.build.cc import __gpp__
 from xnt.tasks.build.cc import __nvcc__
 from xnt.tasks.build.cc import __javac__
-import unittest
+import sys
+if sys.version_info[0] == 2 and sys.version_info[1] == 6:
+    import unittest2 as unittest
+else:
+    import unittest
 
 # pylint: disable=R0904
 class GccTests(unittest.TestCase):

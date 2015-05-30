@@ -21,7 +21,11 @@ from xnt.tests import assert_basic_assumptions
 from xnt.tasks.build.make import __make__
 from xnt.tasks.build.make import __ant__
 from xnt.tasks.build.make import __nant__
-import unittest
+import sys
+if sys.version_info[0] == 2 and sys.version_info[1] == 6:
+    import unittest2 as unittest
+else:
+    import unittest
 
 # pylint: disable=R0904
 class AntTests(unittest.TestCase):

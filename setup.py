@@ -47,6 +47,7 @@ setup(
             'xnt = xnt.xenant:main',
         ],
     },
+    tests_require=['unittest2',],
     install_requires=['setuptools',],
     classifiers=[
         'Development Status :: 4 - Beta',
