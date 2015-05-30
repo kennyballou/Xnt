@@ -46,7 +46,7 @@ def main():
     else:
         error_code = xnt.xntcall(build_file,
                                  args["targets"],
-                                 args["properties"])
+                                 _process_params_(args["properties"]))
     elapsed_time = time.time() - start_time
     print("Execution time: %.3f" % elapsed_time)
     if error_code != 0:
@@ -57,6 +57,16 @@ def main():
            os.path.join(os.path.dirname(build_file), "__pycache__"))
     if error_code != 0:
         sys.exit(error_code)
+
+def _process_params_(params):
+    '''Parse and separate properties'''
+    if not params:
+        return {}
+    properties = {}
+    for param in params:
+        name, value = param.split('=')
+        properties[name] = value
+    return properties
 
 def parse_args(args_in):
     """Parse and group arguments"""

@@ -243,12 +243,12 @@ def __xntcall__(buildfile, targets=None, props=None):
             """Invoke Build with `targets` passing `props`"""
             def call_target(target_name, props):
                 """Call target on build module"""
-                def process_params(params, existing_props=None):
-                    """Parse and separate properties"""
-                    properties = existing_props if existing_props else {}
-                    for param in params:
-                        name, value = param.split("=")
-                        properties[name] = value
+                def merge_properties(params, existing_props=None):
+                    """Merge existing properties with passed properties"""
+                    if not existing_props:
+                        return params
+                    properties = existing_props.copy()
+                    properties.update(params)
                     return properties
                 def __get_properties():
                     """Return the properties dictionary of the build module"""
@@ -261,7 +261,7 @@ def __xntcall__(buildfile, targets=None, props=None):
                     if props and len(props) > 0:
                         setattr(build,
                                 "PROPERTIES",
-                                process_params(props, __get_properties()))
+                                merge_properties(props, __get_properties()))
                     target = getattr(build, target_name)
                     error_code = target()
                     return error_code if error_code else SUCCESS
