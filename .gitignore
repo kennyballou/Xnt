@@ -3,6 +3,7 @@
 **/*__pycache__
 **.rej
 **.orig
+**.eggs/
 dist
 **MANIFEST
 bin
