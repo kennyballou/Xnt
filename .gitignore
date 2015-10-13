@@ -4,6 +4,7 @@
 **.rej
 **.orig
 **.eggs/
+**/*.egg/
 dist
 **MANIFEST
 bin
